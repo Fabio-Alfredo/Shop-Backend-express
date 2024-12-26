@@ -1,5 +1,5 @@
 const express = require("express");
-const config = require("./src/config/config");
+const config = require("./src/config/config").production;
 const db = require("./src/models");
 
 const app = express();
