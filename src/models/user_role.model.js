@@ -1,6 +1,6 @@
 
 module.exports = (sequelize, DataTypes) => {
-  const RoleUser = sequelize.define(
+  const User_role = sequelize.define(
     "User_role",
     {
       assignedIn: {
@@ -8,7 +8,6 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: DataTypes.NOW,
       },
       editedBy: {
-        allowNull: false,
         type: DataTypes.UUID,
       },
     },
@@ -19,5 +18,5 @@ module.exports = (sequelize, DataTypes) => {
   );
 
 
-  return RoleUser;
+  return User_role;
 };
