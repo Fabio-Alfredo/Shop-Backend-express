@@ -22,10 +22,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.STRING,
         validate: {
-        //   isEmail: true,
+          isEmail: true,
           notEmpty: true,
         },
-        unique:true
+        unique: true,
       },
       password: {
         allowNull: false,
@@ -44,12 +44,19 @@ module.exports = (sequelize, DataTypes) => {
 
   User.beforeSave(async (user, options) => {
     if (user.changed("password")) {
-      user.password = await bcrypt.hash(user.password, parseInt(config.salt)); 
+      user.password = await bcrypt.hash(user.password, parseInt(config.salt));
     }
   });
 
   User.prototype.validatePassword = async function (password) {
     return bcrypt.compare(password, this.password);
+  };
+
+  User.associate = (models) => {
+    User.belongsToMany(models.Role, {
+      through: models.User_role, // Usar el modelo UserRole como la tabla intermedia
+      foreignKey: "userId",
+    });
   };
 
   return User;
