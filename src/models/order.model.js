@@ -30,12 +30,17 @@ module.exports = (sequelize) => {
   Order.associate = (models) => {
     Order.belongsToMany(models.Product, {
       through: models.Order_product, 
-      foreignKey: "orderId", 
+      foreignKey: 'orderId', 
     });
 
     Order.belongsTo(models.Direction,{
       foreignKey:'orderId',
       as: 'directions',  
+    })
+
+    Order.belongsToMany(models.Payment,{
+      through:'payment_history',
+      foreignKey:'orderId'
     })
 
   };

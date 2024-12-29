@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       timestamps: true,
-      tableName: "categories",
+      tableName: "category",
     }
   );
   Category.associate = (models) => {
