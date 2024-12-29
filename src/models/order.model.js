@@ -1,10 +1,8 @@
-const DataTypes = require("sequelize").DataTypes;
-const { Model } = require("sequelize");
 const ORDER_STATES = require("../utils/constants/ordersState.utils");
 
 const STATE_LIST = Object.values(ORDER_STATES);
 
-module.exports = (sequelize) => {
+module.exports = (sequelize, DataTypes) => {
   const Order = sequelize.define(
     "Order",
     {
