@@ -32,7 +32,10 @@ module.exports = (sequelize) => {
       through: models.Order_product, 
       foreignKey: "orderId", 
     });
+
+
   };
+
 
   return Order;
 };

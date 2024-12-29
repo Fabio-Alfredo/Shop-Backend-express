@@ -36,14 +36,12 @@ module.exports = (sequelize, DataTypes) => {
       through: "category_products",
       foreignKey: "productId",
     });
+    Product.belongsToMany(models.Order, {
+        through: models.Order_product,
+        foreignKey: "productId",
+      });
   };
 
-  Product.associate = (models) => {
-    Product.belongsToMany(models.Order, {
-      through: models.Order_product,
-      foreignKey: "productId",
-    });
-  };
 
   return Product;
 };
