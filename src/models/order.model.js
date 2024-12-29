@@ -33,6 +33,10 @@ module.exports = (sequelize) => {
       foreignKey: "orderId", 
     });
 
+    Order.belongsTo(models.Direction,{
+      foreignKey:'orderId',
+      as: 'directions',  
+    })
 
   };
 
