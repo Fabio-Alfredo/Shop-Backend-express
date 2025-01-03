@@ -1,5 +1,5 @@
 const bcrypt = require("bcryptjs");
-const config = require("../config/config").production;
+const config = require("../configs/config").production;
 
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define(
@@ -25,7 +25,10 @@ module.exports = (sequelize, DataTypes) => {
           isEmail: true,
           notEmpty: true,
         },
-        unique: true,
+        unique: {
+          args:true,
+          msg:'correo en uso'
+        },
       },
       password: {
         allowNull: false,
