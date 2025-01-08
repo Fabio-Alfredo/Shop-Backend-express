@@ -3,7 +3,7 @@ const config = require("../../configs/config");
 
 const generateToken = (payload) => {
   const token = hash(payload, config.production.jsw, { expiresIn: "1d" });
-  return token;
+  return { token };
 };
 
 const verifyToken = (token) => {
@@ -17,5 +17,5 @@ const verifyToken = (token) => {
 
 module.exports = {
   generateToken,
-  verifyToken
+  verifyToken,
 };
