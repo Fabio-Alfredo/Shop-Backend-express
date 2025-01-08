@@ -1,6 +1,14 @@
 require("dotenv").config();
-const { PORT, DATABASE, DB_USER, DB_PASSWORD, DB_HOST, DB_DIALECT, PASS_SALT } =
-  process.env;
+const {
+  PORT,
+  DATABASE,
+  DB_USER,
+  DB_PASSWORD,
+  DB_HOST,
+  DB_DIALECT,
+  PASS_SALT,
+  JWT_SECRET,
+} = process.env;
 
 const validEnv = (env, name) => {
   if (!env) throw new Error(`${name} is required`);
@@ -14,7 +22,7 @@ const config = {
     password: validEnv(DB_PASSWORD, "DB_PASSWORD"),
     database: validEnv(DATABASE, "DATABASE"),
     socketPath: validEnv(DB_HOST, "DB_HOST"),
-    dialect: validEnv(DB_DIALECT, "DB_DIALECT"), 
+    dialect: validEnv(DB_DIALECT, "DB_DIALECT"),
     salt: validEnv(PASS_SALT, "SALT ENCRYPT"),
   },
   production: {
@@ -25,6 +33,7 @@ const config = {
     db_host: validEnv(DB_HOST, "HOST"),
     db_dialect: validEnv(DB_DIALECT, "DB_DIALECT"),
     salt: validEnv(PASS_SALT, "SALT ENCRYPT"),
+    jsw:validEnv(JWT_SECRET, "JWT_SECRET")
   },
 };
 
