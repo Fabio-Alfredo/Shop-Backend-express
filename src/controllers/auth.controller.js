@@ -8,7 +8,7 @@ const registerUser = async (req, res, next) => {
     const newUser = await authService.createUser(user);
     res.status(201).json(newUser);
   } catch (e) {
-    switch (e) {
+    switch (e.code) {
       case UserCodes.NOT_FOUND:
         next(createHttpError(500, e.message));
         break;
