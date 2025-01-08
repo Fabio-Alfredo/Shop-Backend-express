@@ -12,4 +12,6 @@ authRoute.post(
   authController.registerUser
 );
 
+authRoute.post("/login", authController.loginUser);
+
 module.exports = authRoute;

@@ -1,7 +1,7 @@
 const userRepository = require("../repositories/user.repository");
 const ServiceError = require("../errors/service.error");
 const UserCodes = require("../utils/errorsCodes/user.codes");
-const generateToken = require("../utils/security/jwt.utl");
+const {generateToken} = require("../utils/security/jwt.utl");
 
 const createUser = async (user) => {
   try {
@@ -20,8 +20,8 @@ const createUser = async (user) => {
 
 const authUser = async (email, password) => {
   try {
-    const user = userRepository.existUser(email);
-    if (!user || user.validatePassword(password))
+    const user = await userRepository.existUser(email);
+    if (!user || !( await user.validatePassword(password)))
       throw new ServiceError(
         "Invalid credentials ",
         UserCodes.INVALID_CREDENTIALS

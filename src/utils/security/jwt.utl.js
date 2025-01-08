@@ -1,8 +1,8 @@
-const { hash, verify } = require("jsonwebtoken");
+const { sign, verify } = require("jsonwebtoken");
 const config = require("../../configs/config");
 
 const generateToken = (payload) => {
-  const token = hash(payload, config.production.jsw, { expiresIn: "1d" });
+  const token = sign(payload, config.production.jsw, { expiresIn: "1d" });
   return { token };
 };
 

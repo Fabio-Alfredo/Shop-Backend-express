@@ -49,7 +49,7 @@ module.exports = (sequelize, DataTypes) => {
     if (user.changed("password")) {
       user.password = await bcrypt.hash(user.password, parseInt(config.salt));
     }
-  });
+  }); 
 
   User.prototype.validatePassword = async function (password) {
     return bcrypt.compare(password, this.password);
