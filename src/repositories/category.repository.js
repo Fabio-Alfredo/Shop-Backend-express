@@ -5,12 +5,12 @@ const create = async (category) => {
   return newCategory;
 };
 
-const findCategoryByName = async (category) => {
-  const eCategory = await Category.findOne({ where: { category } });
+const findById = async (category) => {
+  const eCategory = await Category.findOne({ where: { id:category } });
   return eCategory
 };
 
 module.exports = {
   create,
-  findCategoryByName
+  findById
 };

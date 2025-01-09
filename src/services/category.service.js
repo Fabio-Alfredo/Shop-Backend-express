@@ -4,12 +4,13 @@ const CategoryCodes = require("../utils/errorsCodes/category.code");
 
 const createCategory = async (category) => {
   try {
-    const existCategory = await categoryRepository.findCategoryByName(
-      category.category
-    );
+    const existCategory = await categoryRepository.findById(category.id);
 
     if (existCategory)
-      throw new ServiceError("Category already exist",CategoryCodes.ALREADY_EXISTS);
+      throw new ServiceError(
+        "Category already exist",
+        CategoryCodes.ALREADY_EXISTS
+      );
 
     const newCategory = await categoryRepository.create(category);
     return newCategory;
@@ -21,6 +22,24 @@ const createCategory = async (category) => {
   }
 };
 
+const findById = async (id) => {
+  try {
+    const category = await categoryRepository.findById(id);
+    if (!category)
+      throw new ServiceError(
+        "Category Not exist",
+        CategoryCodes.ALREADY_EXISTS
+      );
+    return category;
+  } catch (e) {
+    throw new ServiceError(
+      e.message || "Internal server error while find category",
+      e.code || CategoryCodes.NOT_FOUND
+    );
+  }
+};
+
 module.exports = {
   createCategory,
+  findById
 };
