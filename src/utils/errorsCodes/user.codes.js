@@ -5,3 +5,5 @@ const User = {
   ERROR_LOGIN: 1008,
   USER_NOT_EXISTS: 1009,
 };
+
+module.exports=User

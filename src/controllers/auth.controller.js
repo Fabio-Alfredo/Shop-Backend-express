@@ -12,8 +12,8 @@ const registerUser = async (req, res, next) => {
       case UserCodes.NOT_FOUND:
         next(createHttpError(500, e.message));
         break;
-      case UserCodes.ALREADY_EXISTS:
-        next(createHttpError(409, e.message));
+      // case UserCodes.ALREADY_EXISTS:
+      //   next(createHttpError(409, e.message));
         break;
       default:
         next(e);
