@@ -7,11 +7,23 @@ const create = async (product) => {
 };
 
 const findById = async (id) => {
-  const category = await Product.findOne({ where: { id } });
-  return category;
+  const product = await Product.findOne({ where: { id } });
+  return product;
+};
+
+const update = async (product) => {
+  const updated = await product.save();
+  return updated;
+};
+
+const findAll = async (productIds) => {
+  const products = Product.findAll({ where: { id: productIds } });
+  return products;
 };
 
 module.exports = {
   create,
-  findById
+  findById,
+  update,
+  findAll
 };
