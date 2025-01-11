@@ -46,18 +46,22 @@ const shopProduct = async (items) => {
         ProductCodes.INVALID_PRODUCT
       );
 
-    let total;
-    items.forEach((item) => {
-      const product = item.products((p) => p.id === item.id);
+    let total = 0;
+    for (const item of items) {
+      const product = products.find((p) => p.id === item.id);
       if (product.stock < item.quantity)
         throw new ServiceError(
           "Cantidad insuficiente ",
           ProductCodes.INVALID_PRODUCT
         );
+
       total += product.price * item.quantity;
-    });
-    
-    return total
+      product.stock -= item.quantity;
+
+      await productRepoditory.update(product);
+    }
+
+    return total;
   } catch (e) {
     throw new ServiceError(
       e.message || "Internal server error while find product",
@@ -69,5 +73,5 @@ const shopProduct = async (items) => {
 module.exports = {
   registerProduct,
   findById,
-  shopProduct
+  shopProduct,
 };

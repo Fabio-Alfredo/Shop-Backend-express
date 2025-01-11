@@ -14,6 +14,9 @@ module.exports = (sequelize, DataTypes) => {
       total: {
         type: DataTypes.DECIMAL,
       },
+      direction:{
+        type:DataTypes.STRING
+      },
       status: {
         type: DataTypes.ENUM(STATE_LIST),
         defaultValue: ORDER_STATES.PENDING,
@@ -31,10 +34,10 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'orderId', 
     });
 
-    Order.belongsTo(models.Direction,{
-      foreignKey:'orderId',
-      as: 'directions',  
-    })
+    // Order.belongsTo(models.Direction,{
+    //   foreignKey:'orderId',
+    //   as: 'directions',  
+    // })
 
     Order.belongsToMany(models.Payment,{
       through:'payment_history',

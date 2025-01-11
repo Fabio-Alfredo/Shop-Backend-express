@@ -25,12 +25,12 @@ module.exports = (sequelize, DataTypes) => {
     { timestamps: true, tableName: "direction" }
   );
 
-  Direction.associate=(models)=>{
-    Direction.hasMany(models.Order,{
-        foreignKey:'directionId',
-        as:'orders'
-    })
-  }
+  // Direction.associate=(models)=>{
+  //   Direction.hasMany(models.Order,{
+  //       foreignKey:'directionId',
+  //       as:'orders'
+  //   })
+  // }
 
   return Direction;
 };

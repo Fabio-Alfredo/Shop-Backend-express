@@ -27,7 +27,7 @@ const createValidator = [
     .withMessage("Price must be a float with up to 2 decimal places")
     .bail(),
 
-  body("stok")
+  body("stock")
     .trim()
     .notEmpty()
     .withMessage("Quantity is required")
