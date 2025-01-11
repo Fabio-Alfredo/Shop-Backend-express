@@ -6,7 +6,6 @@ const {generateToken} = require("../utils/security/jwt.utl");
 const createUser = async (user) => {
   try {
     const existUser = await userRepository.existUser(user.email);
-    console.log(UserCodes.ALREADY_EXISTS);
     if (existUser)
       throw new ServiceError("Email already in use", UserCodes.ALREADY_EXISTS);
     const newUser = await userRepository.create(user);
