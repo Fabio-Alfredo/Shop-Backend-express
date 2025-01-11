@@ -2,9 +2,11 @@ const express = require("express");
 const dbConnection = require("./src/configs/dbConnection.config");
 const config = require("./src/configs/config").production;
 const Routes = require("./src/routes/index.route");
-const errorHandler = require('./src/errors/error.handdler');
+const errorHandler = require("./src/errors/error.handdler");
+const stripe = require("./src/configs/stripe.config");
 
 const app = express();
+stripe;
 
 dbConnection();
 
