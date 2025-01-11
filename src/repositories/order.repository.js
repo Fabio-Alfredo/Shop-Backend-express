@@ -6,8 +6,8 @@ const create = async (order) => {
   return newOrder;
 };
 
-const findById = async (id) => {
-  const order = Order.findOne({ where: { id } });
+const findById = async (orderId) => {
+  const order = await Order.findOne({ where: { id:orderId } });
   return order;
 };
 

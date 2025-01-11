@@ -51,8 +51,8 @@ const orderFindById =async (id)=>{
 
 const payOrder = async (payment, id)=>{
   try{
-    const order = orderFindById(id);
-    await order.addPayment(payment);
+    const order = await orderFindById(id);
+    await order.addPayments([payment]);
     order.status = PAID;
 
     const saveOrder = await orderRepository.save(order);

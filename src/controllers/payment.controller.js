@@ -5,7 +5,7 @@ const paymentService = require("../services/payment.service");
 const createPayment = async (req, res, next) => {
   try {
     const payment = req.body;
-    const newPayment = paymentService.createPayment(payment);
+    const newPayment = await paymentService.createPayment(payment);
     res.status(200).json(newPayment);
   } catch (e) {
     next(e);

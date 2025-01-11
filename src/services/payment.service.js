@@ -10,8 +10,11 @@ const createPayment = async (payment) => {
     const { paymentDetails, ...paymentData } = payment;
 
     //await transactionService.stripeTransaction(paymentDetails);
-    const newPayment = await paymentRepository.create(paymentData);
-    await orderService.payOrder(newPayment, paymentDetails.orderId);
+
+    const newPayment = await paymentRepository.create({
+      method: paymentData.method,
+    });
+    await orderService.payOrder(newPayment, paymentData.orderId);
 
     return newPayment;
   } catch (e) {
