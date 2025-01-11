@@ -1,6 +1,8 @@
 const paymentRepository = require("../repositories/ paymet.repository");
 const transactionService = require("../services/transaction.service");
 const orderService = require("../services/order.service");
+const PaymentCodes = require("../utils/errorsCodes/payment.code");
+const ServiceError = require("../errors/service.error");
 
 const createPayment = async (payment) => {
   try {
@@ -13,7 +15,10 @@ const createPayment = async (payment) => {
 
     return newPayment;
   } catch (e) {
-    throw new Error("se dio un pedillo");
+    throw new ServiceError(
+      e.message || "Internal server error while paid order",
+      e.code || PaymentCodes.NOT_FOUND
+    );
   }
 };
 
