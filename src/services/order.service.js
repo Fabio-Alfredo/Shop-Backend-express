@@ -8,8 +8,8 @@ const createOrder = async (order) => {
   try {
     const total = await productService.shopProduct(order.products);
 
-    const orderData = { ...order };
-    delete orderData.products;
+    const { products, paymentDetails, ...orderData } = order;
+    
     orderData.total = total;
     const newOrder = await orderRepository.create(orderData);
 

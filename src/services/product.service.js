@@ -51,7 +51,7 @@ const shopProduct = async (items) => {
       const product = products.find((p) => p.id === item.id);
       if (product.stock < item.quantity)
         throw new ServiceError(
-          "Cantidad insuficiente ",
+          `Cantidad insuficiente de ${product.name} `,
           ProductCodes.INVALID_PRODUCT
         );
 
