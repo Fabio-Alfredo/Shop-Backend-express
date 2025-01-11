@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
       },
       total: {
-        type: DataTypes.DECIMAL,
+        type: DataTypes.DECIMAL(10, 2),
       },
       direction:{
         type:DataTypes.STRING
@@ -33,11 +33,6 @@ module.exports = (sequelize, DataTypes) => {
       through: models.Order_product, 
       foreignKey: 'orderId', 
     });
-
-    // Order.belongsTo(models.Direction,{
-    //   foreignKey:'orderId',
-    //   as: 'directions',  
-    // })
 
     Order.belongsToMany(models.Payment,{
       through:'payment_history',
