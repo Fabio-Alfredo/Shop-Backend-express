@@ -8,6 +8,7 @@ const {
   DB_DIALECT,
   PASS_SALT,
   JWT_SECRET,
+  STRIPE_SECRET,
 } = process.env;
 
 const validEnv = (env, name) => {
@@ -33,7 +34,8 @@ const config = {
     db_host: validEnv(DB_HOST, "HOST"),
     db_dialect: validEnv(DB_DIALECT, "DB_DIALECT"),
     salt: validEnv(PASS_SALT, "SALT ENCRYPT"),
-    jsw:validEnv(JWT_SECRET, "JWT_SECRET")
+    jsw: validEnv(JWT_SECRET, "JWT_SECRET"),
+    stripe: validEnv(STRIPE_SECRET, "STRIPE_SECRET"),
   },
 };
 
