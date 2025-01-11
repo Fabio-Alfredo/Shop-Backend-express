@@ -37,7 +37,9 @@ const findById = async (id) => {
 const shopProduct = async (items) => {
   try {
     const productIds = items.map((item) => item.id);
+
     const products = await productRepoditory.findAll(productIds);
+
     if (productIds.length != products.length)
       throw new ServiceError(
         "Algunos productos no estan disponibles",
@@ -55,8 +57,6 @@ const shopProduct = async (items) => {
       total += product.price * item.quantity;
     });
     
-    // TODO:falta completar estsa logica
-    console.log(total);
     return total
   } catch (e) {
     throw new ServiceError(
@@ -69,4 +69,5 @@ const shopProduct = async (items) => {
 module.exports = {
   registerProduct,
   findById,
+  shopProduct
 };
