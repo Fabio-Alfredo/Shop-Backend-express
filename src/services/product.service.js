@@ -43,9 +43,9 @@ const shopProduct = async (items, t) => {
   try {
     const productIds = items.map((item) => item.id);
 
-    const products = await productRepoditory.findAll(productIds);
+    const products = await productRepoditory.findAllByIds(productIds);
 
-    if (productIds.length != products.length)
+    if (productIds.length !== products.length)
       throw new ServiceError(
         "Algunos productos no estan disponibles",
         ProductCodes.INVALID_PRODUCT

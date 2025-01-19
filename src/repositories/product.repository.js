@@ -21,7 +21,12 @@ const update = async (product, t) => {
   return updated;
 };
 
-const findAll = async (productIds) => {
+const findAll = async () => {
+  const prducts = await Product.findAll();
+    return prducts;
+}
+
+const findAllByIds = async (productIds) => {
   const products = Product.findAll({ where: { id: productIds } });
   return products;
 };
@@ -31,5 +36,6 @@ module.exports = {
   findById,
   update,
   findAll,
+  findAllByIds,
   startTransaction,
 };
