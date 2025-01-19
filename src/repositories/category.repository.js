@@ -1,5 +1,10 @@
 const {Category} = require("../models");
 
+const startTransaction = async () => {
+  const t = await Category.sequelize.transaction();
+  return t;
+};
+
 const create = async (category) => {
   const newCategory = await Category.create(category);
   return newCategory;
@@ -12,5 +17,6 @@ const findById = async (category) => {
 
 module.exports = {
   create,
-  findById
+  findById,
+  startTransaction,
 };

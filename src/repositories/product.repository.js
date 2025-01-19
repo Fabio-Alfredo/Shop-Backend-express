@@ -11,8 +11,8 @@ const findById = async (id) => {
   return product;
 };
 
-const update = async (product) => {
-  const updated = await product.save();
+const update = async (product, t) => {
+  const updated = await product.save({transaction:t});
   return updated;
 };
 

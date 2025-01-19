@@ -1,8 +1,13 @@
 const { where } = require("sequelize");
 const { Order } = require("../models");
 
-const create = async (order) => {
-  const newOrder = await Order.create(order);
+const startTransaction = async ()=>{
+  const t = await Order.sequelize.transaction();
+    return t;
+}
+
+const create = async (order, t) => {
+  const newOrder = await Order.create(order, {transaction:t});
   return newOrder;
 };
 
@@ -19,5 +24,6 @@ const save = async(order )=>{
 module.exports = {
   create,
   findById,
-  save
+  save,
+  startTransaction,
 };
