@@ -5,8 +5,8 @@ const startTransaction = async () => {
   return t;
 };
 
-const create = async (payment) => {
-  const newPayment = await Payment.create(payment);
+const create = async (payment, t) => {
+  const newPayment = await Payment.create(payment, { transaction: t });
   return newPayment;
 };
 

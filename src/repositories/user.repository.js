@@ -5,8 +5,8 @@ const startTransaction = async () => {
   return t;
 };
 
-const create = async (user) => {
-  const newUser = await User.create(user);
+const create = async (user, t) => {
+  const newUser = await User.create(user, {transaction:t});
   return newUser;
 };
 

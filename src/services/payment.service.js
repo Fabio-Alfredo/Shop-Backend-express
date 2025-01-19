@@ -5,19 +5,22 @@ const PaymentCodes = require("../utils/errorsCodes/payment.code");
 const ServiceError = require("../errors/service.error");
 
 const createPayment = async (payment) => {
+  const t = await paymentRepository.startTransaction();
   try {
-    //realizar el cobro
     const { paymentDetails, ...paymentData } = payment;
 
     //await transactionService.stripeTransaction(paymentDetails);
 
     const newPayment = await paymentRepository.create({
       method: paymentData.method,
+      t
     });
-    await orderService.payOrder(newPayment, paymentData.orderId);
+    await orderService.payOrder(newPayment, paymentData.orderId, t);
 
+    await t.commit();
     return newPayment;
   } catch (e) {
+    await  t.rollback();
     throw new ServiceError(
       e.message || "Internal server error while paid order",
       e.code || PaymentCodes.NOT_FOUND

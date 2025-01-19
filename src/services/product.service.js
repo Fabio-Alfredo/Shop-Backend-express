@@ -4,15 +4,20 @@ const ProductCodes = require("../utils/errorsCodes/product.codes");
 const ServiceError = require("../errors/service.error");
 
 const registerProduct = async (product) => {
+  const t = await productRepoditory.startTransaction();
   try {
-    const newProduct = await productRepoditory.create(product);
     const category = await categoryService.findById(product.category);
+
+    const newProduct = await productRepoditory.create(product, t);
 
     if (category) {
       await newProduct.setCategories([category]);
     }
+
+    await t.commit();
     return newProduct;
   } catch (e) {
+    await t.rollback();
     throw new ServiceError(
       e.message || "Internal server error while create product",
       e.code || ProductCodes.NOT_FOUND
@@ -34,7 +39,7 @@ const findById = async (id) => {
   }
 };
 
-const shopProduct = async (items) => {
+const shopProduct = async (items, t) => {
   try {
     const productIds = items.map((item) => item.id);
 
@@ -58,7 +63,7 @@ const shopProduct = async (items) => {
       total += product.price * item.quantity;
       product.stock -= item.quantity;
 
-      await productRepoditory.update(product);
+      await productRepoditory.update(product, t);
     }
 
     return total;

@@ -6,24 +6,27 @@ const OrderCodes = require("../utils/errorsCodes/order.code");
 const {PAID}=require('../utils/constants/ordersState.utils');
 
 const createOrder = async (order) => {
+  const t = await orderRepository.startTransaction();
   try {
-    const total = await productService.shopProduct(order.products);
+    const total = await productService.shopProduct(order.products, t);
 
     const { products, paymentDetails, ...orderData } = order;
 
     orderData.total = total;
-    const newOrder = await orderRepository.create(orderData);
+    const newOrder = await orderRepository.create(orderData, t);
 
     for (const product of order.products) {
       await order_productService.createRelation({
         productId: product.id,
         orderId: newOrder.id,
         quantity: product.quantity,
+        t
       });
     }
-
+    await t.commit();
     return newOrder;
   } catch (e) {
+    await  t.rollback();
     throw new ServiceError(
       e.message || "Internal server error while create order",
       e.code || OrderCodes.NOT_FOUND
@@ -49,13 +52,13 @@ const orderFindById =async (id)=>{
   }
 }
 
-const payOrder = async (payment, id)=>{
+const payOrder = async (payment, id, t)=>{
   try{
     const order = await orderFindById(id);
     await order.addPayments([payment]);
     order.status = PAID;
 
-    const saveOrder = await orderRepository.save(order);
+    const saveOrder = await orderRepository.save(order, t);
     return saveOrder
   }catch(e){
     throw new ServiceError(

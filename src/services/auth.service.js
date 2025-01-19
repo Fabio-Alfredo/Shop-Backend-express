@@ -4,13 +4,17 @@ const UserCodes = require("../utils/errorsCodes/user.codes");
 const {generateToken} = require("../utils/security/jwt.utl");
 
 const createUser = async (user) => {
+  const t = await userRepository.startTransaction();
   try {
     const existUser = await userRepository.existUser(user.email);
     if (existUser)
       throw new ServiceError("Email already in use", UserCodes.ALREADY_EXISTS);
-    const newUser = await userRepository.create(user);
+    const newUser = await userRepository.create(user, t);
+
+    await t.commit();
     return newUser;
   } catch (e) {
+    await t.rollback();
     throw new ServiceError(
       e.message || "Internal server error while register user",
       e.code || UserCodes.NOT_FOUND

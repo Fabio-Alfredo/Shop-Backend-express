@@ -1,8 +1,13 @@
 const { where } = require("sequelize");
 const { Product } = require("../models");
 
-const create = async (product) => {
-  const newProduct = await Product.create(product);
+const startTransaction = async () => {
+  const t = await Product.sequelize.transaction();
+  return t;
+};
+
+const create = async (product, t) => {
+  const newProduct = await Product.create(product, {transaction:t});
   return newProduct;
 };
 
@@ -25,5 +30,6 @@ module.exports = {
   create,
   findById,
   update,
-  findAll
+  findAll,
+  startTransaction,
 };

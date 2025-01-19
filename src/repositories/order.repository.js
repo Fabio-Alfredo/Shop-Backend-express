@@ -16,8 +16,8 @@ const findById = async (orderId) => {
   return order;
 };
 
-const save = async(order )=>{
-  const oder = order.save();
+const save = async(order, t)=>{
+  const oder = order.save({transaction: t});
   return order;
 }
 
