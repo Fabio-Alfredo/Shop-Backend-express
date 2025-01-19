@@ -75,8 +75,21 @@ const shopProduct = async (items, t) => {
   }
 };
 
+const findAll = async () => {
+    try {
+        const products = await productRepoditory.findAll();
+        return products;
+    } catch (e) {
+        throw new ServiceError(
+        e.message || "Internal server error while find product",
+        e.code || ProductCodes.NOT_FOUND
+        );
+    }
+};
+
 module.exports = {
   registerProduct,
   findById,
   shopProduct,
+  findAll
 };

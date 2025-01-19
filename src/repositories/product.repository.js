@@ -23,7 +23,7 @@ const update = async (product, t) => {
 
 const findAll = async () => {
   const prducts = await Product.findAll();
-    return prducts;
+    return prducts || [];
 }
 
 const findAllByIds = async (productIds) => {

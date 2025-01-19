@@ -12,4 +12,6 @@ productRouter.post(
   productController.registerProduct
 );
 
+productRouter.get("/findAll", productController.findAllProducts);
+
 module.exports = productRouter;

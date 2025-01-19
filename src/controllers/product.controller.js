@@ -17,4 +17,13 @@ const registerProduct = async (req, res, next) => {
   }
 };
 
-module.exports = {registerProduct}
+const findAllProducts = async  (req, res, next) => {
+  try{
+    const products = await productService.findAll();
+    res.status(200).json(products);
+  } catch (e) {
+    next(e);
+  }
+}
+
+module.exports = {registerProduct, findAllProducts}
