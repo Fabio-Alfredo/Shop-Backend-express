@@ -17,8 +17,8 @@ const registerProduct = async (req, res, next) => {
   }
 };
 
-const findAllProducts = async  (req, res, next) => {
-  try{
+const findAllProducts = async (req, res, next) => {
+  try {
     const products = await productService.findAll();
     res.status(200).json(products);
   } catch (e) {
@@ -26,4 +26,14 @@ const findAllProducts = async  (req, res, next) => {
   }
 }
 
-module.exports = {registerProduct, findAllProducts}
+const findProductById = async (req, res, next) => {
+  try {
+    const { id } = req.params
+    const product = await productService.findById(id);
+    res.status(200).json(product);
+  } catch (e) {
+
+  }
+}
+
+module.exports = { registerProduct, findAllProducts, findProductById }

@@ -13,5 +13,7 @@ productRouter.post(
 );
 
 productRouter.get("/findAll", productController.findAllProducts);
+productRouter.get("/findId/:id", productController.findProductById);
+
 
 module.exports = productRouter;
