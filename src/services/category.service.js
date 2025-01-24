@@ -1,6 +1,6 @@
 const categoryRepository = require("../repositories/category.repository");
-const ServiceError = require("../errors/service.error");
-const CategoryCodes = require("../utils/errorsCodes/category.code");
+const ServiceError = require("../utils/errors/service.error");
+const CategoryCodes = require("../utils/errors/errorsCodes/category.code");
 
 const createCategory = async (category) => {
   try {

@@ -1,6 +1,6 @@
 const createHttpError = require("http-errors");
 const categoryService = require("../services/category.service");
-const CategoryCodes = require("../utils/errorsCodes/category.code");
+const CategoryCodes = require("../utils/errors/errorsCodes/category.code");
 
 const createCategory = async (req, res, next) => {
   try {

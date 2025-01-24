@@ -1,6 +1,6 @@
 const userRepository = require("../repositories/user.repository");
-const ServiceError = require("../errors/service.error");
-const UserCodes = require("../utils/errorsCodes/user.codes");
+const ServiceError = require("../utils/errors/service.error");
+const UserCodes = require("../utils/errors/errorsCodes/user.codes");
 const {generateToken} = require("../utils/security/jwt.utl");
 
 const createUser = async (user) => {

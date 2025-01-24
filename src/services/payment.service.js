@@ -1,8 +1,8 @@
 const paymentRepository = require("../repositories/ paymet.repository");
 const transactionService = require("../services/transaction.service");
 const orderService = require("../services/order.service");
-const PaymentCodes = require("../utils/errorsCodes/payment.code");
-const ServiceError = require("../errors/service.error");
+const PaymentCodes = require("../utils/errors/errorsCodes/payment.code");
+const ServiceError = require("../utils/errors/service.error");
 
 const createPayment = async (payment) => {
   const t = await paymentRepository.startTransaction();

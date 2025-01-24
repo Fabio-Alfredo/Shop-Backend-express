@@ -1,6 +1,6 @@
 const productService = require("../services/product.service");
 const createHttpError = require("http-errors");
-const ProductCodes = require("../utils/errorsCodes/product.codes");
+const ProductCodes = require("../utils/errors/errorsCodes/product.codes");
 
 const registerProduct = async (req, res, next) => {
   try {

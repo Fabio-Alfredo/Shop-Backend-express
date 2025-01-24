@@ -1,7 +1,7 @@
 const productRepoditory = require("../repositories/product.repository");
 const categoryService = require("../services/category.service");
-const ProductCodes = require("../utils/errorsCodes/product.codes");
-const ServiceError = require("../errors/service.error");
+const ProductCodes = require("../utils/errors/errorsCodes/product.codes");
+const ServiceError = require("../utils/errors/service.error");
 
 const registerProduct = async (product) => {
   const t = await productRepoditory.startTransaction();
@@ -11,7 +11,7 @@ const registerProduct = async (product) => {
     const newProduct = await productRepoditory.create(product, t);
 
     if (category) {
-      await newProduct.setCategories([category]);
+      await newProduct.setCategories([category], { transaction: t });
     }
 
     await t.commit();

@@ -1,8 +1,8 @@
 const orderRepository = require("../repositories/order.repository");
 const order_productService = require("../services/order_product.service");
 const productService = require("../services/product.service");
-const ServiceError = require("../errors/service.error");
-const OrderCodes = require("../utils/errorsCodes/order.code");
+const ServiceError = require("../utils/errors/service.error");
+const OrderCodes = require("../utils/errors/errorsCodes/order.code");
 const {PAID}=require('../utils/constants/ordersState.utils');
 
 const createOrder = async (order) => {

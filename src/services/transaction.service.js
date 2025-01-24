@@ -1,6 +1,6 @@
 const stripe = require("../configs/stripe.config");
-const TransactionCodes = require("../utils/errorsCodes/transaction.codes");
-const ServiceError = require("../errors/service.error");
+const TransactionCodes = require("../utils/errors/errorsCodes/transaction.codes");
+const ServiceError = require("../utils/errors/service.error");
 
 const stripeTransaction = async (total, paymentDetails) => {
   try {

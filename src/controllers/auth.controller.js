@@ -1,5 +1,5 @@
 const authService = require("../services/auth.service");
-const UserCodes = require("../utils/errorsCodes/user.codes");
+const UserCodes = require("../utils/errors/errorsCodes/user.codes");
 const createHttpError = require("http-errors");
 
 const registerUser = async (req, res, next) => {

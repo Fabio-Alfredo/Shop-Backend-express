@@ -1,5 +1,5 @@
 const createHttpError = require("http-errors");
-const PaymentCodes = require("../utils/errorsCodes/payment.code");
+const PaymentCodes = require("../utils/errors/errorsCodes/payment.code");
 const paymentService = require("../services/payment.service");
 
 const createPayment = async (req, res, next) => {
