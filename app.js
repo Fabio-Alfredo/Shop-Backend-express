@@ -2,7 +2,7 @@ const express = require("express");
 const dbConnection = require("./src/configs/dbConnection.config");
 const config = require("./src/configs/config").production;
 const Routes = require("./src/routes/index.route");
-const errorHandler = require("./src/handlers/error.handdler");
+const errorHandler = require("./src/handlers/error.handler");
 
 const app = express();
 

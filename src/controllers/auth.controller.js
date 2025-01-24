@@ -1,12 +1,13 @@
 const authService = require("../services/auth.service");
 const UserCodes = require("../utils/errors/errorsCodes/user.codes");
 const createHttpError = require("http-errors");
+const responseHandler = require("../handlers/response.handler");
 
 const registerUser = async (req, res, next) => {
   try {
     const user = req.body;
     const newUser = await authService.createUser(user);
-    res.status(201).json(newUser);
+    responseHandler(res,201, "success", newUser);
   } catch (e) {
     switch (e.code) {
       case UserCodes.NOT_FOUND:
