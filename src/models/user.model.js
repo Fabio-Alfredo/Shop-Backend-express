@@ -6,24 +6,35 @@ module.exports = (sequelize, DataTypes) => {
     "User",
     {
       id: {
-        allowNull: false,
+        allowNull: {
+            args: false,
+            msg: "Id requerido",
+        },
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
       },
       name: {
-        allowNull: false,
         type: DataTypes.STRING,
         validate: {
-          notEmpty: true,
+          notEmpty: {
+            args: true,
+            msg: "Nombre requerido",
+          },
         },
       },
       email: {
         allowNull: false,
         type: DataTypes.STRING,
         validate: {
-          isEmail: true,
-          notEmpty: true,
+          isEmail: {
+            args: true,
+            msg: "Correo invalido",
+          },
+          notEmpty: {
+            args: true,
+            msg: "Correo requerido",
+          },
         },
         unique: {
           args:true,
@@ -31,11 +42,16 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       password: {
-        allowNull: false,
         type: DataTypes.STRING,
         validate: {
-          notEmpty: true,
-          len: [6, 10],
+          notEmpty: {
+            args: true,
+            msg: "Contraseña requerida",
+          },
+          len: {
+            args: [6, 255],
+            msg: "Contraseña debe tener al menos 6 caracteres",
+          },
         },
       },
     },
