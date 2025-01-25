@@ -3,9 +3,9 @@ const order_productService = require("../services/order_product.service");
 const productService = require("../services/product.service");
 const ServiceError = require("../utils/errors/service.error");
 const OrderCodes = require("../utils/errors/errorsCodes/order.code");
-const {PAID}=require('../utils/constants/ordersState.utils');
+const { PAID } = require('../utils/constants/ordersState.utils');
 
-const createOrder = async (order) => {
+const createOrder = async (order, user) => {
   const t = await orderRepository.startTransaction();
   try {
     const total = await productService.shopProduct(order.products, t);
@@ -13,20 +13,25 @@ const createOrder = async (order) => {
     const { products, paymentDetails, ...orderData } = order;
 
     orderData.total = total;
+    orderData.userId = user.id;
     const newOrder = await orderRepository.create(orderData, t);
+
+
+    console.log("antes deso")
 
     for (const product of order.products) {
       await order_productService.createRelation({
         productId: product.id,
         orderId: newOrder.id,
         quantity: product.quantity,
-        t
-      });
+      }, t);
     }
+
+    console.log("aca va si va")
     await t.commit();
     return newOrder;
   } catch (e) {
-    await  t.rollback();
+    await t.rollback();
     throw new ServiceError(
       e.message || "Internal server error while create order",
       e.code || OrderCodes.NOT_FOUND
@@ -34,17 +39,17 @@ const createOrder = async (order) => {
   }
 };
 
-const orderFindById =async (id)=>{
-  try{
+const orderFindById = async (id) => {
+  try {
     const order = await orderRepository.findById(id);
-    if(!order)
+    if (!order)
       throw new ServiceError(
-       "Order not exist",
-         OrderCodes.INVALID_ORDER
+        "Order not exist",
+        OrderCodes.INVALID_ORDER
       );
 
     return order
-  }catch(e){
+  } catch (e) {
     throw new ServiceError(
       e.message || "Internal server error while find order",
       e.code || OrderCodes.NOT_FOUND
@@ -52,15 +57,15 @@ const orderFindById =async (id)=>{
   }
 }
 
-const payOrder = async (payment, id, t)=>{
-  try{
+const payOrder = async (payment, id, t) => {
+  try {
     const order = await orderFindById(id);
     await order.addPayments([payment]);
     order.status = PAID;
 
     const saveOrder = await orderRepository.save(order, t);
     return saveOrder
-  }catch(e){
+  } catch (e) {
     throw new ServiceError(
       e.message || "Internal server error while paid order",
       e.code || OrderCodes.NOT_FOUND

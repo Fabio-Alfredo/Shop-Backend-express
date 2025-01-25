@@ -14,8 +14,8 @@ module.exports = (sequelize, DataTypes) => {
       total: {
         type: DataTypes.DECIMAL(10, 2),
       },
-      direction:{
-        type:DataTypes.STRING
+      direction: {
+        type: DataTypes.STRING
       },
       status: {
         type: DataTypes.ENUM(STATE_LIST),
@@ -30,13 +30,18 @@ module.exports = (sequelize, DataTypes) => {
 
   Order.associate = (models) => {
     Order.belongsToMany(models.Product, {
-      through: models.Order_product, 
-      foreignKey: 'orderId', 
+      through: models.Order_product,
+      foreignKey: 'orderId',
     });
 
-    Order.belongsToMany(models.Payment,{
-      through:'payment_history',
-      foreignKey:'orderId'
+    Order.belongsToMany(models.Payment, {
+      through: 'payment_history',
+      foreignKey: 'orderId'
+    })
+
+    Order.belongsTo(models.User, {
+      foreignKey: "userId",
+      as: "user"
     })
 
   };

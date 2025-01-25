@@ -1,14 +1,14 @@
 const userRepository = require("../repositories/user.repository");
 const ServiceError = require("../utils/errors/service.error");
 const UserCodes = require("../utils/errors/errorsCodes/user.codes");
-const {generateToken} = require("../utils/security/jwt.utl");
+const { generateToken } = require("../utils/security/jwt.utl");
 
 const createUser = async (user) => {
   const t = await userRepository.startTransaction();
   try {
-    // const existUser = await userRepository.existUser(user.email);
-    // if (existUser)
-    //   throw new ServiceError("Email already in use", UserCodes.ALREADY_EXISTS);
+    const existUser = await userRepository.existUser(user.email);
+    if (existUser)
+      throw new ServiceError("Email already in use", UserCodes.ALREADY_EXISTS);
     const newUser = await userRepository.create(user, t);
 
     await t.commit();
@@ -25,7 +25,7 @@ const createUser = async (user) => {
 const authUser = async (email, password) => {
   try {
     const user = await userRepository.existUser(email);
-    if (!user || !( await user.validatePassword(password)))
+    if (!user || !(await user.validatePassword(password)))
       throw new ServiceError(
         "Invalid credentials ",
         UserCodes.INVALID_CREDENTIALS

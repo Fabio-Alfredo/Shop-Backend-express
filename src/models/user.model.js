@@ -1,4 +1,5 @@
 const bcrypt = require("bcryptjs");
+const { Model } = require("sequelize");
 const config = require("../configs/config").production;
 
 module.exports = (sequelize, DataTypes) => {
@@ -7,8 +8,8 @@ module.exports = (sequelize, DataTypes) => {
     {
       id: {
         allowNull: {
-            args: false,
-            msg: "Id requerido",
+          args: false,
+          msg: "Id requerido",
         },
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
@@ -37,8 +38,8 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
         unique: {
-          args:true,
-          msg:'correo en uso'
+          args: true,
+          msg: 'correo en uso'
         },
       },
       password: {
@@ -65,7 +66,7 @@ module.exports = (sequelize, DataTypes) => {
     if (user.changed("password")) {
       user.password = await bcrypt.hash(user.password, parseInt(config.salt));
     }
-  }); 
+  });
 
   User.prototype.validatePassword = async function (password) {
     return bcrypt.compare(password, this.password);
@@ -78,5 +79,11 @@ module.exports = (sequelize, DataTypes) => {
     });
   };
 
+  User.associate = (models) => {
+    User.hasMany(models.Order, {
+      foreignKey: "userId",
+      as: "orders"
+    })
+  }
   return User;
 };

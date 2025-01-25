@@ -4,7 +4,7 @@ const OrderCodes = require("../utils/errors/errorsCodes/order.code");
 
 const createRelation = async (order_product, t) => {
   try {
-    const orderProduct = await Order_productRepository.create(order_product, {transaction:t});
+    const orderProduct = await Order_productRepository.create(order_product, t);
     return orderProduct;
   } catch (e) {
     throw new ServiceError(
