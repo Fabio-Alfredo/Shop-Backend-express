@@ -5,12 +5,19 @@ const jwt = require('../utils/security/jwt.utl');
 const authValidator = (req, res, next) => {
   try {
     const { authorization } = req.headers;
-    const token = authorization.split(' ')[0];
+    console.log(req.headers)
+if (!authorization)
+      throw createHttpError(401, 'authorization header is required');
+
+    const token = authorization.split(" ")[0];
 
     if (!token)
       throw createHttpError(400, 'invalid token');
 
     const payload = jwt.verifyToken(token);
+
+    if(!payload)
+        throw createHttpError(401, 'invalid credentials');
 
     req.user = payload;
     req.token = token;
