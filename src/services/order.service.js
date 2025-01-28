@@ -8,16 +8,15 @@ const { PAID } = require('../utils/constants/ordersState.utils');
 const createOrder = async (order, user) => {
   const t = await orderRepository.startTransaction();
   try {
-    const total = await productService.shopProduct(order.products, t);
+    await productService.shopProduct(order.products, t);
 
     const { products, paymentDetails, ...orderData } = order;
 
-    orderData.total = total;
+    //TODO: complete validation total in products
+
     orderData.userId = user.id;
     const newOrder = await orderRepository.create(orderData, t);
 
-
-    console.log("antes deso")
 
     for (const product of order.products) {
       await order_productService.createRelation({

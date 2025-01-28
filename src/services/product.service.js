@@ -1,14 +1,14 @@
-const productRepoditory = require("../repositories/product.repository");
+const productRepository = require("../repositories/product.repository");
 const categoryService = require("../services/category.service");
 const ProductCodes = require("../utils/errors/errorsCodes/product.codes");
 const ServiceError = require("../utils/errors/service.error");
 
 const registerProduct = async (product) => {
-  const t = await productRepoditory.startTransaction();
+  const t = await productRepository.startTransaction();
   try {
     const category = await categoryService.findById(product.category);
 
-    const newProduct = await productRepoditory.create(product, t);
+    const newProduct = await productRepository.create(product, t);
 
     if (category) {
       await newProduct.setCategories([category], { transaction: t });
@@ -27,7 +27,7 @@ const registerProduct = async (product) => {
 
 const findById = async (id) => {
   try {
-    const product = await productRepoditory.findById(id);
+    const product = await productRepository.findById(id);
     if (!product)
       throw new ServiceError("Invalid product", ProductCodes.INVALID_PRODUCT);
     return product;
@@ -43,30 +43,18 @@ const shopProduct = async (items, t) => {
   try {
     const productIds = items.map((item) => item.id);
 
-    const products = await productRepoditory.findAllByIds(productIds);
+    const products = await productRepository.findAllByIds(productIds);
 
     if (productIds.length !== products.length)
       throw new ServiceError(
         "Algunos productos no estan disponibles",
         ProductCodes.INVALID_PRODUCT
       );
+    const productMap = new Map(products.map((p)=>[p.id, p]));
+    await validateStock(items, productMap);
+    await updateStock(items, productMap,'buy',  t);
 
-    let total = 0;
-    for (const item of items) {
-      const product = products.find((p) => p.id === item.id);
-      if (product.stock < item.quantity)
-        throw new ServiceError(
-          `Cantidad insuficiente de ${product.name} `,
-          ProductCodes.INVALID_PRODUCT
-        );
-
-      total += product.price * item.quantity;
-      product.stock -= item.quantity;
-
-      await productRepoditory.update(product, t);
-    }
-
-    return total;
+    return true;
   } catch (e) {
     throw new ServiceError(
       e.message || "Internal server error while find product",
@@ -75,9 +63,52 @@ const shopProduct = async (items, t) => {
   }
 };
 
+
+const validateStock = async (items, productMap)=>{
+  try{
+    for (const item of items) {
+      const product = productMap.get(item.id);
+      if (product.stock < item.quantity)
+        throw new ServiceError(
+          `Cantidad insuficiente de ${product.name} `,
+          ProductCodes.INVALID_PRODUCT
+        );
+    }
+    return true;
+  }
+    catch (e) {
+        throw new ServiceError(
+        e.message || "Internal server error while find product",
+        e.code || ProductCodes.NOT_FOUND
+        );
+    }
+}
+
+const updateStock = async (items, productMap, operation, t) => {
+  try {
+    const updatedProducts = items.map((item) => {
+      const product = productMap.get(item.id);
+      if (!product) throw new ServiceError(`Producto con ID ${item.id} no encontrado`, ProductCodes.NOT_FOUND);
+      return {
+        id: product.id,
+        stock: operation === 'buy' ? product.stock - item.quantity : product.stock + item.quantity,
+      };
+    });
+    await productRepository.bulkUpdate(updatedProducts, t);
+    return true;
+  } catch (e) {
+    throw new ServiceError(
+        e.message || "Error interno al actualizar el stock",
+        e.code || ProductCodes.NOT_FOUND
+    );
+  }
+};
+
+
+
 const findAll = async () => {
     try {
-        const products = await productRepoditory.findAll();
+        const products = await productRepository.findAll();
         return products;
     } catch (e) {
         throw new ServiceError(

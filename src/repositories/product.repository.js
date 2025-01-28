@@ -16,10 +16,9 @@ const findById = async (id) => {
   return product;
 };
 
-const update = async (product, t) => {
-  const updated = await product.save({transaction:t});
-  return updated;
-};
+const bulkUpdate = (products, t) => {
+  return Product.bulkCreate(products, { updateOnDuplicate:['stock'], transaction: t });
+}
 
 const findAll = async () => {
   const prducts = await Product.findAll();
@@ -34,7 +33,7 @@ const findAllByIds = async (productIds) => {
 module.exports = {
   create,
   findById,
-  update,
+  bulkUpdate,
   findAll,
   findAllByIds,
   startTransaction,
