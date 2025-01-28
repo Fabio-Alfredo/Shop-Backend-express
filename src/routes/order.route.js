@@ -1,11 +1,16 @@
 const Router = require("express").Router;
 const orderController = require("../controllers/order.controller");
 const authMiddleware = require("../middlewares/authValidator.middleware");
+const orderValidator = require('../validators/order.validator');
+const runValidator = require('../middlewares/validator.middleware')
 
 const orderRouter = Router();
 
 orderRouter.post("/create",
   authMiddleware.authValidator,
-  orderController.createOrder);
+  orderValidator.createOrderValidator,
+  runValidator,
+  orderController.createOrder
+);
 
 module.exports = orderRouter;
