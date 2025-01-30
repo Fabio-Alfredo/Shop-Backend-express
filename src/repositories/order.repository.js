@@ -17,8 +17,8 @@ const findById = async (orderId) => {
 };
 
 const save = async(order, t)=>{
-  const oder = order.save({transaction: t});
-  return order;
+  const newOrder = order.save({transaction: t});
+  return newOrder;
 }
 
 module.exports = {

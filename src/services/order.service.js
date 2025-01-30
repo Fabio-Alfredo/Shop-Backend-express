@@ -17,16 +17,32 @@ const createOrder = async (order, user) => {
     orderData.userId = user.id;
     const newOrder = await orderRepository.create(orderData, t);
 
+    // let order_products;
 
-    for (const product of order.products) {
-      await order_productService.createRelation({
+    const order_products = products.map((product)=>{
+      return{
         productId: product.id,
         orderId: newOrder.id,
-        quantity: product.quantity,
-      }, t);
-    }
+        quantity: product.quantity
+      }
+    })
 
-    console.log("aca va si va")
+    // const order_products =products.map((product) => {
+    //   return {
+    //     productId: product.id,
+    //     orderId: newOrder.id,
+    //     quantity: product.quantity,
+    //   }
+    // }
+
+    // for (const product of order.products) {
+    //   await order_productService.createRelation({
+    //     productId: product.id,
+    //     orderId: newOrder.id,
+    //     quantity: product.quantity,
+    //   }, t);
+    // }
+
     await t.commit();
     return newOrder;
   } catch (e) {

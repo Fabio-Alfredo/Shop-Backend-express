@@ -11,8 +11,14 @@ const create = async (ordere_product, t) => {
   return newRelation;
 };
 
+const bulkCreate = async (order_products, t)=>{
+  const newOrder = await Order_product.bulkCreate(order_products, {transaction: t});
+  return newOrder;
+}
+
 
 module.exports = {
   create,
   startTransaction,
+  bulkCreate
 }
