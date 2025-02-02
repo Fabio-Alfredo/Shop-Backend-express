@@ -6,8 +6,8 @@ const startTransaction = async () => {
 };
 
 const create = async (user, t) => {
-  const newUser = await User.create(user, {transaction:t});
-  return newUser;
+  await User.create(user, {transaction:t});
+  return "User created";
 };
 
 const existUser = async (email) => {
