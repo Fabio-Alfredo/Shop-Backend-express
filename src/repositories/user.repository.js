@@ -1,5 +1,5 @@
 const { User } = require("../models");
-const { User_role } = require("../models");
+const { Role } = require("../models");
 
 const startTransaction = async () => {
   const t = await User.sequelize.transaction();
@@ -7,17 +7,23 @@ const startTransaction = async () => {
 };
 
 const create = async (user, t) => {
-  await User.create(user, {transaction:t});
-  return "User created";
+  const newUser =await User.create(user, {transaction:t});
+  return newUser;
 };
 
 const existUser = async (email) => {
-  const user = await User.findOne({ where: { email }, include: User_role});
+  const user = await User.findOne({ where: { email }, include:Role});
   return user;
 };
+
+const findById = async  (id, t)=>{
+  const user = await  User.findByPk(id, {transaction:t, include: Role});
+  return user;
+}
 
 module.exports = {
   create,
   existUser,
-  startTransaction
+  startTransaction,
+  findById
 };

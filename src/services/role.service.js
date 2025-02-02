@@ -18,4 +18,10 @@ const findById = (id)=>{
             e.code || roleCodes.NOT_FOUND
         )
     }
+
+}
+
+
+module.exports={
+    findById
 }
