@@ -7,7 +7,7 @@ const startTransaction = async () => {
 };
 
 const create = async (order_products, t) => {
-  const newRelation = await Order_product.create(order_products, { transaction: ten  });
+  const newRelation = await Order_product.create(order_products, { transaction: t  });
   return newRelation;
 };
 

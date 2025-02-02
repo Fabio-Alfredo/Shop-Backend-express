@@ -30,7 +30,9 @@ const authUser = async (email, password) => {
         "Invalid credentials ",
         UserCodes.INVALID_CREDENTIALS
       );
-    const token = generateToken({ id: user.id, email: user.email });
+    const roles = await user.getRoles().id;
+    console.log(roles)
+    const token = generateToken({ id: user.id, email: user.email});
     return token;
   } catch (e) {
     throw new ServiceError(

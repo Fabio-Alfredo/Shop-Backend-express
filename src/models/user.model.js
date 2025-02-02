@@ -1,5 +1,4 @@
 const bcrypt = require("bcryptjs");
-const { Model } = require("sequelize");
 const config = require("../configs/config").production;
 
 module.exports = (sequelize, DataTypes) => {
@@ -74,8 +73,8 @@ module.exports = (sequelize, DataTypes) => {
 
   User.associate = (models) => {
     User.belongsToMany(models.Role, {
-      through: models.User_role, // Usar el modelo UserRole como la tabla intermedia
-      foreignKey: "userId",
+      through: models.User_role,
+      foreignKey: "userId"
     });
   };
 

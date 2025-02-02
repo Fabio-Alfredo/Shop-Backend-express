@@ -27,6 +27,19 @@ const authValidator = async (req, res, next) => {
   }
 }
 
+const roleValidator = (roles) => {
+  return (req, res, next) => {
+    try {
+      if (!roles.includes(req.user.role))
+        throw createHttpError(403, 'You are not allowed to access this resource');
+
+      next();
+    } catch (e) {
+      next(e);
+    }
+  }
+}
+
 
 module.exports = {
   authValidator,
