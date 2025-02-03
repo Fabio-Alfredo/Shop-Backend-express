@@ -9,6 +9,7 @@ const categoryRouter = Router();
 categoryRouter.post(
   "/create",
   authMiddleware.authValidator,
+  authMiddleware.roleValidator(['ADMIN']),
   categoryValidator.createValidator,
   runValidator,
   categoryController.createCategory

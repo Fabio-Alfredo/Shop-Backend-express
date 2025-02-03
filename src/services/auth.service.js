@@ -34,10 +34,10 @@ const authUser = async (email, password) => {
         "Invalid credentials ",
         UserCodes.INVALID_CREDENTIALS
       );
-    console.log(user)
+      
+    const roles = user.Roles.map(role => role.id);
 
-
-    const token = generateToken({ id: user.id, email: user.email});
+    const token = generateToken({ id: user.id, email: user.email, roles:roles});
     return token;
   } catch (e) {
     throw new ServiceError(
