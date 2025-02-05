@@ -12,6 +12,11 @@ authRoute.post(
   authController.registerUser
 );
 
-authRoute.post("/login", authController.loginUser);
+authRoute.post(
+  "/login",
+  authValidator.loginValidator,
+  runValidator,
+  authController.loginUser
+);
 
 module.exports = authRoute;

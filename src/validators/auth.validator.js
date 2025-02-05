@@ -25,7 +25,21 @@ const registerValidator = [
     .bail(),
 ];
 
+const loginValidator =[
+  body("email")
+  .trim()
+  .isString()
+  .notEmpty()
+  .withMessage("Email is required"),
+
+  body("password")
+  .trim()
+  .isString()
+  .notEmpty()
+  .withMessage("Password is required")
+]
 
 module.exports ={
-    registerValidator
+    registerValidator,
+    loginValidator
 }
