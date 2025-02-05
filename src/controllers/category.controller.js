@@ -7,13 +7,13 @@ const createCategory = async (req, res, next) => {
   try {
     const category = req.body;
     const newCategory = await categoryService.createCategory(category);
-    responseHandler(res, 201, "Category created", newCategory)
+    responseHandler(res, 201, "Category created", newCategory);
   } catch (e) {
     switch (e.code) {
       case CategoryCodes.NOT_FOUND:
         next(createHttpError(500, e.message));
         break;
-        case CategoryCodes.ALREADY_EXISTS:
+      case CategoryCodes.ALREADY_EXISTS:
         next(createHttpError(409, e.message));
         break;
       default:
@@ -22,6 +22,22 @@ const createCategory = async (req, res, next) => {
   }
 };
 
-module.exports={
-    createCategory
-}
+const findAllCategories = async (req, res, next) => {
+  try {
+    const categories = await categoryService.findAll();
+    responseHandler(res, 200, "sucess", categories);
+  } catch (e) {
+    switch (e.code) {
+      case CategoryCodes.NOT_FOUND:
+        next(createHttpError(500, e.message));
+        break;
+      default:
+        next(e);
+    }
+  }
+};
+
+module.exports = {
+  createCategory,
+  findAllCategories,
+};

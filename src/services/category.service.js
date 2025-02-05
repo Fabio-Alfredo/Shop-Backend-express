@@ -39,7 +39,20 @@ const findById = async (id) => {
   }
 };
 
+const findAll =async()=>{
+  try{
+    const categories = await categoryRepository.findAll();
+    return categories;
+  }catch(e){
+    throw new ServiceError(
+      e.message || "Internal server error while find all categories",
+      e.code || CategoryCodes.NOT_FOUND
+    );
+  }
+}
+
 module.exports = {
   createCategory,
-  findById
+  findById,
+  findAll
 };

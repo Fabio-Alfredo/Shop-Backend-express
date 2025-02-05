@@ -15,8 +15,14 @@ const findById = async (category) => {
   return eCategory
 };
 
+const findAll = async ()=>{
+  const categories = await Category.findAll();
+  return categories;
+}
+
 module.exports = {
   create,
   findById,
   startTransaction,
+  findAll
 };
