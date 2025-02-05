@@ -39,20 +39,24 @@ const findById = async (id) => {
   }
 };
 
+const getProductsMap = async (items)=>{
+  const productIds = items.map(item=>item.id);
+  const products = await productRepository.findAllByIds(productIds);
+  if (productIds.length !== products.length)
+    throw new ServiceError(
+      "Algunos productos no estan disponibles",
+      ProductCodes.INVALID_PRODUCT
+    );
+  
+    return new Map(products.map((p)=>[p.id, p]))
+}
+
 const shopProduct = async (items, t) => {
   try {
-    const productIds = items.map((item) => item.id);
-
-    const products = await productRepository.findAllByIds(productIds);
-
-    if (productIds.length !== products.length)
-      throw new ServiceError(
-        "Algunos productos no estan disponibles",
-        ProductCodes.INVALID_PRODUCT
-      );
-    const productMap = new Map(products.map((p)=>[p.id, p]));
-    await validateStock(items, productMap);
-    await updateStock(items, productMap,'buy',  t);
+    const products = await getProductsMap(items);
+    
+    await validateStock(items, products);
+    await updateStock(items, products,'buy',  t);
 
     return true;
   } catch (e) {
@@ -62,6 +66,19 @@ const shopProduct = async (items, t) => {
     );
   }
 };
+
+const addProducts = async(items)=>{
+  try{
+    const products = await getProductsMap(items)
+    await updateStock(items, products,'add',  t);
+    return true;
+  }catch(e){
+    throw new ServiceError(
+      e.message ||  "Internal server error while ",
+      e.code || ProductCodes.NOT_FOUND
+    )
+  }
+}
 
 
 const validateStock = async (items, productMap)=>{
@@ -122,5 +139,6 @@ module.exports = {
   registerProduct,
   findById,
   shopProduct,
-  findAll
+  findAll,
+  addProducts
 };
