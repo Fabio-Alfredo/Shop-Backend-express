@@ -5,9 +5,14 @@ const ServiceError = require('../utils/errors/service.error');
 const save = async (variants, productId, t)=>{
     try{
         const saveVariants = variants.map(variant => {
-             variant.producId = productId
-            return variant
+             return{
+                 color: variant.color,
+                 size: variant.size,
+                 stock: variant.stock,
+                 productId: productId
+             }
         })
+         console.log(saveVariants)
         return  await variantsRepository.save(saveVariants, t);
     }catch (e){
         throw new ServiceError(

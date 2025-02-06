@@ -5,6 +5,7 @@ const ProductCodes = require("../utils/errors/errorsCodes/product.codes");
 const registerProduct = async (req, res, next) => {
   try {
     const {sku, name, description, price, stock, variants, category} = req.body;
+
     const newProduct = await productService.registerProduct(sku, name, description, price, stock, variants, category);
     res.status(201).json(newProduct);
   } catch (e) {

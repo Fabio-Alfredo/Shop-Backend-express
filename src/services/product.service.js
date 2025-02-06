@@ -10,10 +10,10 @@ const   registerProduct = async (sku, name, description, price, stock, variants,
   try {
 
     await findBySku(sku);
+
     const existCategory = await categoryService.findById(category);
     const product = await productRepository.create({sku, name, description, price, stock}, t)
-
-    await variantsService.save(variants, product.id, t);
+     await variantsService.save(variants, product.id, t);
 
     if (existCategory) {
       await product.setCategories([category], { transaction: t });

@@ -1,4 +1,4 @@
-const { Product } = require("../models");
+const { Product, Product_variants } = require("../models");
 
 const startTransaction = async () => {
   const t = await Product.sequelize.transaction();
@@ -6,7 +6,7 @@ const startTransaction = async () => {
 };
 
 const create = async (product, t) => {
-  const newProduct = await Product.create(product, {transaction:t});
+  const newProduct = await Product.create(product, {transaction:t });
   return newProduct;
 };
 
@@ -26,7 +26,7 @@ const bulkUpdate = (products, t) => {
 }
 
 const findAll = async () => {
-  const prducts = await Product.findAll();
+  const prducts = await Product.findAll({include:{model:Product_variants, as:'product_variants'}});
     return prducts || [];
 }
 
