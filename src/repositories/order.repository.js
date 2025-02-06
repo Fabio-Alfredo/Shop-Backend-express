@@ -1,4 +1,3 @@
-const { where } = require("sequelize");
 const { Order } = require("../models");
 
 const startTransaction = async ()=>{

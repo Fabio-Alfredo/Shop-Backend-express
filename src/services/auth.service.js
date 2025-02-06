@@ -13,8 +13,6 @@ const createUser = async (user) => {
 
     const newUser = await userRepository.create(user, t);
 
-    await userService.assignRole('CLTE', newUser.id, t);
-
     await t.commit();
     return newUser;
   } catch (e) {

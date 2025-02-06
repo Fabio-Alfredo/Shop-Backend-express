@@ -1,22 +1,28 @@
 const productRepository = require("../repositories/product.repository");
 const categoryService = require("../services/category.service");
+const variantsService = require('../services/product_variants.service');
 const ProductCodes = require("../utils/errors/errorsCodes/product.codes");
 const ServiceError = require("../utils/errors/service.error");
 
-const registerProduct = async (product) => {
+
+const   registerProduct = async (sku, name, description, price, stock, variants, category) => {
   const t = await productRepository.startTransaction();
   try {
-    const category = await categoryService.findById(product.category);
 
-    const newProduct = await productRepository.create(product, t);
+    await findBySku(sku);
+    const existCategory = await categoryService.findById(category);
+    const product = await productRepository.create({sku, name, description, price, stock}, t)
 
-    if (category) {
-      await newProduct.setCategories([category], { transaction: t });
+    await variantsService.save(variants, product.id, t);
+
+    if (existCategory) {
+      await product.setCategories([category], { transaction: t });
     }
 
     await t.commit();
-    return newProduct;
+    return product;
   } catch (e) {
+    console.log(e)
     await t.rollback();
     throw new ServiceError(
       e.message || "Internal server error while create product",
@@ -24,6 +30,20 @@ const registerProduct = async (product) => {
     );
   }
 };
+
+const findBySku = async (sku)=>{
+  try{
+    const product = await productRepository.findBySku(sku);
+    if (product)
+      throw new ServiceError("Producto ya ingresado", ProductCodes.INVALID_PRODUCT);
+    return product;
+  }catch(e){
+    throw new ServiceError(
+      e.message || "Internal server error while find product",
+      e.code || ProductCodes.NOT_FOUND
+    );
+  }
+}
 
 const findById = async (id) => {
   try {

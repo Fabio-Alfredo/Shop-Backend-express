@@ -7,8 +7,8 @@ const productRouter = Router();
 
 productRouter.post(
   "/register",
-  productValidator.createValidator,
-  runValidator,
+  // productValidator.createValidator,
+  // runValidator,
   productController.registerProduct
 );
 
