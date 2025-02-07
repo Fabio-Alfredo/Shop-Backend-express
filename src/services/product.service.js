@@ -59,26 +59,30 @@ const findById = async (id) => {
   }
 };
 
+//Busca los productos por su sku
 const getProductsMap = async (items)=>{
-  const productIds = items.map(item=>item.id);
-  const products = await productRepository.findAllByIds(productIds);
-  if (productIds.length !== products.length)
+  const productSkus = items.map(item=>item.sku);
+  const products = await productRepository.findAllBySku(productSkus);
+  if (productSkus.length !== products.length)
     throw new ServiceError(
       "Algunos productos no estan disponibles",
       ProductCodes.INVALID_PRODUCT
     );
+
   
-    return new Map(products.map((p)=>[p.id, p]))
+    return new Map(products.map((p)=>[p.sku, p]))
 }
 
+//Hace el nuevo calculo de los stock
 const shopProduct = async (items, t) => {
   try {
     const products = await getProductsMap(items);
-    
-    await validateStock(items, products);
-    await updateStock(items, products,'buy',  t);
 
-    return true;
+    await validateStock(items, products);
+
+    const update = await updateStock(items, products,'buy',  t);
+
+    return update;
   } catch (e) {
     throw new ServiceError(
       e.message || "Internal server error while find product",
@@ -87,6 +91,7 @@ const shopProduct = async (items, t) => {
   }
 };
 
+//agregar nuevos productos
 const addProducts = async(items)=>{
   try{
     const products = await getProductsMap(items)
@@ -100,11 +105,12 @@ const addProducts = async(items)=>{
   }
 }
 
-
+//Valida si todavia hay existencias del producto
 const validateStock = async (items, productMap)=>{
   try{
+
     for (const item of items) {
-      const product = productMap.get(item.id);
+      const product = productMap.get(item.sku);
       if (product.stock < item.quantity)
         throw new ServiceError(
           `Cantidad insuficiente de ${product.name} `,
@@ -121,18 +127,19 @@ const validateStock = async (items, productMap)=>{
     }
 }
 
+//Hace cambios del campo stock de los productos
 const updateStock = async (items, productMap, operation, t) => {
   try {
     const updatedProducts = items.map((item) => {
-      const product = productMap.get(item.id);
-      if (!product) throw new ServiceError(`Producto con ID ${item.id} no encontrado`, ProductCodes.NOT_FOUND);
+      const product = productMap.get(item.sku);
+      if (!product) throw new ServiceError(`Producto con ID ${item.sku} no encontrado`, ProductCodes.NOT_FOUND);
       return {
-        id: product.id,
+        sku: product.sku,
         stock: operation === 'buy' ? product.stock - item.quantity : product.stock + item.quantity,
       };
     });
-    await productRepository.bulkUpdate(updatedProducts, t);
-    return true;
+
+    return await productRepository.bulkUpdate(updatedProducts, t);;
   } catch (e) {
     throw new ServiceError(
         e.message || "Error interno al actualizar el stock",

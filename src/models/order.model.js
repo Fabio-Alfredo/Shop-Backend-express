@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   Order.associate = (models) => {
-    Order.belongsToMany(models.Product, {
+    Order.belongsToMany(models.Product_variants, {
       through: models.Order_product,
       foreignKey: 'orderId',
     });

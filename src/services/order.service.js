@@ -8,43 +8,25 @@ const { PAID } = require('../utils/constants/ordersState.utils');
 const createOrder = async (order, user) => {
   const t = await orderRepository.startTransaction();
   try {
-    await productService.shopProduct(order.products, t);
 
     const { products, paymentDetails, ...orderData } = order;
 
-    //TODO: complete validation total in products
-
+    //añadimos al usuario a la orden a crear
     orderData.userId = user.id;
-    const newOrder = await orderRepository.create(orderData, t);
+    //crear la nueva orden
+    const newOrder = await orderRepository.create(orderData);
 
-    // let order_products;
+    //creamos la relacion de la orden y los productos
+    await order_productService.createRelation(products, newOrder.id, t);
 
-    const order_products = products.map((product)=>{
-      return{
-        productId: product.id,
-        orderId: newOrder.id,
-        quantity: product.quantity
-      }
-    })
+    //llamar a al recuento de los productos
+    const res = await productService.shopProduct(products, t);
+    console.log(res);
 
-    // const order_products =products.map((product) => {
-    //   return {
-    //     productId: product.id,
-    //     orderId: newOrder.id,
-    //     quantity: product.quantity,
-    //   }
-    // }
-
-    // for (const product of order.products) {
-    //   await order_productService.createRelation({
-    //     productId: product.id,
-    //     orderId: newOrder.id,
-    //     quantity: product.quantity,
-    //   }, t);
-    // }
+    //TODO: hacer el calculo del nuevo stock para las variantes compradas
 
     await t.commit();
-    return newOrder;
+    return "hi";
   } catch (e) {
     await t.rollback();
     throw new ServiceError(

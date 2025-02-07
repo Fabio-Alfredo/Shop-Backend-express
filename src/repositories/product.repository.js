@@ -1,4 +1,5 @@
 const { Product, Product_variants } = require("../models");
+const {assignRole} = require("../services/user.service");
 
 const startTransaction = async () => {
   const t = await Product.sequelize.transaction();
@@ -22,7 +23,7 @@ const findById = async (id) => {
 };
 
 const bulkUpdate = (products, t) => {
-  return Product.bulkCreate(products, { updateOnDuplicate:['stock'], transaction: t });
+  return Product.bulkCreate(products, { updateOnDuplicate:['stock'], transaction: t, where:{sku:products.map(products => products.sku)} });
 }
 
 const findAll = async () => {
@@ -35,6 +36,11 @@ const findAllByIds = async (productIds) => {
   return products;
 };
 
+const findAllBySku = async (skuProducts)=>{
+  const products = await Product.findAll({where:{sku: skuProducts}});
+  return products;
+}
+
 module.exports = {
   create,
   findById,
@@ -42,5 +48,6 @@ module.exports = {
   findAll,
   findAllByIds,
   startTransaction,
-  findBySku
+  findBySku,
+  findAllBySku
 };
