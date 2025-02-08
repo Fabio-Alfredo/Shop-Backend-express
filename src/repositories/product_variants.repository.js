@@ -1,4 +1,4 @@
-const { Product_variants } = require("../models");
+const { Product_variants, Product } = require("../models");
 
 const save = async (variants, t) => {
   const saveVariants = await Product_variants.bulkCreate(variants, {
@@ -8,7 +8,7 @@ const save = async (variants, t) => {
 };
 
 const findAllByIds = async (ids) => {
-  const products = await Product_variants.findAll({ where: { id: ids } });
+  const products = await Product_variants.findAll({ where: { id: ids }, include:{model:Product} });
   return products
 };
 
