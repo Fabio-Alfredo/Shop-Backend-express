@@ -2,7 +2,7 @@ const db = require("../models/index");
 
 const dbConnection = () => {
   db.sequelize
-    .sync({ force: true})
+    .sync({ force: false})
     .then(() => {
       console.log("db sincronizada");
     })

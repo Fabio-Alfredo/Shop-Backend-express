@@ -1,11 +1,24 @@
-const {Product_variants}=require('../models');
+const { Product_variants } = require("../models");
 
-const save=async(variants, t)=>{
-    const saveVariants =   await  Product_variants.bulkCreate(variants, {transaction:t});
-    return saveVariants;
+const save = async (variants, t) => {
+  const saveVariants = await Product_variants.bulkCreate(variants, {
+    transaction: t,
+  });
+  return saveVariants;
+};
+
+const findAllByIds = async (ids) => {
+  const products = await Product_variants.findAll({ where: { id: ids } });
+  return products
+};
+
+const bulkUpdateStock = async (products, t)=>{
+    const _products = await Product_variants.bulkCreate(products, {updateOnDuplicate:['stock'], transaction:t})
+    return _products
 }
 
-
-module.exports={
-    save
-}
+module.exports = {
+  save,
+  findAllByIds,
+  bulkUpdateStock
+};

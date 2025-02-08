@@ -19,10 +19,6 @@ module.exports = (sequelize, DataTypes) => {
     price: {
       type: DataTypes.DECIMAL(10, 2),
     },
-    stock: {
-      type: DataTypes.INTEGER,
-      defaultValue: 0,
-    },
   });
   Product.associate = (models) => {
     Product.belongsToMany(models.Category, {
@@ -33,10 +29,6 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "productId",
       as:"product_variants"
     })
-    // Product.belongsToMany(models.Order, {
-    //   through: models.Order_product,
-    //   foreignKey: "productId",
-    // });
   };
 
   return Product;

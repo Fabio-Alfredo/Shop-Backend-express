@@ -1,5 +1,4 @@
-const { Transaction } = require("sequelize");
-const { Order_product } = require("../models");
+const { Order_product, Product_variants } = require("../models");
 
 const startTransaction = async () => {
   const t = await Order_product.sequelize.transaction();

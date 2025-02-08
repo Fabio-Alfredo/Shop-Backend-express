@@ -6,7 +6,7 @@ const createRelation = async (products, orderId, t) => {
   try {
     const orderProducts = products.map(product =>{
       return {
-        productId: product.productId,
+        productId: product.id,
         orderId:orderId,
         quantity: product.quantity
       }

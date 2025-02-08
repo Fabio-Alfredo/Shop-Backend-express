@@ -1,6 +1,7 @@
 const orderRepository = require("../repositories/order.repository");
 const order_productService = require("../services/order_product.service");
 const productService = require("../services/product.service");
+const variantsService = require('../services/product_variants.service')
 const ServiceError = require("../utils/errors/service.error");
 const OrderCodes = require("../utils/errors/errorsCodes/order.code");
 const { PAID } = require('../utils/constants/ordersState.utils');
@@ -14,19 +15,18 @@ const createOrder = async (order, user) => {
     //añadimos al usuario a la orden a crear
     orderData.userId = user.id;
     //crear la nueva orden
-    const newOrder = await orderRepository.create(orderData);
+    const newOrder = await orderRepository.create(orderData, t);
 
     //creamos la relacion de la orden y los productos
     await order_productService.createRelation(products, newOrder.id, t);
 
-    //llamar a al recuento de los productos
-    const res = await productService.shopProduct(products, t);
-    console.log(res);
-
-    //TODO: hacer el calculo del nuevo stock para las variantes compradas
+    //Creamos el nuevo calculo de los stock
+    const newStock = await variantsService.reservationProducts(products, t);
+    
+    const orderWithProducts = await orderRepository.findById(newOrder.id, t);
 
     await t.commit();
-    return "hi";
+    return orderWithProducts;
   } catch (e) {
     await t.rollback();
     throw new ServiceError(
