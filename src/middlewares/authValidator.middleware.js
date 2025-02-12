@@ -31,7 +31,7 @@ const roleValidator = (roles) => {
   return (req, res, next) => {
     try {
       const {user}=req
-      console.log(user)
+
       if (!roles.some(role=> user.roles.includes(role)))
         throw createHttpError(403, 'You are not allowed to access this resource');
 
