@@ -2,6 +2,7 @@ const productService = require("../services/product.service");
 const createHttpError = require("http-errors");
 const ProductCodes = require("../utils/errors/errorsCodes/product.codes");
 const categoryCodes = require("../utils/errors/errorsCodes/category.codes");
+const responseHandler = require("../handlers/response.handler");
 
 const registerProduct = async (req, res, next) => {
   try {
@@ -17,7 +18,7 @@ const registerProduct = async (req, res, next) => {
       variants,
       category
     );
-    res.status(201).json(newProduct);
+    responseHandler(res, 201, "Product created", newProduct);
   } catch (e) {
     switch (e.code) {
       case ProductCodes.NOT_FOUND:

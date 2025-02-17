@@ -15,10 +15,10 @@ const authValidator = async (req, res, next) => {
 
     const payload = jwt.verifyToken(token);
 
-    if (!payload)
+    if (!payload.valid)
       throw createHttpError(401, 'invalid credentials');
 
-    req.user = payload;
+    req.user = payload.data;
     req.token = token;
     next();
 

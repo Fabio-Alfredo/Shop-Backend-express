@@ -27,6 +27,7 @@ const createUser = async (user) => {
 const authUser = async (email, password) => {
   try {
     const user = await userRepository.existUser(email);
+    
     if (!user || !(await user.validatePassword(password)))
       throw new ServiceError(
         "Invalid credentials ",
