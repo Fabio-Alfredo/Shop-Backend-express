@@ -8,8 +8,8 @@ const orderRouter = Router();
 
 orderRouter.post("/create",
   authMiddleware.authValidator,
-  // orderValidator.createOrderValidator,
-  // runValidator,
+  orderValidator.createOrderValidator,
+  runValidator,
   orderController.createOrder
 );
 

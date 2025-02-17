@@ -1,4 +1,10 @@
-const { Order, Product, Order_product, Product_variants } = require("../models");
+const {
+  Order,
+  Product,
+  User,
+  Order_product,
+  Product_variants,
+} = require("../models");
 
 const startTransaction = async () => {
   const t = await Order.sequelize.transaction();
@@ -13,22 +19,27 @@ const create = async (order, t) => {
 const findById = async (orderId, t) => {
   const order = await Order.findOne({
     where: { id: orderId },
-    include:[
+    include: [
       {
-        model:Product_variants,
-        attributes:['color', 'size'],
-        through:{
+        model: Product_variants,
+        attributes: ["color", "size"],
+        through: {
           model: Order_product,
-          attributes:['quantity']
+          attributes: ["quantity"],
         },
-        include:[
+        include: [
           {
             model: Product,
-            attributes:['sku', 'name', 'description', 'price']
-          }
-        ]
+            attributes: ["sku", "name", "description", "price"],
+          },
+        ],
       },
-     
+
+      {
+        model: User,
+        as: 'user',
+        attributes: ["name", "email"],
+      },
     ],
     transaction: t,
   });

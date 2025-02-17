@@ -20,6 +20,7 @@ const createOrderValidator = [
         .notEmpty().withMessage("Each product must have an ID.")
         .isUUID().withMessage("Product ID must be a valid UUID.")
         .bail(),
+
     body("products.*.quantity")
         .notEmpty().withMessage("Each product must have a quantity.")
         .isInt({ min: 1 }).withMessage("Quantity must be an integer greater than 0.")

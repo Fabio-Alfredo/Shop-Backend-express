@@ -9,7 +9,9 @@ const createPayment = async (payment) => {
   try {
     const { paymentDetails, ...paymentData } = payment;
 
-    //await transactionService.stripeTransaction(paymentDetails);
+    const existOrder = await orderService.orderFindById(paymentData.orderId);
+
+    //await transactionService.stripeTransaction(existOrder.total, paymentDetails);
 
     const newPayment = await paymentRepository.create({
       method: paymentData.method,
