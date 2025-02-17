@@ -1,6 +1,6 @@
 const categoryRepository = require("../repositories/category.repository");
 const ServiceError = require("../utils/errors/service.error");
-const CategoryCodes = require("../utils/errors/errorsCodes/category.code");
+const CategoryCodes = require("../utils/errors/errorsCodes/category.codes");
 
 const createCategory = async (category) => {
   try {
@@ -39,20 +39,20 @@ const findById = async (id) => {
   }
 };
 
-const findAll =async()=>{
-  try{
+const findAll = async () => {
+  try {
     const categories = await categoryRepository.findAll();
     return categories;
-  }catch(e){
+  } catch (e) {
     throw new ServiceError(
       e.message || "Internal server error while find all categories",
       e.code || CategoryCodes.NOT_FOUND
     );
   }
-}
+};
 
 module.exports = {
   createCategory,
   findById,
-  findAll
+  findAll,
 };

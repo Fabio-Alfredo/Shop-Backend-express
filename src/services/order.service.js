@@ -6,7 +6,6 @@ const ServiceError = require("../utils/errors/service.error");
 const OrderCodes = require("../utils/errors/errorsCodes/order.code");
 const { PAID } = require("../utils/constants/ordersState.utils");
 const {MapOrder} = require('../utils/helpers/mapOrder');
-const { or } = require("sequelize");
 
 const createOrder = async (order, user) => {
   const t = await orderRepository.startTransaction();

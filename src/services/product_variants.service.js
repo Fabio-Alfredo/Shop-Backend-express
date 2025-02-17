@@ -1,5 +1,5 @@
 const variantsRepository = require("../repositories/product_variants.repository");
-const variantsCodes = require("../utils/errors/errorsCodes/variants.code");
+const productCodes = require("../utils/errors/errorsCodes/product.codes");
 const ServiceError = require("../utils/errors/service.error");
 
 const save = async (variants, productId, t) => {
@@ -12,12 +12,12 @@ const save = async (variants, productId, t) => {
         productId: productId,
       };
     });
-    console.log(saveVariants);
+
     return await variantsRepository.save(saveVariants, t);
   } catch (e) {
     throw new ServiceError(
       e.message || "Error in save variants",
-      e.code || variantsCodes.NOT_FOUND
+      e.code || productCodes.NOT_FOUND
     );
   }
 };
@@ -31,7 +31,7 @@ const reservationProducts = async (items, t) => {
   } catch (e) {
     throw new ServiceError(
       e.message || "Error al crear la reservacion de productos",
-      e.code || variantsCodes.NOT_FOUND
+      e.code || productCodes.NOT_FOUND
     );
   }
 };
@@ -42,7 +42,7 @@ const getProductsMap = async (items) => {
   if (productIds.length != items.length) {
     throw new ServiceError(
       "Algunos productos no estan disponibles",
-      variantsCodes.NOT_FOUND
+      productCodes.NOT_FOUND
     );
   }
   return new Map(products.map((p) => [p.id, p]));
@@ -56,14 +56,14 @@ const validateStock = async (items, products) => {
       if (product.stock < item.quantity)
         throw new ServiceError(
           `Cantidad insuficiente de ${product.Product.name} ${product.color}`,
-          variantsCodes.NOT_FOUND
+          productCodes.OUT_OF_STOCK
         );
     }
     return true;
   } catch (e) {
     throw new ServiceError(
       e.message || "Error al calcular el stock 1",
-      e.coode || variantsCodes.NOT_FOUND
+      e.coode || productCodes.NOT_FOUND
     );
   }
 };
@@ -75,7 +75,7 @@ const updateStock = async (items, products, operation, t) => {
       if (!product)
         throw new ServiceError(
           `EL roducto ${product.name} no fue encontrado`,
-          variantsCodes.NOT_FOUND
+          productCodes.NOT_FOUND
         );
       return {
         id: product.id,
@@ -89,7 +89,7 @@ const updateStock = async (items, products, operation, t) => {
   } catch (e) {
     throw new ServiceError(
       e.message || "Error al recalcular el stock2 ",
-      e.code || variantsCodes.NOT_FOUND
+      e.code || productCodes.NOT_FOUND
     );
   }
 };
