@@ -1,3 +1,4 @@
+const { where, or } = require("sequelize");
 const {
   Order,
   Product,
@@ -15,6 +16,30 @@ const create = async (order, t) => {
   const newOrder = await Order.create(order, { transaction: t });
   return newOrder;
 };
+
+const findByUser = async(userId)=>{
+  const order = await Order.findAll({
+    where:{userId:userId},
+    include: [
+      {
+        model: Product_variants,
+        attributes: ["color", "size"],
+        through: {
+          model: Order_product,
+          attributes: ["quantity"],
+        },
+        include: [
+          {
+            model: Product,
+            attributes: ["sku", "name", "description", "price"],
+          },
+        ],
+      },
+    ],
+  })
+
+  return order;
+}
 
 const findById = async (orderId, t) => {
   const order = await Order.findOne({
@@ -56,4 +81,5 @@ module.exports = {
   findById,
   save,
   startTransaction,
+  findByUser
 };

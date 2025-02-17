@@ -6,6 +6,7 @@ const ServiceError = require("../utils/errors/service.error");
 const OrderCodes = require("../utils/errors/errorsCodes/order.code");
 const { PAID } = require("../utils/constants/ordersState.utils");
 const {MapOrder} = require('../utils/helpers/mapOrder');
+const { or } = require("sequelize");
 
 const createOrder = async (order, user) => {
   const t = await orderRepository.startTransaction();
@@ -53,6 +54,24 @@ const orderFindById = async (id) => {
   }
 };
 
+const findByUser =async(userId)=>{
+  try{
+    const orders = await orderRepository.findByUser(userId);
+    let mapOrders=[];
+    for(const order of orders){
+      const mappedOrder = await MapOrder(order)
+      mapOrders.push(mappedOrder)
+    }
+
+    return mapOrders;
+  }catch(e){
+    throw new ServiceError(
+      e.message || 'Internal service error while find orders',
+      e.code || OrderCodes.NOT_FOUND
+    )
+  }
+}
+
 
 
 const payOrder = async (payment, id, t) => {
@@ -75,4 +94,5 @@ module.exports = {
   createOrder,
   orderFindById,
   payOrder,
+  findByUser
 };

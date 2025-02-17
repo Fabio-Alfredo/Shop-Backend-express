@@ -24,7 +24,18 @@ const getOrderById= async(req, res, next)=>{
   }
 }
 
+const getOrdersByUser = async (req, res, next)=>{
+  try{
+    const user = req.user;
+    const orders = await orderService.findByUser(user.id);
+    responseHandler(res, 200, 'succes', orders)
+  }catch(e){
+    next(e)
+  }
+}
+
 module.exports = {
   createOrder,
-  getOrderById
+  getOrderById,
+  getOrdersByUser
 };
