@@ -1,4 +1,5 @@
 const orderService = require("../services/order.service");
+const responseHandler = require('../handlers/response.handler');
 
 const createOrder = async (req, res, next) => {
   try {
@@ -13,6 +14,17 @@ const createOrder = async (req, res, next) => {
   }
 };
 
+const getOrderById= async(req, res, next)=>{
+  try{
+    const {id} = req.params;
+    const order = await orderService.orderFindById(id);
+    responseHandler(res, 200, "sussecc", order);
+  }catch(e){
+    next(e)
+  }
+}
+
 module.exports = {
   createOrder,
+  getOrderById
 };

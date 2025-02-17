@@ -13,4 +13,11 @@ orderRouter.post("/create",
   orderController.createOrder
 );
 
+orderRouter.get('/findId/:id',
+  authMiddleware.authValidator,
+  orderValidator.findOrderValidator,
+  runValidator,
+  orderController.getOrderById
+)
+
 module.exports = orderRouter;

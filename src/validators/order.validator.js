@@ -1,4 +1,4 @@
-const { body } = require("express-validator");
+const { body, param} = require("express-validator");
 
 const createOrderValidator = [
     body("direction")
@@ -28,6 +28,16 @@ const createOrderValidator = [
 
 ];
 
+const findOrderValidator =[
+    param('id')
+    .trim()
+    .notEmpty()
+    .withMessage('Id is required for realizate search')
+    .isUUID()
+    .withMessage('Product id must be a valid UUID')
+]
+
 module.exports = {
     createOrderValidator,
+    findOrderValidator
 };
