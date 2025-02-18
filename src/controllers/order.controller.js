@@ -35,10 +35,21 @@ const createOrder = async (req, res, next) => {
 //REFACTORIZAR EL CODIGO QUE SEA POSIBLE Y DONDE SEA MAS NECESARIO
 const addProductsInOrder = async (req, res, next) => {
   try {
-    const { orderId, products } = req.body;
+    const { products, ...orderData } = req.body;
     const user = req.user;
-    const order = await orderService.updateProductsInOrder(products, orderId, user);
-    responseHandler(res, 200, "Products added to order", order);
+    const { orderId } = req.params;
+
+    const response = await orderService.updateOrder(
+      products,
+      orderData,
+      orderId,
+      user
+    );
+    if (response.exist === false) {
+      responseHandler(res, 200, response.message);
+    }
+    const order = await orderService.orderFindById(orderId);
+    responseHandler(res, 200, "Order updated", order);
   } catch (e) {
     switch (e.code) {
       case OrderCodes.NOT_FOUND:

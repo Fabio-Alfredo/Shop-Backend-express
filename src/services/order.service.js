@@ -5,7 +5,6 @@ const userService = require("../services/user.service");
 const variantsService = require("../services/product_variants.service");
 const ServiceError = require("../utils/errors/service.error");
 const OrderCodes = require("../utils/errors/errorsCodes/order.code");
-const operations = require("../utils/constants/operationProducts");
 
 const {
   PAID,
@@ -13,7 +12,6 @@ const {
   PENDING,
 } = require("../utils/constants/ordersState.utils");
 const { MapOrder } = require("../utils/helpers/mapOrder");
-const { or } = require("sequelize");
 
 const createOrder = async (order, user) => {
   const t = await orderRepository.startTransaction();
@@ -44,7 +42,27 @@ const createOrder = async (order, user) => {
   }
 };
 
-const updateProductsInOrder = async (products, orderId, user) => {
+// const updateOrder = async ( id, order) => {
+//   const t = await orderRepository.startTransaction();
+//   try {
+//     const updatedOrder = await orderRepository.updateOrder(id, order, t);
+
+//     if(products && products.length > 0){
+//       await updateProductsInOrder(products, id, t);
+//     }
+
+//     await t.commit();
+//     return updatedOrder;
+//   } catch (e) {
+//     await t.rollback();
+//     throw new ServiceError(
+//       e.message || "Internal server error while update order",
+//       e.code || OrderCodes.NOT_FOUND
+//     );
+//   }
+// }
+
+const updateOrder = async (products, orderData, orderId, user) => {
   const t = await orderRepository.startTransaction();
 
   try {
@@ -57,17 +75,22 @@ const updateProductsInOrder = async (products, orderId, user) => {
       );
     }
 
-    await order_productService.updateRelation(products, order.id, t);
-    await variantsService.reservationProducts(products, t);
+    await orderRepository.updateOrder(order.id, orderData, t);
 
-    if(order.products.length == 0){
+    if (products && products.length > 0) {
+      await order_productService.updateRelation(products, order.id, t);
+      await variantsService.reservationProducts(products, t);
+    }
+
+    
+    if (order.products.length == 0) {
       await orderRepository.deleteOrder(order.id, t);
       await t.commit();
-      return "Order delted";
+      return { message: "Order deleted", exist: false };
     }
 
     await t.commit();
-    return order;
+    return { message: "Products added to order", exist: true }; ;
   } catch (e) {
     await t.rollback();
     throw new ServiceError(
@@ -159,5 +182,5 @@ module.exports = {
   payOrder,
   findByUser,
   cancelOrder,
-  updateProductsInOrder,
+  updateOrder,
 };

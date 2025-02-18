@@ -13,7 +13,7 @@ orderRouter.post("/create",
   orderController.createOrder
 );
 
-orderRouter.put("/addProducts",
+orderRouter.put("/update/:orderId",
   authMiddleware.authValidator,
   // orderValidator.addProductsValidator,
   runValidator,
