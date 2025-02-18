@@ -32,11 +32,12 @@ const createOrder = async (req, res, next) => {
   }
 };
 
+//REFACTORIZAR EL CODIGO QUE SEA POSIBLE Y DONDE SEA MAS NECESARIO
 const addProductsInOrder = async (req, res, next) => {
   try {
     const { orderId, products } = req.body;
     const user = req.user;
-    await orderService.addProductsInOrder(products, orderId, user);
+    await orderService.updateProductsInOrder(products, orderId, user);
     const order = await orderService.orderFindById(orderId);
     responseHandler(res, 200, "Products added to order", order);
   } catch (e) {

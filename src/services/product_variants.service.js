@@ -25,12 +25,37 @@ const save = async (variants, productId, t) => {
 const reservationProducts = async (items, t) => {
   try {
     const products = await getProductsMap(items);
-    await validateStock(items, products);
-    const update = await updateStock(items, products, "buy", t);
+    // await validateStock(items, products);
+    const update = await updateStock(items, products, t);
     return update;
   } catch (e) {
     throw new ServiceError(
       e.message || "Error al crear la reservacion de productos",
+      e.code || productCodes.NOT_FOUND
+    );
+  }
+};
+
+const updateStock = async (items, products, t) => {
+  try {
+    
+    const updateProducts = items.map((item) => {
+      const product = products.get(item.id);
+      if (!product || (item.quantity>= 0 && item.quantity > product.stock))
+        throw new ServiceError(
+          `EL roducto ${product.name} no tiene suficiente stock`,
+          productCodes.NOT_FOUND
+        );
+      return {
+        id: product.id,
+        stock: product.stock - item.quantity,
+      };
+    });
+
+    return await variantsRepository.bulkUpdateStock(updateProducts, t);
+  } catch (e) {
+    throw new ServiceError(
+      e.message || "Error al recalcular el stock2 ",
       e.code || productCodes.NOT_FOUND
     );
   }
@@ -63,55 +88,30 @@ const getProductsMap = async (items) => {
   return new Map(products.map((p) => [p.id, p]));
 };
 
-const validateStock = async (items, products) => {
-  try {
-    for (const item of items) {
-      const product = products.get(item.id);
-      if (product.stock < item.quantity)
-        throw new ServiceError(
-          `Cantidad insuficiente de ${product.Product.name} ${product.color}`,
-          productCodes.OUT_OF_STOCK
-        );
-    }
-    return true;
-  } catch (e) {
-    throw new ServiceError(
-      e.message || "Error al calcular el stock 1",
-      e.coode || productCodes.NOT_FOUND
-    );
-  }
-};
+// const validateStock = async (items, products) => {
+//   try {
+//     for (const item of items) {
+//       const product = products.get(item.id);
+//       if (product.stock < item.quantity)
+//         throw new ServiceError(
+//           `Cantidad insuficiente de ${product.Product.name} ${product.color}`,
+//           productCodes.OUT_OF_STOCK
+//         );
+//     }
+//     return true;
+//   } catch (e) {
+//     throw new ServiceError(
+//       e.message || "Error al calcular el stock 1",
+//       e.coode || productCodes.NOT_FOUND
+//     );
+//   }
+// };
 
-const updateStock = async (items, products, operation, t) => {
-  try {
-    
-    const updateProducts = items.map((item) => {
-      const product = products.get(item.id);
-      if (!product)
-        throw new ServiceError(
-          `EL roducto ${product.name} no fue encontrado`,
-          productCodes.NOT_FOUND
-        );
-      return {
-        id: product.id,
-        stock:
-          operation === "buy"
-            ? product.stock - item.quantity
-            : product.stock + item.quantity,
-      };
-    });
 
-    return await variantsRepository.bulkUpdateStock(updateProducts, t);
-  } catch (e) {
-    throw new ServiceError(
-      e.message || "Error al recalcular el stock2 ",
-      e.code || productCodes.NOT_FOUND
-    );
-  }
-};
 
 module.exports = {
   save,
   reservationProducts,
   addProducts,
+  updateStock,
 };

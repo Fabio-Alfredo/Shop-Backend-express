@@ -5,6 +5,8 @@ const userService = require("../services/user.service");
 const variantsService = require("../services/product_variants.service");
 const ServiceError = require("../utils/errors/service.error");
 const OrderCodes = require("../utils/errors/errorsCodes/order.code");
+const operations = require("../utils/constants/operationProducts");
+
 const {
   PAID,
   CANCELED,
@@ -41,7 +43,7 @@ const createOrder = async (order, user) => {
   }
 };
 
-const addProductsInOrder = async (products, orderId, user) => {
+const updateProductsInOrder = async (products, orderId, user) => {
   const t = await orderRepository.startTransaction();
 
   try {
@@ -54,10 +56,8 @@ const addProductsInOrder = async (products, orderId, user) => {
       );
     }
 
-
-    await order_productService.updateRelation(products, order.id);
-
-    await variantsService.reservationProducts(products);
+    await order_productService.updateRelation(products, order.id, t);
+    await variantsService.reservationProducts(products, t);
 
     await t.commit();
     return true;
@@ -152,5 +152,5 @@ module.exports = {
   payOrder,
   findByUser,
   cancelOrder,
-  addProductsInOrder,
+  updateProductsInOrder,
 };
