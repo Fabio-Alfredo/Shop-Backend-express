@@ -1,6 +1,7 @@
 const orderRepository = require("../repositories/order.repository");
 const order_productService = require("../services/order_product.service");
 const productService = require("../services/product.service");
+const userService = require("../services/user.service");
 const variantsService = require("../services/product_variants.service");
 const ServiceError = require("../utils/errors/service.error");
 const OrderCodes = require("../utils/errors/errorsCodes/order.code");
@@ -35,6 +36,35 @@ const createOrder = async (order, user) => {
     await t.rollback();
     throw new ServiceError(
       e.message || "Internal server error while create order",
+      e.code || OrderCodes.NOT_FOUND
+    );
+  }
+};
+
+const addProductsInOrder = async (products, orderId, user) => {
+  const t = await orderRepository.startTransaction();
+
+  try {
+    const order = await orderFindById(orderId);
+
+    if (!user || order.userId !== user.id || order.status !== PENDING) {
+      throw new ServiceError(
+        "User not authorized or order is invalid for adding products",
+        OrderCodes.INVALID_ORDER
+      );
+    }
+
+
+    await order_productService.updateRelation(products, order.id);
+
+    await variantsService.reservationProducts(products);
+
+    await t.commit();
+    return true;
+  } catch (e) {
+    await t.rollback();
+    throw new ServiceError(
+      e.message || "Internal server error while add products in order",
       e.code || OrderCodes.NOT_FOUND
     );
   }
@@ -122,4 +152,5 @@ module.exports = {
   payOrder,
   findByUser,
   cancelOrder,
+  addProductsInOrder,
 };

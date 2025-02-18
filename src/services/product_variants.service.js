@@ -65,7 +65,6 @@ const getProductsMap = async (items) => {
 
 const validateStock = async (items, products) => {
   try {
-    console.log(items, products);
     for (const item of items) {
       const product = products.get(item.id);
       if (product.stock < item.quantity)
@@ -85,7 +84,7 @@ const validateStock = async (items, products) => {
 
 const updateStock = async (items, products, operation, t) => {
   try {
-    console.log(items, products);
+    
     const updateProducts = items.map((item) => {
       const product = products.get(item.id);
       if (!product)

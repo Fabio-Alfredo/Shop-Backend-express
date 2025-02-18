@@ -32,6 +32,33 @@ const createOrder = async (req, res, next) => {
   }
 };
 
+const addProductsInOrder = async (req, res, next) => {
+  try {
+    const { orderId, products } = req.body;
+    const user = req.user;
+    await orderService.addProductsInOrder(products, orderId, user);
+    const order = await orderService.orderFindById(orderId);
+    responseHandler(res, 200, "Products added to order", order);
+  } catch (e) {
+    switch (e.code) {
+      case OrderCodes.NOT_FOUND:
+        next(createHttpError(404, e.message));
+        break;
+      case ProductCodes.NOT_FOUND:
+        next(createHttpError(404, e.message));
+        break;
+      case ProductCodes.OUT_OF_STOCK:
+        next(createHttpError(400, e.message));
+        break;
+      case OrderCodes.INVALID_ORDER:
+        next(createHttpError(400, e.message));
+        break;
+      default:
+        next(e);
+    }
+  }
+};
+
 const cancelOrder = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -50,7 +77,7 @@ const cancelOrder = async (req, res, next) => {
         next(e);
     }
   }
-}
+};
 
 const getOrderById = async (req, res, next) => {
   try {
@@ -75,7 +102,7 @@ const getOrdersByUser = async (req, res, next) => {
   try {
     const user = req.user;
     const orders = await orderService.findByUser(user.id);
-    responseHandler(res, 200, "succes",   orders);
+    responseHandler(res, 200, "succes", orders);
   } catch (e) {
     switch (e.code) {
       case OrderCodes.NOT_FOUND:
@@ -91,5 +118,6 @@ module.exports = {
   createOrder,
   getOrderById,
   getOrdersByUser,
-  cancelOrder
+  cancelOrder,
+  addProductsInOrder,
 };
