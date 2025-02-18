@@ -13,6 +13,13 @@ orderRouter.post("/create",
   orderController.createOrder
 );
 
+orderRouter.put("/cancel/:id",
+  authMiddleware.authValidator,
+  orderValidator.findOrderValidator,
+  runValidator,
+  orderController.cancelOrder
+);
+
 orderRouter.get('/findUser',
   authMiddleware.authValidator,
   orderController.getOrdersByUser

@@ -4,6 +4,7 @@ const MapOrder = async (order) => {
   const products = Product_variants.map((product) => {
     return {
       sku: product.Product.sku,
+      id: product.id,
       name: product.Product.name,
       description: product.Product.description,
       color: product.color,

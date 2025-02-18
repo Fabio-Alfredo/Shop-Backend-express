@@ -17,9 +17,9 @@ const create = async (order, t) => {
   return newOrder;
 };
 
-const findByUser = async(userId)=>{
+const findByUser = async (userId) => {
   const order = await Order.findAll({
-    where:{userId:userId},
+    where: { userId: userId },
     include: [
       {
         model: Product_variants,
@@ -36,10 +36,10 @@ const findByUser = async(userId)=>{
         ],
       },
     ],
-  })
+  });
 
   return order;
-}
+};
 
 const findById = async (orderId, t) => {
   const order = await Order.findOne({
@@ -47,7 +47,7 @@ const findById = async (orderId, t) => {
     include: [
       {
         model: Product_variants,
-        attributes: ["color", "size"],
+        attributes: ["id", "color", "size"],
         through: {
           model: Order_product,
           attributes: ["quantity"],
@@ -62,7 +62,7 @@ const findById = async (orderId, t) => {
 
       {
         model: User,
-        as: 'user',
+        as: "user",
         attributes: ["name", "email"],
       },
     ],
@@ -72,8 +72,16 @@ const findById = async (orderId, t) => {
 };
 
 const save = async (order, t) => {
-  const newOrder = order.save({ transaction: t });
+  const newOrder = await order.save({ transaction: t });
   return newOrder;
+};
+
+const updateOrder = async (order, data, t) => {
+  const updateOrder = await Order.update(data, {
+    where: { id: order },
+    transaction: t,
+  });
+  return updateOrder;
 };
 
 module.exports = {
@@ -81,5 +89,6 @@ module.exports = {
   findById,
   save,
   startTransaction,
-  findByUser
+  findByUser,
+  updateOrder,
 };

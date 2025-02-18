@@ -36,7 +36,22 @@ const reservationProducts = async (items, t) => {
   }
 };
 
+const addProducts = async (items, t) => {
+  try {
+    const products = await getProductsMap(items);
+
+    await updateStock(items, products, "add", t);
+    return true;
+  } catch (e) {
+    throw new ServiceError(
+      e.message || "Error al agregar productos",
+      e.code || productCodes.NOT_FOUND
+    );
+  }
+}
+
 const getProductsMap = async (items) => {
+
   const productIds = items.map((item) => item.id);
   const products = await variantsRepository.findAllByIds(productIds);
   if (productIds.length != items.length) {
@@ -70,6 +85,7 @@ const validateStock = async (items, products) => {
 
 const updateStock = async (items, products, operation, t) => {
   try {
+    console.log(items, products);
     const updateProducts = items.map((item) => {
       const product = products.get(item.id);
       if (!product)
@@ -82,9 +98,10 @@ const updateStock = async (items, products, operation, t) => {
         stock:
           operation === "buy"
             ? product.stock - item.quantity
-            : product.item + item.quantity,
+            : product.stock + item.quantity,
       };
     });
+
     return await variantsRepository.bulkUpdateStock(updateProducts, t);
   } catch (e) {
     throw new ServiceError(
@@ -97,4 +114,5 @@ const updateStock = async (items, products, operation, t) => {
 module.exports = {
   save,
   reservationProducts,
+  addProducts,
 };

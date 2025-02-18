@@ -4,8 +4,12 @@ const productService = require("../services/product.service");
 const variantsService = require("../services/product_variants.service");
 const ServiceError = require("../utils/errors/service.error");
 const OrderCodes = require("../utils/errors/errorsCodes/order.code");
-const { PAID } = require("../utils/constants/ordersState.utils");
-const {MapOrder} = require('../utils/helpers/mapOrder');
+const {
+  PAID,
+  CANCELED,
+  PENDING,
+} = require("../utils/constants/ordersState.utils");
+const { MapOrder } = require("../utils/helpers/mapOrder");
 
 const createOrder = async (order, user) => {
   const t = await orderRepository.startTransaction();
@@ -36,6 +40,31 @@ const createOrder = async (order, user) => {
   }
 };
 
+const cancelOrder = async (id) => {
+  const t = await orderRepository.startTransaction();
+  try {
+    const order = await orderFindById(id);
+    if (order.status !== PENDING)
+      throw new ServiceError(
+        "Estate order is invalid for cancel",
+        OrderCodes.INVALID_ORDER
+      );
+
+    await orderRepository.updateOrder(order.id, { status: CANCELED }, t);
+
+    await variantsService.addProducts(order.products, t);
+
+    await t.commit();
+    return true;
+  } catch (e) {
+    await t.rollback();
+    throw new ServiceError(
+      e.message || "Internal server error while cancel order",
+      e.code || OrderCodes.NOT_FOUND
+    );
+  }
+};
+
 const orderFindById = async (id) => {
   try {
     const order = await orderRepository.findById(id);
@@ -53,25 +82,23 @@ const orderFindById = async (id) => {
   }
 };
 
-const findByUser =async(userId)=>{
-  try{
+const findByUser = async (userId) => {
+  try {
     const orders = await orderRepository.findByUser(userId);
-    let mapOrders=[];
-    for(const order of orders){
-      const mappedOrder = await MapOrder(order)
-      mapOrders.push(mappedOrder)
+    let mapOrders = [];
+    for (const order of orders) {
+      const mappedOrder = await MapOrder(order);
+      mapOrders.push(mappedOrder);
     }
 
     return mapOrders;
-  }catch(e){
+  } catch (e) {
     throw new ServiceError(
-      e.message || 'Internal service error while find orders',
+      e.message || "Internal service error while find orders",
       e.code || OrderCodes.NOT_FOUND
-    )
+    );
   }
-}
-
-
+};
 
 const payOrder = async (payment, id, t) => {
   try {
@@ -93,5 +120,6 @@ module.exports = {
   createOrder,
   orderFindById,
   payOrder,
-  findByUser
+  findByUser,
+  cancelOrder,
 };

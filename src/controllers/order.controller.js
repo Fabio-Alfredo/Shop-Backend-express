@@ -32,6 +32,26 @@ const createOrder = async (req, res, next) => {
   }
 };
 
+const cancelOrder = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    await orderService.cancelOrder(id);
+    const order = await orderService.orderFindById(id);
+    responseHandler(res, 200, "Order canceled", order);
+  } catch (e) {
+    switch (e.code) {
+      case OrderCodes.NOT_FOUND:
+        next(createHttpError(404, e.message));
+        break;
+      case OrderCodes.INVALID_ORDER:
+        next(createHttpError(400, e.message));
+        break;
+      default:
+        next(e);
+    }
+  }
+}
+
 const getOrderById = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -55,7 +75,7 @@ const getOrdersByUser = async (req, res, next) => {
   try {
     const user = req.user;
     const orders = await orderService.findByUser(user.id);
-    responseHandler(res, 200, "succes", orders);
+    responseHandler(res, 200, "succes",   orders);
   } catch (e) {
     switch (e.code) {
       case OrderCodes.NOT_FOUND:
@@ -71,4 +91,5 @@ module.exports = {
   createOrder,
   getOrderById,
   getOrdersByUser,
+  cancelOrder
 };
