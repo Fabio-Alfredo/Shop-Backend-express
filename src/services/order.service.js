@@ -13,6 +13,7 @@ const {
   PENDING,
 } = require("../utils/constants/ordersState.utils");
 const { MapOrder } = require("../utils/helpers/mapOrder");
+const { or } = require("sequelize");
 
 const createOrder = async (order, user) => {
   const t = await orderRepository.startTransaction();
@@ -47,7 +48,7 @@ const updateProductsInOrder = async (products, orderId, user) => {
   const t = await orderRepository.startTransaction();
 
   try {
-    const order = await orderFindById(orderId);
+    const order = await orderFindById(orderId, t);
 
     if (!user || order.userId !== user.id || order.status !== PENDING) {
       throw new ServiceError(
@@ -59,8 +60,14 @@ const updateProductsInOrder = async (products, orderId, user) => {
     await order_productService.updateRelation(products, order.id, t);
     await variantsService.reservationProducts(products, t);
 
+    if(order.products.length == 0){
+      await orderRepository.deleteOrder(order.id, t);
+      await t.commit();
+      return "Order delted";
+    }
+
     await t.commit();
-    return true;
+    return order;
   } catch (e) {
     await t.rollback();
     throw new ServiceError(
@@ -95,9 +102,9 @@ const cancelOrder = async (id) => {
   }
 };
 
-const orderFindById = async (id) => {
+const orderFindById = async (id, t) => {
   try {
-    const order = await orderRepository.findById(id);
+    const order = await orderRepository.findById(id, t);
     if (!order)
       throw new ServiceError("Order not exist", OrderCodes.INVALID_ORDER);
 

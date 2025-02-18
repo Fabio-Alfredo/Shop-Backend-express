@@ -17,6 +17,14 @@ const create = async (order, t) => {
   return newOrder;
 };
 
+const deleteOrder = async (orderId, t) => {
+  const deletedOrder = await Order.destroy({
+    where: { id: orderId },
+    transaction: t,
+  });
+  return deletedOrder;
+};
+
 const findByUser = async (userId) => {
   const order = await Order.findAll({
     where: { userId: userId },
@@ -91,4 +99,5 @@ module.exports = {
   startTransaction,
   findByUser,
   updateOrder,
+  deleteOrder
 };

@@ -38,10 +38,9 @@ const reservationProducts = async (items, t) => {
 
 const updateStock = async (items, products, t) => {
   try {
-    
     const updateProducts = items.map((item) => {
       const product = products.get(item.id);
-      if (!product || (item.quantity>= 0 && item.quantity > product.stock))
+      if (!product || (item.quantity > 0 && item.quantity > product.stock))
         throw new ServiceError(
           `EL roducto ${product.name} no tiene suficiente stock`,
           productCodes.NOT_FOUND
@@ -73,10 +72,9 @@ const addProducts = async (items, t) => {
       e.code || productCodes.NOT_FOUND
     );
   }
-}
+};
 
 const getProductsMap = async (items) => {
-
   const productIds = items.map((item) => item.id);
   const products = await variantsRepository.findAllByIds(productIds);
   if (productIds.length != items.length) {
@@ -106,8 +104,6 @@ const getProductsMap = async (items) => {
 //     );
 //   }
 // };
-
-
 
 module.exports = {
   save,

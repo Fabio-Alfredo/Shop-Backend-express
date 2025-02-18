@@ -37,8 +37,7 @@ const addProductsInOrder = async (req, res, next) => {
   try {
     const { orderId, products } = req.body;
     const user = req.user;
-    await orderService.updateProductsInOrder(products, orderId, user);
-    const order = await orderService.orderFindById(orderId);
+    const order = await orderService.updateProductsInOrder(products, orderId, user);
     responseHandler(res, 200, "Products added to order", order);
   } catch (e) {
     switch (e.code) {

@@ -21,28 +21,23 @@ const createRelation = async (products, orderId, t) => {
   }
 };
 
+//validar cuando el numero enviado es menor a 0 para pder eliminar la relacion
 const updateRelation = async (products, orderId, t) => {
   try {
     // Obtener los productos actuales en la orden
     const orderProducts = await findOrder(orderId);
 
     // Crear un mapa con los productos ya existentes
-    console.log(orderProducts);
-    const existingMap = new Map(
-      orderProducts.map((p) => [p.productId, p.quantity])
+    const { toUpdate, toDelete } = await clasificarProductos(
+      products,
+      orderProducts,
+      orderId
     );
-
-    const newOrderProducts = products.map((product) => {
-      const existingQuantity = existingMap.get(product.id) || 0;
-      
-
-      return {
-        productId: product.id,
-        orderId: orderId,
-        quantity: existingQuantity + product.quantity, 
-      };
-    });
-    return await Order_productRepository.bulkCreate(newOrderProducts, t);
+   
+    await Order_productRepository.bulkCreate(toUpdate, t);
+    await Order_productRepository.deleteProduct(toDelete, orderId, t);
+  
+    return true;
   } catch (e) {
     throw new ServiceError(
       e.message || "Internal server error while create order",
@@ -51,14 +46,31 @@ const updateRelation = async (products, orderId, t) => {
   }
 };
 
+const clasificarProductos = async (products,orderProducts, orderId) => {
+  const existingMap = new Map(orderProducts.map((p) => [p.productId, p.quantity]));
+
+  const toUpdate = [];
+  const toDelete = [];
+
+  for (const product of products) {
+    const existingQuantity = existingMap.get(product.id) || 0;
+    const newQuantity = existingQuantity + product.quantity;
+
+    if (newQuantity <= 0) {
+      toDelete.push(product.id);
+    } else {
+      toUpdate.push({ productId: product.id, orderId, quantity: newQuantity });
+    }
+  }
+
+  return { toUpdate, toDelete };
+};
+
 const findOrder = async (orderId) => {
   try {
     const orderProducts = await Order_productRepository.findByOrder(orderId);
-    if(!orderProducts) {
-      throw new ServiceError(
-        "Order not found",
-        OrderCodes.NOT_FOUND
-      );
+    if (!orderProducts) {
+      throw new ServiceError("Order not found", OrderCodes.NOT_FOUND);
     }
 
     return orderProducts;

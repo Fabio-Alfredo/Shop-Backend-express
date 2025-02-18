@@ -21,11 +21,19 @@ const bulkCreate = async (order_products, t) => {
   return newOrder;
 };
 
+const deleteProduct = async (productId, orderId, t) => {
+  const deletedProduct = await Order_product.destroy({
+    where: { orderId, productId },
+    transaction: t,
+  });
+  return deletedProduct;
+};
+
 const findByOrder = async (orderId, t) => {
   const orderProducts = await Order_product.findAll({
     where: { orderId },
     transaction: t,
-  })
+  });
   return orderProducts;
 };
 
@@ -34,4 +42,5 @@ module.exports = {
   startTransaction,
   bulkCreate,
   findByOrder,
+  deleteProduct,
 };
