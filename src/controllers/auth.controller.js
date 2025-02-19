@@ -7,7 +7,7 @@ const registerUser = async (req, res, next) => {
   try {
     const user = req.body;
     const newUser = await authService.createUser(user);
-    responseHandler(res, 201, "success", newUser);
+    return responseHandler(res, 201, "success", newUser);
   } catch (e) {
     switch (e.code) {
       case UserCodes.NOT_FOUND:
@@ -26,7 +26,7 @@ const loginUser = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     const token = await authService.authUser(email, password);
-    responseHandler(res, 200, "success login", token);
+    return responseHandler(res, 200, "success login", token);
   } catch (e) {
     switch (e.code) {
       case UserCodes.INVALID_CREDENTIALS:

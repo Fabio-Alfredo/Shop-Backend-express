@@ -8,7 +8,7 @@ const assignRole = async (req, res, next) => {
     const user = req.user;
 
     await userService.assignRole(roleId, userId, user.id);
-    responseHandle(res, 201, "success", "role editado con exito");
+    return responseHandle(res, 201, "success", "role editado con exito");
   } catch (e) {
     switch (e.code) {
       case userCodes.NOT_FOUND:

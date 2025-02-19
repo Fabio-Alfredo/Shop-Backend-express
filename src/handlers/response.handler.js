@@ -1,4 +1,4 @@
-const responseHandler = (res, status, message=null, data={})=>{
+const return responseHandler = (res, status, message=null, data={})=>{
     return res.status(status || 200).json({
         success: true,
         message:message,
@@ -6,4 +6,4 @@ const responseHandler = (res, status, message=null, data={})=>{
     })
 }
 
-module.exports = responseHandler;
+module.exports = return responseHandler;

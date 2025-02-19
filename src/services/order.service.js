@@ -63,7 +63,8 @@ const updateOrder = async (products, orderData, orderId, user) => {
         parseFloat(order.total);
     }
 
-    if (orderData.total == 0) {
+
+    if (orderData.total <= 0) {
       await orderRepository.deleteOrder(order.id, t);
       await t.commit();
       return { exist: false, message: "Order deleted" };

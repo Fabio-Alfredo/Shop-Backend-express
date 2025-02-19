@@ -18,7 +18,7 @@ const registerProduct = async (req, res, next) => {
       variants,
       category
     );
-    responseHandler(res, 201, "Product created", newProduct);
+    return responseHandler(res, 201, "Product created", newProduct);
   } catch (e) {
     switch (e.code) {
       case ProductCodes.NOT_FOUND:

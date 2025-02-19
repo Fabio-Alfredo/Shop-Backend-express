@@ -11,7 +11,7 @@ const createOrder = async (req, res, next) => {
 
     const order = await orderService.createOrder(data, user);
     const newOrder = await orderService.orderFindById(order.id);
-    responseHandler(res, 201, "Order created", newOrder);
+    return responseHandler(res, 201, "Order created", newOrder);
   } catch (e) {
     switch (e.code) {
       case OrderCodes.NOT_FOUND:
@@ -45,11 +45,11 @@ const addProductsInOrder = async (req, res, next) => {
       orderId,
       user
     );
-    if (response.exist === false) {
-      responseHandler(res, 200, response.message);
+    if (!response.exist) {
+      return responseHandler(res, 200, response.message);
     }
     const order = await orderService.orderFindById(orderId);
-    responseHandler(res, 200, "Order updated", order);
+    return responseHandler(res, 200, "Order updated", order);
   } catch (e) {
     switch (e.code) {
       case OrderCodes.NOT_FOUND:
@@ -75,7 +75,7 @@ const cancelOrder = async (req, res, next) => {
     const { id } = req.params;
     await orderService.cancelOrder(id);
     const order = await orderService.orderFindById(id);
-    responseHandler(res, 200, "Order canceled", order);
+    return responseHandler(res, 200, "Order canceled", order);
   } catch (e) {
     switch (e.code) {
       case OrderCodes.NOT_FOUND:
@@ -94,7 +94,7 @@ const getOrderById = async (req, res, next) => {
   try {
     const { id } = req.params;
     const order = await orderService.orderFindById(id);
-    responseHandler(res, 200, "succes", order);
+    return responseHandler(res, 200, "succes", order);
   } catch (e) {
     switch (e.code) {
       case OrderCodes.NOT_FOUND:
@@ -113,7 +113,7 @@ const getOrdersByUser = async (req, res, next) => {
   try {
     const user = req.user;
     const orders = await orderService.findByUser(user.id);
-    responseHandler(res, 200, "succes", orders);
+    return responseHandler(res, 200, "succes", orders);
   } catch (e) {
     switch (e.code) {
       case OrderCodes.NOT_FOUND:

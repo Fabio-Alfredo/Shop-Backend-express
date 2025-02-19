@@ -7,7 +7,7 @@ const createCategory = async (req, res, next) => {
   try {
     const category = req.body;
     const newCategory = await categoryService.createCategory(category);
-    responseHandler(res, 201, "Category created", newCategory);
+    return responseHandler(res, 201, "Category created", newCategory);
   } catch (e) {
     switch (e.code) {
       case CategoryCodes.NOT_FOUND:
@@ -25,7 +25,7 @@ const createCategory = async (req, res, next) => {
 const findAllCategories = async (req, res, next) => {
   try {
     const categories = await categoryService.findAll();
-    responseHandler(res, 200, "sucess", categories);
+    return responseHandler(res, 200, "sucess", categories);
   } catch (e) {
     switch (e.code) {
       case CategoryCodes.NOT_FOUND:
