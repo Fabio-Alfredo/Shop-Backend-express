@@ -21,6 +21,14 @@ const bulkCreate = async (order_products, t) => {
   return newOrder;
 };
 
+const updateRelations = async (products, orderId, t) => {
+  const update = Order_product.bulkCreate(products, {
+    updateOnDuplicate: ["quantity"],
+    transaction: t,
+  });
+  return update;
+}
+
 const deleteProduct = async (productId, orderId, t) => {
   const deletedProduct = await Order_product.destroy({
     where: { orderId, productId },
@@ -43,4 +51,5 @@ module.exports = {
   bulkCreate,
   findByOrder,
   deleteProduct,
+  updateRelations,
 };
