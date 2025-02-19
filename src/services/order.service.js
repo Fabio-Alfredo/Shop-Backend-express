@@ -184,5 +184,4 @@ module.exports = {
   payOrder,
   findByUser,
   cancelOrder,
-  updateOrder,
 };

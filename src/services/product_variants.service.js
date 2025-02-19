@@ -24,7 +24,7 @@ const save = async (variants, productId, t) => {
 
 const reservationProducts = async (items, t) => {
   try {
-    // await validateStock(items, products);
+    
      await updateStock(items,'remove', t);
      const price = await calculateTotal(items, products);
     return price;

@@ -41,5 +41,4 @@ const findOrder = async (orderId) => {
 module.exports = {
   createRelation,
   findOrder,
-  updateRelation,
 };

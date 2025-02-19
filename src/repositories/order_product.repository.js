@@ -35,6 +35,4 @@ module.exports = {
   startTransaction,
   bulkCreate,
   findByOrder,
-  deleteProduct,
-  updateRelations,
 };

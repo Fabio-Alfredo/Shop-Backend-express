@@ -93,5 +93,4 @@ module.exports = {
   getOrderById,
   getOrdersByUser,
   cancelOrder,
-  addProductsInOrder,
 };

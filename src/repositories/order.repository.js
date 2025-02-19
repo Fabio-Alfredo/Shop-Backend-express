@@ -90,6 +90,5 @@ module.exports = {
   save,
   startTransaction,
   findByUser,
-  updateOrder,
   deleteOrder
 };
