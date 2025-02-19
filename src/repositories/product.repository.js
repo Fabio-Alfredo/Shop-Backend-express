@@ -1,5 +1,4 @@
-const { Product, Product_variants } = require("../models");
-const { assignRole } = require("../services/user.service");
+const { Product, Product_variants, Category } = require("../models");
 
 const startTransaction = async () => {
   const t = await Product.sequelize.transaction();
@@ -37,6 +36,18 @@ const findAll = async () => {
   return prducts || [];
 };
 
+const findAllByCategory = async (categoryId) => {
+  
+  const products = await Product.findAll({
+    include: {
+      model: Category,
+      where: { id: categoryId },
+      through: { attributes: [] },
+    },
+  });
+  return products;
+};
+
 const findAllByIds = async (productIds) => {
   const products = Product.findAll({ where: { id: productIds } });
   return products;
@@ -65,4 +76,5 @@ module.exports = {
   findBySku,
   findAllBySku,
   updateProducts,
+  findAllByCategory,
 };

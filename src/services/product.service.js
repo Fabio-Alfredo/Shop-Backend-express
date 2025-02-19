@@ -22,7 +22,6 @@ const registerProduct = async (
       t
     );
 
-   
     await variantsService.save(variants, product.id, t);
     await assingCategory(product, category, t);
 
@@ -38,19 +37,19 @@ const registerProduct = async (
 };
 
 const assingCategory = async (product, categoryId, t) => {
-  try{
+  try {
     const category = await categoryService.findById(categoryId);
-    if(category){
+    if (category) {
       await product.setCategories([categoryId], { transaction: t });
     }
     return product;
-  }catch(e){
+  } catch (e) {
     throw new ServiceError(
       e.message || "Internalserver error while assign category",
       e.code || ProductCodes.NOT_FOUND
     );
   }
-}
+};
 
 const findBySku = async (sku) => {
   try {
@@ -83,34 +82,39 @@ const findById = async (id) => {
   }
 };
 
-const updateProducts = async (id, productData, variants) => {
-  const t = await productRepository.startTransaction();
-  try{
-    const product = await findById(id);
+// const updateProducts = async (id, productData, variants) => {
+//   const t = await productRepository.startTransaction();
+//   try{
+//     const product = await findById(id);
 
-    const updateProducts = await productRepository.updateProducts(productData, t);
+//     const updateProducts = await productRepository.updateProducts(productData, t);
 
-    if(variants && variants.length > 0)
-      await variantsService.updateStock(variants,'add', t);
+//     if(variants && variants.length > 0)
+//       await variantsService.updateStock(variants,'add' t);
 
-    if(productData.category)
-      await assingCategory(product, productData.category, t);
-    
+//     if(productData.category)
+//       await assingCategory(product, productData.category, t);
 
-    await t.commit();
-    return updateProducts;
-  }catch(e){
-    await t.rollback();
-    throw new ServiceError(
-      e.message || "Internal server error while update product",
-      e.code || ProductCodes.NOT_FOUND
-    );
-  }
-}
+//     await t.commit();
+//     return updateProducts;
+//   }catch(e){
+//     await t.rollback();
+//     throw new ServiceError(
+//       e.message || "Internal server error while update product",
+//       e.code || ProductCodes.NOT_FOUND
+//     );
+//   }
+// }
 
-const findAll = async () => {
+const findAll = async (category) => {
   try {
-    const products = await productRepository.findAll();
+    let products;
+
+    if (category)
+      products = await productRepository.findAllByCategory(category);
+    else 
+      products = await productRepository.findAll();
+    
     return products;
   } catch (e) {
     throw new ServiceError(
@@ -124,5 +128,4 @@ module.exports = {
   registerProduct,
   findById,
   findAll,
-  updateProducts,
 };

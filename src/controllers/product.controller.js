@@ -59,7 +59,9 @@ const updateDataProduct = async (req, res, next) => {
 
 const findAllProducts = async (req, res, next) => {
   try {
-    const products = await productService.findAll();
+    console.log(req.query);
+    const {category} = req.query || null;
+    const products = await productService.findAll(category);
     res.status(200).json(products);
   } catch (e) {
     switch (e.code) {
