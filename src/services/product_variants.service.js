@@ -1,6 +1,10 @@
 const variantsRepository = require("../repositories/product_variants.repository");
 const productCodes = require("../utils/errors/errorsCodes/product.codes");
 const ServiceError = require("../utils/errors/service.error");
+const {
+  ADD_PRODUCT,
+  REMOVE_PRODUCT,
+} = require("../utils/constants/operationProduct.util");
 
 const save = async (variants, productId, t) => {
   try {
@@ -24,9 +28,8 @@ const save = async (variants, productId, t) => {
 
 const reservationProducts = async (items, t) => {
   try {
-    
-     await updateStock(items,'remove', t);
-     const price = await calculateTotal(items, products);
+    await updateStock(items, REMOVE_PRODUCT, t);
+    const price = await calculateTotal(items, products);
     return price;
   } catch (e) {
     throw new ServiceError(
@@ -36,9 +39,7 @@ const reservationProducts = async (items, t) => {
   }
 };
 
-
-
-const updateStock = async (items, operation,  t) => {
+const updateStock = async (items, operation, t) => {
   try {
     const products = await getProductsMap(items);
 
@@ -51,12 +52,15 @@ const updateStock = async (items, operation,  t) => {
         );
       return {
         id: product.id,
-        stock: operation === 'remove' ? product.stock - item.quantity : product.stock + item.quantity,
+        stock:
+          operation === REMOVE_PRODUCT
+            ? product.stock - item.quantity
+            : product.stock + item.quantity,
       };
     });
 
     await variantsRepository.bulkUpdateStock(updateProducts, t);
-    
+
     return true;
   } catch (e) {
     throw new ServiceError(
@@ -66,18 +70,16 @@ const updateStock = async (items, operation,  t) => {
   }
 };
 
-
 const calculateTotal = (items, products) => {
   return items.reduce((acc, item) => {
     const product = products.get(item.id);
     return acc + product.Product.price * item.quantity;
   }, 0);
-}
+};
 
 const addProducts = async (items, t) => {
   try {
-
-    await updateStock(items,'add', t);
+    await updateStock(items, ADD_PRODUCT, t);
     return true;
   } catch (e) {
     throw new ServiceError(
