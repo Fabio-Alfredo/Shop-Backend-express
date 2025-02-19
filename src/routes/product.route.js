@@ -15,6 +15,15 @@ productRouter.post(
   productController.registerProduct
 );
 
+productRouter.put(
+  "/update/:id",
+  // productValidator.updateValidator,
+  // runValidator,
+  autValidator.authValidator,
+  autValidator.roleValidator(['ADMIN']),
+  productController.updateDataProduct
+);
+
 productRouter.get("/findAll", productController.findAllProducts);
 productRouter.get("/findId/:id", productController.findProductById);
 

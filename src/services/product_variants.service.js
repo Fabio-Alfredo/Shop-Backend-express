@@ -24,10 +24,10 @@ const save = async (variants, productId, t) => {
 
 const reservationProducts = async (items, t) => {
   try {
-    const products = await getProductsMap(items);
     // await validateStock(items, products);
-    const update = await updateStock(items, products, t);
-    return update;
+     await updateStock(items,'remove', t);
+     const price = await calculateTotal(items, products);
+    return price;
   } catch (e) {
     throw new ServiceError(
       e.message || "Error al crear la reservacion de productos",
@@ -36,8 +36,12 @@ const reservationProducts = async (items, t) => {
   }
 };
 
-const updateStock = async (items, products, t) => {
+
+
+const updateStock = async (items, operation,  t) => {
   try {
+    const products = await getProductsMap(items);
+
     const updateProducts = items.map((item) => {
       const product = products.get(item.id);
       if (!product || (item.quantity > 0 && item.quantity > product.stock))
@@ -47,14 +51,13 @@ const updateStock = async (items, products, t) => {
         );
       return {
         id: product.id,
-        stock: product.stock - item.quantity,
+        stock: operation === 'remove' ? product.stock - item.quantity : product.stock + item.quantity,
       };
     });
 
     await variantsRepository.bulkUpdateStock(updateProducts, t);
-    const price = calculateTotal(items, products);
     
-    return price;
+    return true;
   } catch (e) {
     throw new ServiceError(
       e.message || "Error al recalcular el stock2 ",
@@ -73,9 +76,8 @@ const calculateTotal = (items, products) => {
 
 const addProducts = async (items, t) => {
   try {
-    const products = await getProductsMap(items);
 
-    await updateStock(items, products, "add", t);
+    await updateStock(items,'add', t);
     return true;
   } catch (e) {
     throw new ServiceError(
@@ -96,25 +98,6 @@ const getProductsMap = async (items) => {
   }
   return new Map(products.map((p) => [p.id, p]));
 };
-
-// const validateStock = async (items, products) => {
-//   try {
-//     for (const item of items) {
-//       const product = products.get(item.id);
-//       if (product.stock < item.quantity)
-//         throw new ServiceError(
-//           `Cantidad insuficiente de ${product.Product.name} ${product.color}`,
-//           productCodes.OUT_OF_STOCK
-//         );
-//     }
-//     return true;
-//   } catch (e) {
-//     throw new ServiceError(
-//       e.message || "Error al calcular el stock 1",
-//       e.coode || productCodes.NOT_FOUND
-//     );
-//   }
-// };
 
 module.exports = {
   save,

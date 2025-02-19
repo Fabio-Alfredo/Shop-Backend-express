@@ -1,4 +1,5 @@
 const productService = require("../services/product.service");
+const variantsProductService = require("../services/product_variants.service");
 const createHttpError = require("http-errors");
 const ProductCodes = require("../utils/errors/errorsCodes/product.codes");
 const categoryCodes = require("../utils/errors/errorsCodes/category.codes");
@@ -36,12 +37,32 @@ const registerProduct = async (req, res, next) => {
   }
 };
 
+const updateDataProduct = async (req, res, next) => {
+  try {
+    const { variants, ...productData } = req.body;
+    const { id } = req.params;
+
+    await productService.updateProducts(id, productData, variants);
+    const product = await productService.findById(id);
+
+    return responseHandler(res, 200, "Product updated", product);
+  } catch (e) {
+    switch (e.code) {
+      case ProductCodes.NOT_FOUND:
+        next(createHttpError(500, e.message));
+        break;
+      default:
+        next(e);
+    }
+  }
+};
+
 const findAllProducts = async (req, res, next) => {
   try {
     const products = await productService.findAll();
     res.status(200).json(products);
   } catch (e) {
-    switch(e.code){
+    switch (e.code) {
       case ProductCodes.NOT_FOUND:
         next(createHttpError(500, e.message));
         break;
@@ -57,7 +78,7 @@ const findProductById = async (req, res, next) => {
     const product = await productService.findById(id);
     res.status(200).json(product);
   } catch (e) {
-    switch(e.code){
+    switch (e.code) {
       case ProductCodes.NOT_FOUND:
         next(createHttpError(500, e.message));
         break;
@@ -70,4 +91,9 @@ const findProductById = async (req, res, next) => {
   }
 };
 
-module.exports = { registerProduct, findAllProducts, findProductById };
+module.exports = {
+  registerProduct,
+  findAllProducts,
+  findProductById,
+  updateDataProduct,
+};

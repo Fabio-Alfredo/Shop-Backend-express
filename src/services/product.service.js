@@ -17,18 +17,14 @@ const registerProduct = async (
   try {
     await findBySku(sku);
 
-    const existCategory = await categoryService.findById(category);
-
     const product = await productRepository.create(
       { sku, name, description, price, stock },
       t
     );
 
+   
     await variantsService.save(variants, product.id, t);
-
-    if (existCategory) {
-      await product.setCategories([category], { transaction: t });
-    }
+    await assingCategory(product, category, t);
 
     await t.commit();
     return product;
@@ -40,6 +36,21 @@ const registerProduct = async (
     );
   }
 };
+
+const assingCategory = async (product, categoryId, t) => {
+  try{
+    const category = await categoryService.findById(categoryId);
+    if(category){
+      await product.setCategories([categoryId], { transaction: t });
+    }
+    return product;
+  }catch(e){
+    throw new ServiceError(
+      e.message || "Internalserver error while assign category",
+      e.code || ProductCodes.NOT_FOUND
+    );
+  }
+}
 
 const findBySku = async (sku) => {
   try {
@@ -72,6 +83,31 @@ const findById = async (id) => {
   }
 };
 
+const updateProducts = async (id, productData, variants) => {
+  const t = await productRepository.startTransaction();
+  try{
+    const product = await findById(id);
+
+    const updateProducts = await productRepository.updateProducts(productData, t);
+
+    if(variants && variants.length > 0)
+      await variantsService.updateStock(variants,'add', t);
+
+    if(productData.category)
+      await assingCategory(product, productData.category, t);
+    
+
+    await t.commit();
+    return updateProducts;
+  }catch(e){
+    await t.rollback();
+    throw new ServiceError(
+      e.message || "Internal server error while update product",
+      e.code || ProductCodes.NOT_FOUND
+    );
+  }
+}
+
 const findAll = async () => {
   try {
     const products = await productRepository.findAll();
@@ -88,4 +124,5 @@ module.exports = {
   registerProduct,
   findById,
   findAll,
+  updateProducts,
 };
