@@ -2,12 +2,13 @@ const createHttpError = require("http-errors");
 const PaymentCodes = require("../utils/errors/errorsCodes/payment.code");
 const paymentService = require("../services/payment.service");
 const OrderCodes = require("../utils/errors/errorsCodes/order.code");
+const responseHandler = require('../handlers/response.handler');
 
 const createPayment = async (req, res, next) => {
   try {
     const payment = req.body;
     const newPayment = await paymentService.createPayment(payment);
-    res.status(200).json(newPayment);
+    responseHandler(res, 201,'succes', newPayment);
   } catch (e) {
     switch (e.code) {
       case OrderCodes.INVALID_ORDER:

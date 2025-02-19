@@ -15,7 +15,7 @@ orderRouter.post("/create",
 
 orderRouter.put("/update/:orderId",
   authMiddleware.authValidator,
-  // orderValidator.addProductsValidator,
+  orderValidator.updateOrderValidator,
   runValidator,
   orderController.addProductsInOrder
 );
