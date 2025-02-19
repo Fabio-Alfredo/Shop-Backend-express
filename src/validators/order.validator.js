@@ -7,10 +7,10 @@ const createOrderValidator = [
         .notEmpty().withMessage("Direction is required.")
         .bail(),
 
-    body("total")
-        .notEmpty().withMessage("Total is required.")
-        .isFloat({ min: 0, decimal_digits: '0,2' }).withMessage("Total must be a positive float with up to 2 decimal places.")
-        .bail(),
+    // body("total")
+    //     .notEmpty().withMessage("Total is required.")
+    //     .isFloat({ min: 0, decimal_digits: '0,2' }).withMessage("Total must be a positive float with up to 2 decimal places.")
+    //     .bail(),
 
     body("products")
         .isArray({ min: 1 }).withMessage("Products must be a non-empty array.")

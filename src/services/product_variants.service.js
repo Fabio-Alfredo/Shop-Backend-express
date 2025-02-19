@@ -51,7 +51,16 @@ const updateStock = async (items, products, t) => {
       };
     });
 
-    return await variantsRepository.bulkUpdateStock(updateProducts, t);
+    await variantsRepository.bulkUpdateStock(updateProducts, t);
+    console.log(products)
+    const price = items.reduce((acc, item) => {
+      const product = products.get(item.id);
+      return acc + product.Product.price * item.quantity;
+    }, 0);
+
+    console.log(price)
+    
+    return price;
   } catch (e) {
     throw new ServiceError(
       e.message || "Error al recalcular el stock2 ",
