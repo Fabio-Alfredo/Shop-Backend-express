@@ -52,13 +52,7 @@ const updateStock = async (items, products, t) => {
     });
 
     await variantsRepository.bulkUpdateStock(updateProducts, t);
-    console.log(products)
-    const price = items.reduce((acc, item) => {
-      const product = products.get(item.id);
-      return acc + product.Product.price * item.quantity;
-    }, 0);
-
-    console.log(price)
+    const price = calculateTotal(items, products);
     
     return price;
   } catch (e) {
@@ -68,6 +62,14 @@ const updateStock = async (items, products, t) => {
     );
   }
 };
+
+
+const calculateTotal = (items, products) => {
+  return items.reduce((acc, item) => {
+    const product = products.get(item.id);
+    return acc + product.Product.price * item.quantity;
+  }, 0);
+}
 
 const addProducts = async (items, t) => {
   try {
