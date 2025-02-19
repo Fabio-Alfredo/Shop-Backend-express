@@ -12,7 +12,6 @@ const {
   PENDING,
 } = require("../utils/constants/ordersState.utils");
 const { MapOrder } = require("../utils/helpers/mapOrder");
-const { or } = require("sequelize");
 
 const createOrder = async (order, user) => {
   const t = await orderRepository.startTransaction();
@@ -44,44 +43,44 @@ const createOrder = async (order, user) => {
   }
 };
 
-const updateOrder = async (products, orderData, orderId, user) => {
-  const t = await orderRepository.startTransaction();
-  try {
-    const order = await orderFindById(orderId, t);
+// const updateOrder = async (products, orderData, orderId, user) => {
+//   const t = await orderRepository.startTransaction();
+//   try {
+//     const order = await orderFindById(orderId, t);
 
-    if (!user || order.userId !== user.id || order.status !== PENDING) {
-      throw new ServiceError(
-        "User not authorized or order is invalid for adding products",
-        OrderCodes.INVALID_ORDER
-      );
-    }
+//     if (!user || order.userId !== user.id || order.status !== PENDING) {
+//       throw new ServiceError(
+//         "User not authorized or order is invalid for adding products",
+//         OrderCodes.INVALID_ORDER
+//       );
+//     }
 
-    if (products && products.length > 0) {
-      await order_productService.updateRelation(products, order.id, t);
-      orderData.total =
-        (await variantsService.reservationProducts(products, t)) +
-        parseFloat(order.total);
-    }
+//     if (products && products.length > 0) {
+//       await order_productService.updateRelation(products, order.id, t);
+//       orderData.total =
+//         (await variantsService.reservationProducts(products, t)) +
+//         parseFloat(order.total);
+//     }
 
 
-    if (orderData.total <= 0) {
-      await orderRepository.deleteOrder(order.id, t);
-      await t.commit();
-      return { exist: false, message: "Order deleted" };
-    }
+//     if (orderData.total <= 0) {
+//       await orderRepository.deleteOrder(order.id, t);
+//       await t.commit();
+//       return { exist: false, message: "Order deleted" };
+//     }
 
-    await orderRepository.updateOrder(order.id, orderData, t);
+//     await orderRepository.updateOrder(order.id, orderData, t);
 
-    await t.commit();
-    return { exist: true, message: "Order updated" };
-  } catch (e) {
-    await t.rollback();
-    throw new ServiceError(
-      e.message || "Internal server error while add products in order",
-      e.code || OrderCodes.NOT_FOUND
-    );
-  }
-};
+//     await t.commit();
+//     return { exist: true, message: "Order updated" };
+//   } catch (e) {
+//     await t.rollback();
+//     throw new ServiceError(
+//       e.message || "Internal server error while add products in order",
+//       e.code || OrderCodes.NOT_FOUND
+//     );
+//   }
+// };
 
 // const updateOrder = async ( id, order) => {
 //   const t = await orderRepository.startTransaction();

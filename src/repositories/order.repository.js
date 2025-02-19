@@ -84,14 +84,6 @@ const save = async (order, t) => {
   return newOrder;
 };
 
-const updateOrder = async (order, data, t) => {
-  const updateOrder = await Order.update(data, {
-    where: { id: order },
-    transaction: t,
-  });
-  return updateOrder;
-};
-
 module.exports = {
   create,
   findById,
