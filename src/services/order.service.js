@@ -9,7 +9,7 @@ const OrderCodes = require("../utils/errors/errorsCodes/order.code");
 const {
   PAID,
   CANCELED,
-  PENDING,
+  REFUNDED,
 } = require("../utils/constants/ordersState.utils");
 const { MapOrder } = require("../utils/helpers/mapOrder");
 
@@ -43,70 +43,11 @@ const createOrder = async (order, user) => {
   }
 };
 
-// const updateOrder = async (products, orderData, orderId, user) => {
-//   const t = await orderRepository.startTransaction();
-//   try {
-//     const order = await orderFindById(orderId, t);
-
-//     if (!user || order.userId !== user.id || order.status !== PENDING) {
-//       throw new ServiceError(
-//         "User not authorized or order is invalid for adding products",
-//         OrderCodes.INVALID_ORDER
-//       );
-//     }
-
-//     if (products && products.length > 0) {
-//       await order_productService.updateRelation(products, order.id, t);
-//       orderData.total =
-//         (await variantsService.reservationProducts(products, t)) +
-//         parseFloat(order.total);
-//     }
-
-
-//     if (orderData.total <= 0) {
-//       await orderRepository.deleteOrder(order.id, t);
-//       await t.commit();
-//       return { exist: false, message: "Order deleted" };
-//     }
-
-//     await orderRepository.updateOrder(order.id, orderData, t);
-
-//     await t.commit();
-//     return { exist: true, message: "Order updated" };
-//   } catch (e) {
-//     await t.rollback();
-//     throw new ServiceError(
-//       e.message || "Internal server error while add products in order",
-//       e.code || OrderCodes.NOT_FOUND
-//     );
-//   }
-// };
-
-// const updateOrder = async ( id, order) => {
-//   const t = await orderRepository.startTransaction();
-//   try {
-//     const updatedOrder = await orderRepository.updateOrder(id, order, t);
-
-//     if(products && products.length > 0){
-//       await updateProductsInOrder(products, id, t);
-//     }
-
-//     await t.commit();
-//     return updatedOrder;
-//   } catch (e) {
-//     await t.rollback();
-//     throw new ServiceError(
-//       e.message || "Internal server error while update order",
-//       e.code || OrderCodes.NOT_FOUND
-//     );
-//   }
-// }
-
 const cancelOrder = async (id) => {
   const t = await orderRepository.startTransaction();
   try {
     const order = await orderFindById(id);
-    if (order.status !== PENDING)
+    if (order.status !== PAID)
       throw new ServiceError(
         "Estate order is invalid for cancel",
         OrderCodes.INVALID_ORDER
@@ -177,6 +118,7 @@ const payOrder = async (payment, id, t) => {
     );
   }
 };
+
 
 module.exports = {
   createOrder,

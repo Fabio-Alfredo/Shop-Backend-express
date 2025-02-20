@@ -23,7 +23,29 @@ const stripeTransaction = async (total, paymentDetails) => {
   }
 };
 
+const stripeRefund = async (paymentIntentId, amount = null) => {
+  try {
+    const refundParams = { payment_intent: paymentIntentId };
+    
+    // Si amount es proporcionado, significa que se quiere un reembolso parcial
+    if (amount) {
+      refundParams.amount = amount * 100; 
+    }
+
+    const refund = await stripe.refunds.create(refundParams);
+
+    return refund;
+  } catch (e) {
+    throw new ServiceError(
+      e.message || "Internal server error while processing refund",
+      e.code || TransactionCodes.NOT_FOUND
+    );
+  }
+};
+
+
 
 module.exports = {
-    stripeTransaction
+    stripeTransaction,
+    stripeRefund
 }

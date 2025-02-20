@@ -82,29 +82,6 @@ const findById = async (id) => {
   }
 };
 
-// const updateProducts = async (id, productData, variants) => {
-//   const t = await productRepository.startTransaction();
-//   try{
-//     const product = await findById(id);
-
-//     const updateProducts = await productRepository.updateProducts(productData, t);
-
-//     if(variants && variants.length > 0)
-//       await variantsService.updateStock(variants,'add' t);
-
-//     if(productData.category)
-//       await assingCategory(product, productData.category, t);
-
-//     await t.commit();
-//     return updateProducts;
-//   }catch(e){
-//     await t.rollback();
-//     throw new ServiceError(
-//       e.message || "Internal server error while update product",
-//       e.code || ProductCodes.NOT_FOUND
-//     );
-//   }
-// }
 
 const findAll = async (category) => {
   try {
@@ -114,7 +91,7 @@ const findAll = async (category) => {
       products = await productRepository.findAllByCategory(category);
     else 
       products = await productRepository.findAll();
-    
+  
     return products;
   } catch (e) {
     throw new ServiceError(
