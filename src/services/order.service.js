@@ -8,7 +8,7 @@ const OrderCodes = require("../utils/errors/errorsCodes/order.code");
 
 const {
   PAID,
-  CANCELED,
+  PROCESSING,
   REFUNDED,
 } = require("../utils/constants/ordersState.utils");
 const { MapOrder } = require("../utils/helpers/mapOrder");
@@ -53,9 +53,7 @@ const cancelOrder = async (id) => {
         OrderCodes.INVALID_ORDER
       );
 
-    await orderRepository.updateOrder(order.id, { status: CANCELED }, t);
-
-    await variantsService.addProducts(order.products, t);
+    await orderRepository.updateOrder(order.id, { status: PROCESSING }, t);
 
     await t.commit();
     return true;
