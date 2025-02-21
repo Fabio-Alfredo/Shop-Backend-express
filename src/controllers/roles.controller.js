@@ -17,3 +17,7 @@ const findAllRoles = async (req, res, next) => {
     }
   }
 };
+
+module.exports = {
+  findAllRoles,
+};
