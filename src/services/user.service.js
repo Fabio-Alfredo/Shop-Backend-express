@@ -5,18 +5,22 @@ const userCodes = require("../utils/errors/errorsCodes/user.codes");
 const ServiceError = require("../utils/errors/service.error");
 const serviceError = require("../utils/errors/service.error");
 
-const assignRole = async (roleId, userId, editedBy, t) => {
+const assignRole = async (roleId, userId, editedBy) => {
+  const t = await userRepository.startTransaction();
   try {
     const user = await findById(userId);
     const role = await roleService.findById(roleId);
-    if (user.role == editedBy)
+    if (user.id == editedBy )
       throw new ServiceError(
         "Invalid action update your roles",
         userCodes.INVALID_ACTION
       );
     await user_roleService.createRelation(role.id, user.id, editedBy, t);
+
+    await t.commit();
     return true;
   } catch (e) {
+    await t.rollback();
     throw new serviceError(
       e.message || "Internal server error",
       e.code || userCodes.NOT_FOUND
@@ -26,6 +30,7 @@ const assignRole = async (roleId, userId, editedBy, t) => {
 
 const findById = async (id, t) => {
   try {
+    console.log("id", id);
     const user = await userRepository.findById(id, t);
     if (!user)
       throw new serviceError("Invalid data user", userCodes.USER_NOT_EXISTS);

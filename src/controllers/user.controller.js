@@ -1,6 +1,7 @@
 const userService = require("../services/user.service");
 const responseHandle = require("../handlers/response.handler");
 const userCodes = require("../utils/errors/errorsCodes/user.codes");
+const createHttpError = require("http-errors");
 
 const assignRole = async (req, res, next) => {
   try {
