@@ -34,8 +34,31 @@ const createPayment = async (payment) => {
   }
 };
 
+const refundPayment = async (orderId, amount = null) => {
+  const t = await paymentRepository.startTransaction();
+  try {
+    const payment = await paymentRepository.findByOrderId(orderId);
 
+    //await transactionService.stripeRefund(payment.transactionId, amount);
+
+    const refund = await paymentRepository.update(
+      { status: "refunded" },
+      payment.id,
+      t
+    );
+
+    await t.commit();
+    return refund;
+  } catch (e) {
+    await t.rollback();
+    throw new ServiceError(
+      e.message || "Internal server error while refund order",
+      e.code || PaymentCodes.NOT_FOUND
+    );
+  }
+};
 
 module.exports = {
   createPayment,
+  refundPayment,
 };

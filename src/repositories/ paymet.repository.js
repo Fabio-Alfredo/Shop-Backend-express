@@ -1,4 +1,5 @@
 const { Payment } = require("../models");
+const Order = require("../utils/errors/errorsCodes/order.code");
 
 const startTransaction = async () => {
   const t = await Payment.sequelize.transaction();
@@ -20,17 +21,29 @@ const findById = async (id) => {
   return payment;
 };
 
+const findByOrderId = async (orderId) => {
+  const payment = await Payment.findOne({
+    include: {
+      model: Order,
+      where: { id: orderId },
+      through: { attributes: [] },
+    },
+  });
+  return payment;
+};
+
 const update = async (payment, id, t) => {
   const updatedPayment = await Payment.update(payment, {
     where: { id },
     transaction: t,
   });
   return updatedPayment;
-}
+};
 
 module.exports = {
   create,
   startTransaction,
   findById,
   update,
+  findByOrderId,
 };

@@ -1,7 +1,7 @@
 module.exports ={
     PENDING:'pending',
     PAID:'paid',
-    PROCESSING:'processing',
+    PROCESSING:'processing refund',
     SHIPPED:'shipped',
     DELIVERED:'delivered',
     CANCELED:'canceled',
