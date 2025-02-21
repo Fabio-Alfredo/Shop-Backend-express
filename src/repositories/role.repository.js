@@ -10,7 +10,13 @@ const findById = async (id)=>{
     return role;
 }
 
+const findAll = async ()=>{
+    const roles = await Role.findAll();
+    return roles;
+}
+
 module.exports={
     create,
-    findById
+    findById,
+    findAll
 }
