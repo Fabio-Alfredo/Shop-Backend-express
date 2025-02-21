@@ -2,9 +2,9 @@ const roleRepository = require("../repositories/role.repository");
 const serviceError = require("../utils/errors/service.error");
 const roleCodes = require("../utils/errors/errorsCodes/role.code");
 
-const findById = (id) => {
+const findById = async (id) => {
   try {
-    const role = roleRepository.findById(id);
+    const role = await roleRepository.findById(id);
     if (!role)
       throw new serviceError(
         "Invalid role, not exists",
@@ -19,6 +19,19 @@ const findById = (id) => {
   }
 };
 
+const findAll = async ()=>{
+  try{
+    const roles = await roleRepository.findAll() || [];
+    return roles;
+  }catch(e){
+    throw new serviceError(
+      e.message || "Internal Service error",
+      e.code || roleCodes.NOT_FOUND
+    );
+  }
+}
+
 module.exports = {
   findById,
+  findAll
 };
