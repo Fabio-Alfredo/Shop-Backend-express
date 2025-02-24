@@ -30,10 +30,11 @@ const assignRole = async (roleId, userId, editedBy) => {
 
 const findById = async (id, t) => {
   try {
-    console.log("id", id);
     const user = await userRepository.findById(id, t);
+    
     if (!user)
       throw new serviceError("Invalid data user", userCodes.USER_NOT_EXISTS);
+
     return user;
   } catch (e) {
     throw new serviceError(

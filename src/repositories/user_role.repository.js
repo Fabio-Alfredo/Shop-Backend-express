@@ -1,4 +1,4 @@
-const {User_role}=require('../models');
+const {User_role}=require('../domain/models');
 
 const create = async (roleId, userId, editedBy, t)=>{
     const newRelation = await User_role.create({roleId, userId, editedBy}, {transaction: t});

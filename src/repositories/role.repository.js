@@ -1,4 +1,4 @@
-const {Role} = require('../models');
+const {Role} = require('../domain/models');
 
 const create =  async  (id, role)=>{
     const newRole = await Role.create({id, role});

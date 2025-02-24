@@ -12,6 +12,14 @@ const assingRoleValidator = [
     .withMessage('roleId is required')
 ]
 
+const idValidators = [
+    param('id')
+    .isUUID()
+    .notEmpty()
+    .withMessage('userId is required')
+]
+
 module.exports = {
-    assingRoleValidator
+    assingRoleValidator,
+    idValidators
 }

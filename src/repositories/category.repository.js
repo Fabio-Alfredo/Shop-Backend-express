@@ -1,4 +1,4 @@
-const {Category} = require("../models");
+const {Category} = require("../domain/models");
 
 const startTransaction = async () => {
   const t = await Category.sequelize.transaction();

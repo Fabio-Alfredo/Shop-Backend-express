@@ -5,7 +5,7 @@ const {
   User,
   Order_product,
   Product_variants,
-} = require("../models");
+} = require("../domain/models");
 
 const startTransaction = async () => {
   const t = await Order.sequelize.transaction();

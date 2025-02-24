@@ -1,4 +1,4 @@
-const { Payment } = require("../models");
+const { Payment } = require("../domain/models");
 const Order = require("../utils/errors/errorsCodes/order.code");
 
 const startTransaction = async () => {

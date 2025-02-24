@@ -10,7 +10,7 @@ const {
   PROCESSING,
   REFUNDED,
 } = require("../utils/constants/ordersState.utils");
-const { MapOrder } = require("../utils/helpers/mapOrder");
+const { MapOrder } = require("../domain/dtos/mapOrder");
 
 const createOrder = async (order, user) => {
   const t = await orderRepository.startTransaction();

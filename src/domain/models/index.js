@@ -1,9 +1,8 @@
 'use strict';
-
 const fs = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');
-const sequelize = require('../configs/db.config')
+const sequelize = require('../../configs/db.config');
 const basename = path.basename(__filename);
 
 const db = {};

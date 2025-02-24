@@ -1,4 +1,4 @@
-const ORDER_STATES = require("../utils/constants/ordersState.utils");
+const ORDER_STATES = require("../../utils/constants/ordersState.utils");
 
 const STATE_LIST = Object.values(ORDER_STATES);
 

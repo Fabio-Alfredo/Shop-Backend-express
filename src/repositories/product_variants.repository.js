@@ -1,4 +1,4 @@
-const { Product_variants, Product } = require("../models");
+const { Product_variants, Product } = require("../domain/models");
 
 const save = async (variants, t) => {
   const saveVariants = await Product_variants.bulkCreate(variants, {

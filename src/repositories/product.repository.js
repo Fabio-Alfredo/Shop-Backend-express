@@ -1,4 +1,4 @@
-const { Product, Product_variants, Category } = require("../models");
+const { Product, Product_variants, Category } = require("../domain/models");
 
 const startTransaction = async () => {
   const t = await Product.sequelize.transaction();

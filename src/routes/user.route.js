@@ -9,10 +9,19 @@ const userRoute = Route();
 userRoute.post(
   "/assingRole",
   authMiddleware.authValidator,
-  authMiddleware.roleValidator(['ADMIN']),
+  authMiddleware.roleValidator(["ADMIN"]),
   userValidator.assingRoleValidator,
   runValidator,
   userController.assignRole
+);
+
+userRoute.get(
+  "/findId/:id",
+  authMiddleware.authValidator,
+  authMiddleware.roleValidator(["ADMIN"]),
+  userValidator.idValidators,
+  runValidator,
+  userController.findUserById
 );
 
 module.exports = userRoute;

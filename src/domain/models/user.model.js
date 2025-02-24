@@ -1,5 +1,5 @@
 const bcrypt = require("bcryptjs");
-const config = require("../configs/config").production;
+const config = require("../../configs/config").production;
 
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define(
