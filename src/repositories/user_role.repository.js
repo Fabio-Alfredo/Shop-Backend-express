@@ -1,10 +1,27 @@
-const {User_role}=require('../domain/models');
+const { User_role } = require("../domain/models");
+const { Op } = require("sequelize");
 
-const create = async (roleId, userId, editedBy, t)=>{
-    const newRelation = await User_role.create({roleId, userId, editedBy}, {transaction: t});
-    return newRelation;
-}
+const create = async (user_roles, t) => {
+  const newUser_role = await User_role.bulkCreate(user_roles, {
+    transaction: t,
+  });
+  return newUser_role;
+};
 
-module.exports={
-    create
-}
+const deleteByUserIdAndRoleId = async (userId, roleIds, t) => {
+    console.log(userId, roleIds)
+    console.log(t)
+  const deletedRelation = await User_role.destroy({
+    where: {
+      userId,
+      roleId: { [Op.in]: roleIds },
+    },
+    transaction: t,
+  });
+  return deletedRelation;
+};
+
+module.exports = {
+  create,
+  deleteByUserIdAndRoleId,
+};

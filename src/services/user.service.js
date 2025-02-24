@@ -2,20 +2,31 @@ const userRepository = require("../repositories/user.repository");
 const roleService = require("../services/role.service");
 const user_roleService = require("../services/user_role.service");
 const userCodes = require("../utils/errors/errorsCodes/user.codes");
+const roleOperations = require("../utils/constants/operationRoles.util");
 const ServiceError = require("../utils/errors/service.error");
 const serviceError = require("../utils/errors/service.error");
 
-const assignRole = async (roleId, userId, editedBy) => {
+const assignRole = async (action, roleIds, userId, editedBy) => {
   const t = await userRepository.startTransaction();
   try {
+
     const user = await findById(userId);
-    const role = await roleService.findById(roleId);
+     await roleService.findAllByIds(roleIds);
+
     if (user.id == editedBy)
       throw new ServiceError(
         "Invalid action update your roles",
         userCodes.INVALID_ACTION
       );
-    await user_roleService.createRelation(role.id, user.id, editedBy, t);
+
+    if (action === roleOperations.ADD_ROLE) {
+      await user_roleService.createRelation( user.id,roleIds, editedBy, t);
+    } else if (action === roleOperations.REMOVE_ROLE) {
+      
+      await user_roleService.deleteRelation( user.id, roleIds, editedBy, t);
+    } else {
+      throw new ServiceError("Invalid action", userCodes.INVALID_ACTION);
+    }
 
     await t.commit();
     return true;
@@ -47,11 +58,9 @@ const findById = async (id, t) => {
 const findAllByRole = async (roleId) => {
   try {
     let users = [];
-    if (!roleId) 
-      users = await userRepository.findAll();
-    else
-      users = await userRepository.findAllByRol(roleId);
-    
+    if (!roleId) users = await userRepository.findAll();
+    else users = await userRepository.findAllByRol(roleId);
+
     return users;
   } catch (e) {
     throw new serviceError(

@@ -6,10 +6,10 @@ const createHttpError = require("http-errors");
 
 const assignRole = async (req, res, next) => {
   try {
-    const { userId, roleId } = req.body;
+    const { userId, roleIds, action} = req.body;
     const user = req.user;
 
-    await userService.assignRole(roleId, userId, user.id);
+    await userService.assignRole(action, roleIds, userId, user.id);
     return responseHandle(res, 201, "success", "role editado con exito");
   } catch (e) {
     switch (e.code) {
