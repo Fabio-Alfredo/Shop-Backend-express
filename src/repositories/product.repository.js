@@ -37,7 +37,6 @@ const findAll = async () => {
 };
 
 const findAllByCategory = async (categoryId) => {
-  
   const products = await Product.findAll({
     include: {
       model: Category,
