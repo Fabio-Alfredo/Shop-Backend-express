@@ -16,6 +16,13 @@ userRoute.post(
 );
 
 userRoute.get(
+  "/all",
+  authMiddleware.authValidator,
+  authMiddleware.roleValidator(["ADMIN"]),
+  userController.findAll
+);
+
+userRoute.get(
   "/findId/:id",
   authMiddleware.authValidator,
   authMiddleware.roleValidator(["ADMIN"]),

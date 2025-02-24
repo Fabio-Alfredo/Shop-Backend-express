@@ -10,7 +10,7 @@ const assignRole = async (roleId, userId, editedBy) => {
   try {
     const user = await findById(userId);
     const role = await roleService.findById(roleId);
-    if (user.id == editedBy )
+    if (user.id == editedBy)
       throw new ServiceError(
         "Invalid action update your roles",
         userCodes.INVALID_ACTION
@@ -31,7 +31,7 @@ const assignRole = async (roleId, userId, editedBy) => {
 const findById = async (id, t) => {
   try {
     const user = await userRepository.findById(id, t);
-    
+
     if (!user)
       throw new serviceError("Invalid data user", userCodes.USER_NOT_EXISTS);
 
@@ -44,7 +44,25 @@ const findById = async (id, t) => {
   }
 };
 
+const findAllByRole = async (roleId) => {
+  try {
+    let users = [];
+    if (!roleId) 
+      users = await userRepository.findAll();
+    else
+      users = await userRepository.findAllByRol(roleId);
+    
+    return users;
+  } catch (e) {
+    throw new serviceError(
+      e.message || "Internal service error",
+      e.code || userCodes.NOT_FOUND
+    );
+  }
+};
+
 module.exports = {
   assignRole,
   findById,
+  findAllByRole,
 };

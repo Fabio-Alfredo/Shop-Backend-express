@@ -25,9 +25,29 @@ const findById = async (id, t) => {
   return user;
 };
 
+const findAll = async () => {
+  const users = await User.findAll({
+    include: { model: Role, through: { attributes: [] } },
+  });
+  return users;
+};
+
+const findAllByRol = async (id) => {
+  const users = await User.findAll({
+    include: {
+      model: Role,
+      where: { id },
+      through: { attributes: [] },
+    },
+  });
+  return users;
+};
+
 module.exports = {
   create,
   existUser,
   startTransaction,
   findById,
+  findAllByRol,
+  findAll,
 };

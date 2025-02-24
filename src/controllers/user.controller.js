@@ -47,7 +47,33 @@ const findUserById = async (req, res, next) => {
   }
 };
 
+const findAll = async (req, res, next) => {
+  try {
+    const { roleId } = req.query || null;
+    const users = await userService.findAllByRole(roleId);
+    console.log(users);
+    return responseHandle(
+      res,
+      200,
+      "success",
+      users.map((user) => userDTO(user))
+    );
+  } catch (e) {
+    switch (e.code) {
+      case userCodes.NOT_FOUND:
+        next(createHttpError(400, e.message));
+        break;
+      case userCodes.USER_NOT_EXISTS:
+        next(createHttpError(404, e.message));
+        break;
+      default:
+        next(e);
+    }
+  }
+};
+
 module.exports = {
   assignRole,
   findUserById,
+  findAll,
 };
