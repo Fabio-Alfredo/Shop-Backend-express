@@ -19,6 +19,10 @@ module.exports = (sequelize, DataTypes) => {
     price: {
       type: DataTypes.DECIMAL(10, 2),
     },
+    status: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+    },
   });
   Product.associate = (models) => {
     Product.belongsToMany(models.Category, {

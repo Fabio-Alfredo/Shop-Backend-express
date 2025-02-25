@@ -82,16 +82,14 @@ const findById = async (id) => {
   }
 };
 
-
 const findAll = async (category) => {
   try {
     let products;
 
     if (category)
       products = await productRepository.findAllByCategory(category);
-    else 
-      products = await productRepository.findAll();
-  
+    else products = await productRepository.findAll();
+
     return products;
   } catch (e) {
     throw new ServiceError(
@@ -101,8 +99,23 @@ const findAll = async (category) => {
   }
 };
 
+const deleteProduct = async (id) => {
+  try {
+    await findById(id);
+    const product = await productRepository.deleteProduct(id);
+
+    return product;
+  } catch (e) {
+    throw new ServiceError(
+      e.message || "Internal server error while delete product",
+      e.code || ProductCodes.NOT_FOUND
+    );
+  }
+};
+
 module.exports = {
   registerProduct,
   findById,
   findAll,
+  deleteProduct,
 };

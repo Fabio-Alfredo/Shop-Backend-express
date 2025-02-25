@@ -1,3 +1,4 @@
+const { where } = require("sequelize");
 const { Product, Product_variants, Category } = require("../domain/models");
 
 const startTransaction = async () => {
@@ -31,13 +32,18 @@ const bulkUpdate = (products, t) => {
 
 const findAll = async () => {
   const prducts = await Product.findAll({
-    include: { model: Product_variants, as: "product_variants" },
+    where: { status: true },
+    include: {
+      model: Product_variants,
+      as: "product_variants",
+    },
   });
   return prducts || [];
 };
 
 const findAllByCategory = async (categoryId) => {
   const products = await Product.findAll({
+    where: { status: true },
     include: {
       model: Category,
       where: { id: categoryId },
@@ -48,7 +54,7 @@ const findAllByCategory = async (categoryId) => {
 };
 
 const findAllByIds = async (productIds) => {
-  const products = Product.findAll({ where: { id: productIds } });
+  const products = Product.findAll({ where: { id: productIds, status: true } });
   return products;
 };
 
@@ -61,8 +67,18 @@ const updateProducts = async (products, t) => {
 };
 
 const findAllBySku = async (skuProducts) => {
-  const products = await Product.findAll({ where: { sku: skuProducts } });
+  const products = await Product.findAll({
+    where: { sku: skuProducts, status: true },
+  });
   return products;
+};
+
+const deleteProduct = async (id) => {
+  const product = await Product.update(
+    { status: false },
+    { where: { id } }
+  );
+  return product;
 };
 
 module.exports = {
@@ -76,4 +92,5 @@ module.exports = {
   findAllBySku,
   updateProducts,
   findAllByCategory,
+  deleteProduct,
 };

@@ -24,6 +24,14 @@ productRouter.put(
   productController.updateDataProduct
 );
 
+//validar que los productos comiencen a tener estado 
+productRouter.delete(
+  "/delete/:id",
+  autValidator.authValidator,
+  autValidator.roleValidator(['ADMIN']),
+  productController.deleteProduct
+);
+
 productRouter.get("/findAll", productController.findAllProducts);
 productRouter.get("/findId/:id", productController.findProductById);
 
