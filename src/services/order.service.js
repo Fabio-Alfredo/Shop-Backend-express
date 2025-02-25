@@ -4,7 +4,6 @@ const paymentService = require("../services/payment.service");
 const variantsService = require("../services/product_variants.service");
 const ServiceError = require("../utils/errors/service.error");
 const OrderCodes = require("../utils/errors/errorsCodes/order.code");
-
 const {
   PAID,
   PROCESSING,
@@ -12,9 +11,11 @@ const {
 } = require("../utils/constants/ordersState.utils");
 const { MapOrder } = require("../domain/dtos/mapOrder");
 
+//FUNCION PARA CREAR UNA NUEVA ORDEN
 const createOrder = async (order, user) => {
   const t = await orderRepository.startTransaction();
   try {
+    //Extraemos los productos y los detalles de pago de la orden
     const { products, paymentDetails, ...orderData } = order;
 
     //añadimos al usuario a la orden a crear
@@ -31,9 +32,13 @@ const createOrder = async (order, user) => {
 
     // const orderWithProducts = await orderFindById(newOrder.id, t);
 
+    //se cofirma la transaccion
+    //se retorna la orden creada
     await t.commit();
     return newOrder;
   } catch (e) {
+    //en caso de error se hace rollback de la transaccion
+    //se lanza una excepcion
     await t.rollback();
     throw new ServiceError(
       e.message || "Internal server error while create order",
@@ -42,21 +47,29 @@ const createOrder = async (order, user) => {
   }
 };
 
+//FUNCION PARA CANCELAR UNA ORDEN
 const cancelOrder = async (id) => {
   const t = await orderRepository.startTransaction();
   try {
+    //se busca la orden por id
     const order = await orderFindById(id);
+    //se valida que la orden este en estado pagado
     if (order.status !== PAID)
       throw new ServiceError(
         "Estate order is invalid for cancel",
         OrderCodes.INVALID_ORDER
       );
 
+    //se actualiza el estado de la orden a procesando
     await orderRepository.updateOrder(order.id, { status: PROCESSING }, t);
 
+    //se confirma la transaccion
+    //se retorna true si todo fue exit
     await t.commit();
     return true;
   } catch (e) {
+    //en caso de error se hace rollback de la transaccion
+    //se lanza una excepcion
     await t.rollback();
     throw new ServiceError(
       e.message || "Internal server error while cancel order",
@@ -65,40 +78,55 @@ const cancelOrder = async (id) => {
   }
 };
 
+//FUNCION PARA HACER UN REEMBOLSO DE UNA ORDEN
 const refundOrder = async (id) => {
   const t = await orderRepository.startTransaction();
   try {
+    //se busca la orden por id
     const order = await orderFindById(id);
+    //se valida que la orden este en estado pagado
     if (order.status !== PAID)
       throw new ServiceError(
         "Estate order is invalid for refund",
         OrderCodes.INVALID_ORDER
       );
+    //se realiza el reembolso de la orden
     await paymentService.refundPayment(order.id);
+    //se actualiza el estado de la orden a reembolsado
     await orderRepository.updateOrder(order.id, { status: REFUNDED }, t);
+    //se actualiza el stock de los productos
     await variantsService.addProducts(order.products, t);
 
+    //se confirma la transaccion
+    //se retorna true si todo fue exitoso
     await t.commit();
     return true;
   } catch (e) {
+    //en caso de error se hace rollback de la transaccion
+    //se lanza una excepcion
     await t.rollback();
     throw new ServiceError(
       e.message || "Internal server error while refund order",
       e.code || OrderCodes.NOT_FOUND
     );
   }
-}
+};
 
+//FUNCION PARA BUSCAR UNA ORDEN POR ID
 const orderFindById = async (id, t) => {
   try {
+    //se busca la orden por id
     const order = await orderRepository.findById(id, t);
+    //si no existe se lanza una excepcion
     if (!order)
       throw new ServiceError("Order not exist", OrderCodes.INVALID_ORDER);
 
+    //se mappea la orden en un dto
+    //se retorna la orden si todo fue exitoso
     const mapOrder = await MapOrder(order);
-
     return mapOrder;
   } catch (e) {
+    //si ocurre un error se lanza una excepcion
     throw new ServiceError(
       e.message || "Internal server error while find order",
       e.code || OrderCodes.NOT_FOUND
@@ -106,17 +134,21 @@ const orderFindById = async (id, t) => {
   }
 };
 
+//FUNCION PARA BUSCAR ORDENES POR USUARIO
 const findByUser = async (userId) => {
   try {
+    //se buscan las ordenes por usuario
     const orders = await orderRepository.findByUser(userId);
     let mapOrders = [];
+    //se mappean las ordenes en un dto
     for (const order of orders) {
       const mappedOrder = await MapOrder(order);
       mapOrders.push(mappedOrder);
     }
-
+    //se retorna un array de ordenes
     return mapOrders;
   } catch (e) {
+    //en caso de error se lanza una excepcion
     throw new ServiceError(
       e.message || "Internal service error while find orders",
       e.code || OrderCodes.NOT_FOUND
@@ -124,15 +156,22 @@ const findByUser = async (userId) => {
   }
 };
 
+//FUNCION PARA PAGAR UNA ORDEN
 const payOrder = async (payment, id, t) => {
   try {
+    //se busca la orden por id
     const order = await orderFindById(id);
+    //se valida que la orden este en estado procesando
     await order.addPayments([payment]);
-    order.status = PAID;
 
+    //se actualiza el estado de la orden a pagado
+    order.status = PAID;
     const saveOrder = await orderRepository.save(order, t);
+
+    //se retorna la orden si todo fue exitoso
     return saveOrder;
   } catch (e) {
+    //en caso de error se lanza una excepcion
     throw new ServiceError(
       e.message || "Internal server error while paid order",
       e.code || OrderCodes.NOT_FOUND
@@ -140,12 +179,11 @@ const payOrder = async (payment, id, t) => {
   }
 };
 
-
 module.exports = {
   createOrder,
   orderFindById,
   payOrder,
   findByUser,
   cancelOrder,
-  refundOrder
+  refundOrder,
 };

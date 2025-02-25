@@ -7,7 +7,7 @@ const startTransaction = async () => {
 };
 
 //crea una nueva categoria
-const create = async (category) => {
+const create = async (category, t) => {
   const newCategory = await Category.create(category);
   return newCategory;
 };
