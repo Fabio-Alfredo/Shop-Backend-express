@@ -1,5 +1,4 @@
 const productService = require("../services/product.service");
-const variantsProductService = require("../services/product_variants.service");
 const createHttpError = require("http-errors");
 const ProductCodes = require("../utils/errors/errorsCodes/product.codes");
 const categoryCodes = require("../utils/errors/errorsCodes/category.codes");
@@ -19,7 +18,7 @@ const registerProduct = async (req, res, next) => {
       variants,
       category
     );
-    return responseHandler(res, 201, "Product created", newProduct);
+    return  responseHandler(res, 201, "Product created", newProduct);
   } catch (e) {
     switch (e.code) {
       case ProductCodes.NOT_FOUND:
@@ -60,7 +59,7 @@ const findAllProducts = async (req, res, next) => {
   try {
     const { category } = req.query || null;
     const products = await productService.findAll(category);
-    res.status(200).json(products);
+    return responseHandler(res, 200, "success", products);
   } catch (e) {
     switch (e.code) {
       case ProductCodes.NOT_FOUND:
@@ -76,7 +75,7 @@ const findProductById = async (req, res, next) => {
   try {
     const { id } = req.params;
     const product = await productService.findById(id);
-    res.status(200).json(product);
+    return responseHandler(res, 200, "success", product);
   } catch (e) {
     switch (e.code) {
       case ProductCodes.NOT_FOUND:
@@ -95,7 +94,26 @@ const deleteProduct = async (req, res, next) => {
   try {
     const { id } = req.params;
     await productService.deleteProduct(id);
-    res.status(204).send('Product deleted');
+    return responseHandler(res, 204, "Product deleted");
+  } catch (e) {
+    switch (e.code) {
+      case ProductCodes.NOT_FOUND:
+        next(createHttpError(500, e.message));
+        break;
+      case ProductCodes.INVALID_PRODUCT:
+        next(createHttpError(400, e.message));
+        break;
+      default:
+        next(e);
+    }
+  }
+};
+
+const addProducts = async (req, res, next) => {
+  try {
+    const { items } = req.body;
+    await productService.addProducts(items);
+    return responseHandler(res, 201, "Products added");
   } catch (e) {
     switch (e.code) {
       case ProductCodes.NOT_FOUND:
@@ -116,4 +134,5 @@ module.exports = {
   findProductById,
   updateDataProduct,
   deleteProduct,
+  addProducts,
 };

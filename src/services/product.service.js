@@ -100,12 +100,15 @@ const findAll = async (category) => {
 };
 
 const deleteProduct = async (id) => {
+  const t = await productRepository.startTransaction();
   try {
     await findById(id);
-    const product = await productRepository.deleteProduct(id);
+    const product = await productRepository.deleteProduct(id, t);
 
+    await t.commit();
     return product;
   } catch (e) {
+    await t.rollback();
     throw new ServiceError(
       e.message || "Internal server error while delete product",
       e.code || ProductCodes.NOT_FOUND
@@ -119,6 +122,7 @@ const updateProduct = async (id, data, variants) => {
     await findById(id);
     const productUpdated = await productRepository.updateProduct(id, data, t);
     await variantsService.updateVariants(variants, t);
+
     await t.commit();
     return productUpdated;
   } catch (e) {
@@ -130,10 +134,27 @@ const updateProduct = async (id, data, variants) => {
   }
 };
 
+const addProducts = async (items) => {
+  const t = await productRepository.startTransaction();
+  try {
+    await variantsService.addProducts(items, t);
+
+    await t.commit();
+    return true;
+  } catch (e) {
+    await t.rollback();
+    throw new ServiceError(
+      e.message || "Error al agregar productos",
+      e.code || ProductCodes.NOT_FOUND
+    );
+  }
+};
+
 module.exports = {
   registerProduct,
   findById,
   findAll,
   deleteProduct,
   updateProduct,
+  addProducts,
 };

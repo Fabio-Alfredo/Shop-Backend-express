@@ -81,8 +81,12 @@ const findAllBySku = async (skuProducts) => {
   return products;
 };
 
-const deleteProduct = async (id) => {
-  const product = await Product.update({ status: false }, { where: { id } });
+const deleteProduct = async (id, t) => {
+  const product = await Product.update(
+    { status: false },
+    { where: { id } },
+    { transaction: t }
+  );
   return product;
 };
 

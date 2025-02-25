@@ -41,6 +41,7 @@ const reservationProducts = async (items, t) => {
 
 const updateStock = async (items, operation, t) => {
   try {
+    
     const products = await getProductsMap(items);
 
     const updateProducts = items.map((item) => {
@@ -54,8 +55,8 @@ const updateStock = async (items, operation, t) => {
         id: product.id,
         stock:
           operation === REMOVE_PRODUCT
-            ? product.stock - item.quantity
-            : product.stock + item.quantity,
+            ? parseInt(product.stock) - item.quantity
+            : parseInt(product.stock) + item.quantity,
       };
     });
 
