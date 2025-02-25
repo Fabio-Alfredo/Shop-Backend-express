@@ -1,5 +1,7 @@
 const db = require("../domain/models/index");
 
+//sincroniza la base de datos
+//force: false no elimina los datos de la base de datos
 const dbConnection = () => {
   db.sequelize
     .sync({ force: false})

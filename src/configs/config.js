@@ -11,12 +11,17 @@ const {
   STRIPE_SECRET,
 } = process.env;
 
+//valida que las variables de entorno no esten vacias
+//si estan vacias lanza una excepcion
+//de lo contrario retorna la variable
 const validEnv = (env, name) => {
   if (!env) throw new Error(`${name} is required`);
 
   return env;
 };
 
+//configuracion de las variables de entorno
+//para desarrollo y produccion
 const config = {
   development: {
     username: validEnv(DB_USER, "DB_USER"),

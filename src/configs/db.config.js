@@ -3,6 +3,9 @@ const config = require("./config").production;
 
 let sequelize;
 
+// Configuración de conexión con socket (si aplica)
+// Si la variable de entorno use_env_variable existe, se conecta a la base de datos con la variable de entorno
+// De lo contrario, se conecta a la base de datos con las variables de configuración
 if (config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.use_env_variable], config);
 } else {
