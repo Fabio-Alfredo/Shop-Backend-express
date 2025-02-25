@@ -1,11 +1,12 @@
-const { where } = require("sequelize");
 const { Order_product, Product_variants } = require("../domain/models");
 
+//inicializa las transacciones
 const startTransaction = async () => {
   const t = await Order_product.sequelize.transaction();
   return t;
 };
 
+//crea una nueva relacion entre orden y producto
 const create = async (order_products, t) => {
   const newRelation = await Order_product.create(order_products, {
     transaction: t,
@@ -13,6 +14,7 @@ const create = async (order_products, t) => {
   return newRelation;
 };
 
+//crea una nueva relacion entre orden y producto
 const bulkCreate = async (order_products, t) => {
   const newOrder = await Order_product.bulkCreate(order_products, {
     transaction: t,
@@ -21,7 +23,8 @@ const bulkCreate = async (order_products, t) => {
   return newOrder;
 };
 
-
+//busca los productos de una orden
+//por id de orden
 const findByOrder = async (orderId, t) => {
   const orderProducts = await Order_product.findAll({
     where: { orderId },

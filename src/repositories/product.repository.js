@@ -1,27 +1,32 @@
-const { where } = require("sequelize");
 const { Product, Product_variants, Category } = require("../domain/models");
 
+//inicializa las transacciones
 const startTransaction = async () => {
   const t = await Product.sequelize.transaction();
   return t;
 };
 
+//crea un nuevo producto
 const create = async (product, t) => {
   const newProduct = await Product.create(product, { transaction: t });
   return newProduct;
 };
 
+//busca un producto por su sku
 const findBySku = async (sku) => {
   console.log(sku);
   const product = await Product.findOne({ where: { sku } });
   return product;
 };
 
+//busca un producto por su id
 const findById = async (id) => {
   const product = await Product.findOne({ where: { id } });
   return product;
 };
 
+//actualiza el stock de los productos por sku,
+//si el producto no existe lo crea
 const bulkUpdate = (products, t) => {
   return Product.bulkCreate(products, {
     updateOnDuplicate: ["stock"],
@@ -30,6 +35,8 @@ const bulkUpdate = (products, t) => {
   });
 };
 
+//busca todos los productos
+//incluye las variantes de los productos
 const findAll = async () => {
   const prducts = await Product.findAll({
     where: { status: true },
@@ -41,6 +48,8 @@ const findAll = async () => {
   return prducts || [];
 };
 
+//busca todos los productos por categoria
+//incluye la categoria a la que pertenece
 const findAllByCategory = async (categoryId) => {
   const products = await Product.findAll({
     where: { status: true },
@@ -53,19 +62,14 @@ const findAllByCategory = async (categoryId) => {
   return products;
 };
 
+//busca todos los productos por id y con estado activo
+//incluye las variantes de los productos
 const findAllByIds = async (productIds) => {
   const products = Product.findAll({ where: { id: productIds, status: true } });
   return products;
 };
 
-// const updateProducts = async (products, t) => {
-//   const productsUpdated = await Product.bulkCreate(products, {
-//     updateOnDuplicate: ["name", "description", "price"],
-//     transaction: t,
-//   });
-//   return productsUpdated;
-// };
-
+//actualiza todos los datos de un producto
 const updateProduct = async (id, product, t) => {
   const productUpdated = await Product.update(product, {
     where: { id },
@@ -74,6 +78,7 @@ const updateProduct = async (id, product, t) => {
   return productUpdated;
 };
 
+//busca todos los productos por sku, solo los activos
 const findAllBySku = async (skuProducts) => {
   const products = await Product.findAll({
     where: { sku: skuProducts, status: true },
@@ -81,6 +86,7 @@ const findAllBySku = async (skuProducts) => {
   return products;
 };
 
+//elimina un producto, solo cambia el estado a inactivo
 const deleteProduct = async (id, t) => {
   const product = await Product.update(
     { status: false },

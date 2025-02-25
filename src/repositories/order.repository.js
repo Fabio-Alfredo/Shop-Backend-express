@@ -1,4 +1,3 @@
-const { where, or } = require("sequelize");
 const {
   Order,
   Product,
@@ -7,16 +6,19 @@ const {
   Product_variants,
 } = require("../domain/models");
 
+//inicializa las transacciones
 const startTransaction = async () => {
   const t = await Order.sequelize.transaction();
   return t;
 };
 
+//crea una nueva orden
 const create = async (order, t) => {
   const newOrder = await Order.create(order, { transaction: t });
   return newOrder;
 };
 
+//elimina una orden por id
 const deleteOrder = async (orderId, t) => {
   const deletedOrder = await Order.destroy({
     where: { id: orderId },
@@ -25,6 +27,8 @@ const deleteOrder = async (orderId, t) => {
   return deletedOrder;
 };
 
+//busca las ordenes de un usuario
+//incluye los productos, variantes y detalles de la orden
 const findByUser = async (userId) => {
   const order = await Order.findAll({
     where: { userId: userId },
@@ -49,6 +53,8 @@ const findByUser = async (userId) => {
   return order;
 };
 
+//busca una orden por id
+//incluye los productos, variantes, detalles de la orden y usuario
 const findById = async (orderId, t) => {
   const order = await Order.findOne({
     where: { id: orderId },
@@ -79,6 +85,7 @@ const findById = async (orderId, t) => {
   return order;
 };
 
+//guarda una orden
 const save = async (order, t) => {
   const newOrder = await order.save({ transaction: t });
   return newOrder;
