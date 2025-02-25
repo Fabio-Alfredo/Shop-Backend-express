@@ -45,7 +45,7 @@ const updateStock = async (items, operation, t) => {
 
     const updateProducts = items.map((item) => {
       const product = products.get(item.id);
-      if (!product || (item.quantity > 0 && item.quantity > product.stock))
+      if (!product)
         throw new ServiceError(
           `EL roducto ${product.name} no tiene suficiente stock`,
           productCodes.NOT_FOUND
@@ -107,7 +107,6 @@ const updateVariants = async (variants, t) => {
     for (const variant of variants) {
       await variantsRepository.udpateProducts(variant.id, variant, t);
     }
-    // const updateVariants = variantsRepository.udpateProducts(variants, t);
 
     return updateVariants;
   } catch (e) {
@@ -122,6 +121,5 @@ module.exports = {
   save,
   reservationProducts,
   addProducts,
-  updateStock,
   updateVariants,
 };

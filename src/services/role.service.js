@@ -46,8 +46,27 @@ const findAll = async () => {
   }
 };
 
+const create = async (id, role) => {
+  try {
+    const exists = await roleRepository.existsRole(id, role);
+    if (exists)
+      throw new serviceError(
+        "Role already exists",
+        roleCodes.ROLE_ALREADY_EXISTS
+      );
+    const newRole = await roleRepository.create(id, role);
+    return newRole;
+  } catch (e) {
+    throw new serviceError(
+      e.message || "Internal Service error",
+      e.code || roleCodes.NOT_FOUND
+    );
+  }
+};
+
 module.exports = {
   findById,
   findAll,
   findAllByIds,
+  create,
 };

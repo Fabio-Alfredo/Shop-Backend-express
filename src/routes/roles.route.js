@@ -6,10 +6,17 @@ const runValidator = require("../middlewares/validator.middleware");
 const roleRoute = Router();
 
 roleRoute.get(
-    "/all",
-    authMiddleware.authValidator,
-    authMiddleware.roleValidator(['ADMIN']),
-    roleController.findAllRoles
-)
+  "/all",
+  authMiddleware.authValidator,
+  authMiddleware.roleValidator(["ADMIN"]),
+  roleController.findAllRoles
+);
+
+roleRoute.post(
+  "/create",
+  authMiddleware.authValidator,
+  authMiddleware.roleValidator(["ADMIN"]),
+  roleController.createRole
+);
 
 module.exports = roleRoute;
