@@ -58,12 +58,20 @@ const findAllByIds = async (productIds) => {
   return products;
 };
 
-const updateProducts = async (products, t) => {
-  const productsUpdated = await Product.bulkCreate(products, {
-    updateOnDuplicate: ["name", "description", "price"],
+// const updateProducts = async (products, t) => {
+//   const productsUpdated = await Product.bulkCreate(products, {
+//     updateOnDuplicate: ["name", "description", "price"],
+//     transaction: t,
+//   });
+//   return productsUpdated;
+// };
+
+const updateProduct = async (id, product, t) => {
+  const productUpdated = await Product.update(product, {
+    where: { id },
     transaction: t,
   });
-  return productsUpdated;
+  return productUpdated;
 };
 
 const findAllBySku = async (skuProducts) => {
@@ -74,10 +82,7 @@ const findAllBySku = async (skuProducts) => {
 };
 
 const deleteProduct = async (id) => {
-  const product = await Product.update(
-    { status: false },
-    { where: { id } }
-  );
+  const product = await Product.update({ status: false }, { where: { id } });
   return product;
 };
 
@@ -90,7 +95,7 @@ module.exports = {
   startTransaction,
   findBySku,
   findAllBySku,
-  updateProducts,
+  updateProduct,
   findAllByCategory,
   deleteProduct,
 };

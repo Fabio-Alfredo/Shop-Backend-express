@@ -42,7 +42,7 @@ const updateDataProduct = async (req, res, next) => {
     const { variants, ...productData } = req.body;
     const { id } = req.params;
     //TODO: hacer la ruta para poder hacer update  de los productos
-    await productService.updateProducts(id, productData, variants);
+    await productService.updateProduct(id, productData, variants);
     const product = await productService.findById(id);
     return responseHandler(res, 200, "Product updated", product);
   } catch (e) {

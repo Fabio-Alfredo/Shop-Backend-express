@@ -113,9 +113,27 @@ const deleteProduct = async (id) => {
   }
 };
 
+const updateProduct = async (id, data, variants) => {
+  const t = await productRepository.startTransaction();
+  try {
+    await findById(id);
+    const productUpdated = await productRepository.updateProduct(id, data, t);
+    await variantsService.updateVariants(variants, t);
+    await t.commit();
+    return productUpdated;
+  } catch (e) {
+    await t.rollback();
+    throw new ServiceError(
+      e.message || "Internal server error while update product",
+      e.code || ProductCodes.NOT_FOUND
+    );
+  }
+};
+
 module.exports = {
   registerProduct,
   findById,
   findAll,
   deleteProduct,
+  updateProduct,
 };

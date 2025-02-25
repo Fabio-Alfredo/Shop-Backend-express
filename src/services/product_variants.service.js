@@ -101,9 +101,27 @@ const getProductsMap = async (items) => {
   return new Map(products.map((p) => [p.id, p]));
 };
 
+const updateVariants = async (variants, t) => {
+  try {
+    await getProductsMap(variants);
+    for (const variant of variants) {
+      await variantsRepository.udpateProducts(variant.id, variant, t);
+    }
+    // const updateVariants = variantsRepository.udpateProducts(variants, t);
+
+    return updateVariants;
+  } catch (e) {
+    throw new ServiceError(
+      e.message || "Error al actualizar los productos",
+      e.code || productCodes.NOT_FOUND
+    );
+  }
+};
+
 module.exports = {
   save,
   reservationProducts,
   addProducts,
   updateStock,
+  updateVariants,
 };
