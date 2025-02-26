@@ -1,7 +1,13 @@
 const { User_role } = require("../domain/models");
 const { Op } = require("sequelize");
 
-//crea una relacion entre usuario y rol
+/**
+ * Crea una nueva relacion entre usuario y roles
+ *
+ * @param {array[]} user_roles - datos de las relaciones
+ * @param t - transaccion
+ * @returns {Promise<*>} relaciones creadas
+ */
 const create = async (user_roles, t) => {
   const newUser_role = await User_role.bulkCreate(user_roles, {
     transaction: t,
@@ -9,11 +15,17 @@ const create = async (user_roles, t) => {
   return newUser_role;
 };
 
-//elimina una relacion entre usuario y rol
-//por id de usuario y id de rol
+/**
+ * Elimina una relacion entre usuario y roles
+ *
+ * @param {UUID} userId - id del usuario
+ * @param {array[]} roleIds - ids de los roles
+ * @param t - transaccion
+ * @returns {Promise<*>} confirmacion de eliminacion
+ */
 const deleteByUserIdAndRoleId = async (userId, roleIds, t) => {
-    console.log(userId, roleIds)
-    console.log(t)
+  console.log(userId, roleIds);
+  console.log(t);
   const deletedRelation = await User_role.destroy({
     where: {
       userId,

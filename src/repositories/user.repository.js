@@ -2,52 +2,87 @@ const { Model } = require("sequelize");
 const { User } = require("../domain/models");
 const { Role } = require("../domain/models");
 
-//inicializa las transacciones
+/**
+ * Inicializa una transaccion
+ *
+ * @returns {Promise<*>} transaccion
+ */
 const startTransaction = async () => {
   const t = await User.sequelize.transaction();
   return t;
 };
 
-//crea un usuario
+/**
+ * Crea un nuevo usuario
+ *
+ * @param {object} user - datos del usuario
+ * @param t - transaccion
+ * @returns {Promise<*>} usuario creado
+ */
 const create = async (user, t) => {
   const newUser = await User.create(user, { transaction: t });
   return newUser;
 };
 
-//verifica si existe un usuario con ese email
-//incluye el rol del usuario
+/**
+ * Verifica si existe un usuario por email
+ *
+ * @param {string} email - email del usuario
+ * @returns {Promise<*>} usuario encontrado
+ */
 const existUser = async (email) => {
-  const user = await User.findOne({ where: { email }, include: Role });
-  return user;
-};
-
-//busca un usuario por id
-//incluye el rol del usuario
-const findById = async (id, t) => {
-  const user = await User.findByPk(id, {
-    transaction: t,
-    include: { model: Role, through: { attributes: [] } },
+  const user = await User.findOne({
+    where: { email },
+    include: Role, //incluye loes roles del usuario
   });
   return user;
 };
 
-//busca todos los usuarios
-//incluye el rol del usuario
+/**
+ * Busca un usuario por id
+ *
+ * @param {UUID} id - id del usuario
+ * @param t - transaccion
+ * @returns {Promise<*>} usuario encontrado
+ */
+const findById = async (id, t) => {
+  const user = await User.findByPk(id, {
+    transaction: t,
+    include: {
+      model: Role, //incluye el rol del usuario
+      through: { attributes: [] }, //no se muestran los atributos de la relacion
+    },
+  });
+  return user;
+};
+
+/**
+ * Busca todos los usuarios
+ *
+ * @returns {Promise<*>} usuarios encontrados
+ */
 const findAll = async () => {
   const users = await User.findAll({
-    include: { model: Role, through: { attributes: [] } },
+    include: {
+      model: Role, //incluye el rol del usuario
+      through: { attributes: [] }, //no se muestran los atributos de la relacion
+    },
   });
   return users;
 };
 
-//busca todos los usuarios por rol
-//incluye el rol del usuario
+/**
+ * Busca todos los usuarios por rol
+ *
+ * @param {string} id - id del rol
+ * @returns {Promise<*>} usuarios encontrados
+ */
 const findAllByRol = async (id) => {
   const users = await User.findAll({
     include: {
-      model: Role,
+      model: Role, //incluye los roles
       where: { id },
-      through: { attributes: [] },
+      through: { attributes: [] }, //no se muestran los atributos de la relacion 
     },
   });
   return users;

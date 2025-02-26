@@ -6,19 +6,35 @@ const {
   Product_variants,
 } = require("../domain/models");
 
-//inicializa las transacciones
+/**
+ * Inicializa una transaccion
+ *
+ * @returns {Promise<*>} transaccion
+ */
 const startTransaction = async () => {
   const t = await Order.sequelize.transaction();
   return t;
 };
 
-//crea una nueva orden
+/**
+ * Crea una nueva orden
+ *
+ * @param {object} order - datos de la orden
+ * @param t - transaccion
+ * @returns {Promise<*>} orden creada
+ */
 const create = async (order, t) => {
   const newOrder = await Order.create(order, { transaction: t });
   return newOrder;
 };
 
-//elimina una orden por id
+/**
+ * Elimina una orden
+ *
+ * @param {number} orderId - id de la orden
+ * @param t - transaccion
+ * @returns {Promise<*>} confirmacion de eliminacion
+ */
 const deleteOrder = async (orderId, t) => {
   const deletedOrder = await Order.destroy({
     where: { id: orderId },
@@ -27,23 +43,27 @@ const deleteOrder = async (orderId, t) => {
   return deletedOrder;
 };
 
-//busca las ordenes de un usuario
-//incluye los productos, variantes y detalles de la orden
+/**
+ * Busca una orden por usuario
+ *
+ * @param {number} userId - id del usuario
+ * @returns {Promise<*>} ordenes del usuario con sus productos
+ */
 const findByUser = async (userId) => {
   const order = await Order.findAll({
     where: { userId: userId },
     include: [
       {
-        model: Product_variants,
-        attributes: ["color", "size"],
+        model: Product_variants, //incluye los productos con sus variantes
+        attributes: ["color", "size"], //atributos de las variantes
         through: {
-          model: Order_product,
-          attributes: ["quantity"],
+          model: Order_product, //modelo de la relacion
+          attributes: ["quantity"], //atributos de la relacion
         },
         include: [
           {
-            model: Product,
-            attributes: ["sku", "name", "description", "price"],
+            model: Product, //incluye los productos
+            attributes: ["sku", "name", "description", "price"], //atributos de los productos
           },
         ],
       },
@@ -53,31 +73,36 @@ const findByUser = async (userId) => {
   return order;
 };
 
-//busca una orden por id
-//incluye los productos, variantes, detalles de la orden y usuario
+/**
+ * Busca una orden por id
+ *
+ * @param {number} orderId - id de la orden
+ * @param t - transaccion
+ * @returns {Promise<*>} orden con sus productos y usuario
+ */
 const findById = async (orderId, t) => {
   const order = await Order.findOne({
     where: { id: orderId },
     include: [
       {
-        model: Product_variants,
-        attributes: ["id", "color", "size"],
+        model: Product_variants, //incluye los productos con sus variantes
+        attributes: ["id", "color", "size"], //atributos de las variantes
         through: {
-          model: Order_product,
-          attributes: ["quantity"],
+          model: Order_product, //modelo de la relacion
+          attributes: ["quantity"], //atributos de la relacion
         },
         include: [
           {
-            model: Product,
-            attributes: ["sku", "name", "description", "price"],
+            model: Product, //incluye los productos
+            attributes: ["sku", "name", "description", "price"], //atributos de los productos
           },
         ],
       },
 
       {
-        model: User,
+        model: User, //incluye el usuario
         as: "user",
-        attributes: ["name", "email"],
+        attributes: ["name", "email"], //atributos del usuario
       },
     ],
     transaction: t,
@@ -85,7 +110,13 @@ const findById = async (orderId, t) => {
   return order;
 };
 
-//guarda una orden
+/**
+ * Guarda una orden
+ *
+ * @param {object} order - datos de la orden
+ * @param t - transaccion
+ * @returns {Promise<*>} orden guardada
+ */
 const save = async (order, t) => {
   const newOrder = await order.save({ transaction: t });
   return newOrder;
@@ -97,5 +128,5 @@ module.exports = {
   save,
   startTransaction,
   findByUser,
-  deleteOrder
+  deleteOrder,
 };

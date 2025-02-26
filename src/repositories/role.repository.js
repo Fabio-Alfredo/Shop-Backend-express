@@ -1,30 +1,56 @@
 const { Role } = require("../domain/models");
 
-//crea un nuevo rol
+/**
+ * Crea un nuevo rol
+ * 
+ * @param {string} id - id del rol
+ * @param {string} rol - nombre del rol
+ * @returns {Promise<*>} rol creado
+ */
 const create = async (id, rol) => {
   const newRole = await Role.create({ id, rol });
   return newRole;
 };
 
-//busca un rol por id
+/**
+ * Busca un rol por id
+ * 
+ * @param {number} id - id del rol
+ * @returns {Promise<*>} rol encontrado
+ */
 const findById = async (id) => {
   const role = await Role.findByPk(id);
   return role;
 };
 
-//verifica si existe un rol con ese id y nombre
+/**
+ * Verifica si existe un rol por id y nombre
+ * 
+ * @param {string} id - id del rol
+ * @param {string} rol - nombre del rol
+ * @returns {Promise<boolean>} true si existe, false si no
+ */
 const existsRole = async (id, rol) => {
   const role = await Role.findOne({ where: { id, rol } });
   return role ? true : false;
 };
 
-//busca todos los roles
+/**
+ * Busca todos los roles
+ *
+ * @returns {Promise<*>} roles encontrados
+ */
 const findAll = async () => {
   const roles = await Role.findAll();
   return roles;
 };
 
-//busca todos los roles por id
+/**
+ * Busca todos los roles por id
+ * 
+ * @param {array[]} ids - ids de los roles
+ * @returns {Promise<*>} roles encontrados
+ */
 const findAllByIds = async (ids) => {
   const roles = await Role.findAll({ where: { id: ids } });
   return roles;

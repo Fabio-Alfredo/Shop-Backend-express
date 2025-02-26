@@ -1,75 +1,117 @@
 const { Product, Product_variants, Category } = require("../domain/models");
 
-//inicializa las transacciones
+/**
+ * Inicializa una transaccion
+ *
+ * @returns {Promise<*>} transaccion
+ */
 const startTransaction = async () => {
   const t = await Product.sequelize.transaction();
   return t;
 };
 
-//crea un nuevo producto
+/**
+ * Crea un nuevo producto
+ *
+ * @param {object} product - datos del producto
+ * @param t - transaccion
+ * @returns {Promise<*>} producto creado
+ */
 const create = async (product, t) => {
   const newProduct = await Product.create(product, { transaction: t });
   return newProduct;
 };
 
-//busca un producto por su sku
+/**
+ * Busca un producto por sku
+ *
+ * @param {string} sku - sku del producto
+ * @returns {Promise<*>} producto encontrado
+ */
 const findBySku = async (sku) => {
-  console.log(sku);
   const product = await Product.findOne({ where: { sku } });
   return product;
 };
 
-//busca un producto por su id
+/**
+ * Busca un producto por id
+ *
+ * @param {UUID} id - id del producto
+ * @returns {Promise<*>} producto encontrado
+ */
 const findById = async (id) => {
   const product = await Product.findOne({ where: { id } });
   return product;
 };
 
-//actualiza el stock de los productos por sku,
-//si el producto no existe lo crea
+/**
+ * Actualiza el stock de los productos
+ *
+ * @param {array[]} products - informacion de los productos
+ * @param t - transaccion
+ * @returns {Promise<*>} confirmacion de actualizacion
+ */
 const bulkUpdate = (products, t) => {
   return Product.bulkCreate(products, {
-    updateOnDuplicate: ["stock"],
+    updateOnDuplicate: ["stock"], //actualiza solo el stock
     transaction: t,
-    where: { sku: products.map((products) => products.sku) },
+    where: { sku: products.map((products) => products.sku) }, //busca por sku
   });
 };
 
-//busca todos los productos
-//incluye las variantes de los productos
+/**
+ * Busca todos los productos activos
+ *
+ * @returns {Promise<*>} productos encontrados o vacio
+ */
 const findAll = async () => {
   const prducts = await Product.findAll({
     where: { status: true },
     include: {
-      model: Product_variants,
+      model: Product_variants, //incluye las variantes
       as: "product_variants",
     },
   });
   return prducts || [];
 };
 
-//busca todos los productos por categoria
-//incluye la categoria a la que pertenece
+/**
+* Busca todos los productos por categoria
+*
+* @param {String} categoryId - id de la categoria
+* @returns {Promise<*>} productos encontrados
+*/
 const findAllByCategory = async (categoryId) => {
   const products = await Product.findAll({
     where: { status: true },
     include: {
-      model: Category,
-      where: { id: categoryId },
-      through: { attributes: [] },
+      model: Category,  //incluye la categoria
+      where: { id: categoryId },  //busca por id de categoria
+      through: { attributes: [] }, //no se muestran los atributos de la relacion
     },
   });
   return products;
 };
 
-//busca todos los productos por id y con estado activo
-//incluye las variantes de los productos
+/**
+ * Busca todos los productos por ids
+ * 
+ * @param {array[]} productIds - ids de los productos
+ * @returns {Promise<*>} productos encontrados
+ */
 const findAllByIds = async (productIds) => {
   const products = Product.findAll({ where: { id: productIds, status: true } });
   return products;
 };
 
-//actualiza todos los datos de un producto
+/**
+ * Actualiza un producto
+ * 
+ * @param {UUID} id - id del producto
+ * @param {object} product - datos del producto
+ * @param t - transaccion
+ * @returns {Promise<*>} confirmacion de actualizacion
+ */
 const updateProduct = async (id, product, t) => {
   const productUpdated = await Product.update(product, {
     where: { id },
@@ -78,7 +120,12 @@ const updateProduct = async (id, product, t) => {
   return productUpdated;
 };
 
-//busca todos los productos por sku, solo los activos
+/**
+ * Busca todos los productos por sku
+ * 
+ * @param {array[]} skuProducts - skus de los productos
+ * @returns {Promise<*>} productos encontrados
+ */
 const findAllBySku = async (skuProducts) => {
   const products = await Product.findAll({
     where: { sku: skuProducts, status: true },
@@ -86,10 +133,16 @@ const findAllBySku = async (skuProducts) => {
   return products;
 };
 
-//elimina un producto, solo cambia el estado a inactivo
+/**
+ * Elimina un producto o lo desactiva
+ * 
+ * @param {UUID} id - id del producto
+ * @param t - transaccion
+ * @returns {Promise<*>} confirmacion de eliminacion
+ */
 const deleteProduct = async (id, t) => {
   const product = await Product.update(
-    { status: false },
+    { status: false }, //desactiva el producto
     { where: { id } },
     { transaction: t }
   );
