@@ -18,6 +18,7 @@ categoryRouter.post(
 categoryRouter.get(
   "/all",
   authMiddleware.authValidator,
+  authMiddleware.roleValidator(["ADMIN"]),
   categoryController.findAllCategories
 );
 

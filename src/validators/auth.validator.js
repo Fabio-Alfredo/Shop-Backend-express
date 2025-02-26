@@ -28,6 +28,8 @@ const registerValidator = [
 const loginValidator =[
   body("email")
   .trim()
+  .isEmail()
+  .withMessage("Email is not valid")
   .isString()
   .notEmpty()
   .withMessage("Email is required"),

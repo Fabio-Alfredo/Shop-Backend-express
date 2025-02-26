@@ -8,39 +8,47 @@ const productRouter = Router();
 
 productRouter.post(
   "/register",
-  productValidator.createValidator,
-  runValidator,
   autValidator.authValidator,
   autValidator.roleValidator(["ADMIN"]),
+  productValidator.createValidator,
+  runValidator,
   productController.registerProduct
 );
 
 productRouter.put(
   "/addStock",
-  // productValidator.addStockValidator,
-  // runValidator,
   autValidator.authValidator,
   autValidator.roleValidator(["ADMIN"]),
+  productValidator.addStockValidator,
+  runValidator,
   productController.addProducts
-)
+);
+
 productRouter.put(
   "/update/:id",
-  // productValidator.updateValidator,
-  // runValidator,
   autValidator.authValidator,
   autValidator.roleValidator(["ADMIN"]),
+  productValidator.updateValidator,
+  runValidator,
   productController.updateDataProduct
 );
 
-//validar que los productos comiencen a tener estado
 productRouter.delete(
   "/delete/:id",
   autValidator.authValidator,
   autValidator.roleValidator(["ADMIN"]),
+  productValidator.idValidator,
+  runValidator,
   productController.deleteProduct
 );
 
 productRouter.get("/findAll", productController.findAllProducts);
-productRouter.get("/findId/:id", productController.findProductById);
+
+productRouter.get(
+  "/findId/:id",
+  productValidator.idValidator,
+  runValidator,
+  productController.findProductById
+);
 
 module.exports = productRouter;

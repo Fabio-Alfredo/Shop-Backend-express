@@ -23,8 +23,8 @@ orderRouter.put("/cancel/:id",
 orderRouter.put("/refund/:id",
   authMiddleware.authValidator,
   authMiddleware.roleValidator(["ADMIN"]),
-  // orderValidator.findOrderValidator,
-  // runValidator,
+  orderValidator.findOrderValidator,
+  runValidator,
   orderController.refundOrder
 );
 
