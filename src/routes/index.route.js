@@ -7,8 +7,10 @@ const paymentRoute = require('./payment.route');
 const userRoute = require('./user.route')
 const roleRoute = require('./roles.route');
 
+//crea una instancia de Router
 const indexRouter = Router();
 
+//se definen las rutas de la aplicación
 indexRouter.use('/auth', authRoute);
 indexRouter.use('/product', productRoute);
 indexRouter.use('/category', categoryRoute);
