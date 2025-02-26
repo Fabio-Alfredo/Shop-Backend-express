@@ -2,7 +2,14 @@ const stripe = require("../configs/stripe.config");
 const TransactionCodes = require("../utils/errors/errorsCodes/transaction.codes");
 const ServiceError = require("../utils/errors/service.error");
 
-//FUNCION PARA REALIZAR UNA TRANSACCION CON STR
+/**
+ * Funcion para realizar una transaccion con stripe
+ * 
+ * @param {Number} total - total de la transaccion
+ * @param {Object} paymentDetails - detalles del pago
+ * @returns {Promise<Object>} intento de pago
+ * @throws {ServiceError} error con detalles del problema
+ */
 const stripeTransaction = async (total, paymentDetails) => {
   try {
     //se crea un intento de pago con los detalles proporcionados
@@ -25,7 +32,14 @@ const stripeTransaction = async (total, paymentDetails) => {
   }
 };
 
-//FUNCION PARA REALIZAR UN REEMBOLSO CON STRIPE
+/**
+ * Funcion para realizar un reembolso con stripe
+ * 
+ * @param {String} paymentIntentId - id del intento de pago
+ * @param {Number} amount - cantidad a reembolsar
+ * @returns {Promise<Object>} reembolso
+ * @throws {ServiceError} error con detalles del problema
+ */
 const stripeRefund = async (paymentIntentId, amount = null) => {
   try {
     //se crea un objeto con los parametros para el reembolso

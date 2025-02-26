@@ -11,7 +11,14 @@ const {
 } = require("../utils/constants/ordersState.utils");
 const { MapOrder } = require("../domain/dtos/mapOrder");
 
-//FUNCION PARA CREAR UNA NUEVA ORDEN
+/**
+ * Servicio para crear una nueva orden
+ *
+ * @param {Object} order - datos de la nueva orden
+ * @param {Object} user  - informacion del usuario autenticado que crea la orden
+ * @returns {Promise<Object>} orden creada
+ * @throws {ServiceError} error con detalles del problema
+ */
 const createOrder = async (order, user) => {
   const t = await orderRepository.startTransaction();
   try {
@@ -47,7 +54,13 @@ const createOrder = async (order, user) => {
   }
 };
 
-//FUNCION PARA CANCELAR UNA ORDEN
+/**
+ * Servicio para cancelar una orden
+ *
+ * @param {UUID} id - id de la orden
+ * @returns {Promise<Boolean>} true si todo fue exitoso
+ * @throws {ServiceError} error con detalles del problema
+ */
 const cancelOrder = async (id) => {
   const t = await orderRepository.startTransaction();
   try {
@@ -78,7 +91,13 @@ const cancelOrder = async (id) => {
   }
 };
 
-//FUNCION PARA HACER UN REEMBOLSO DE UNA ORDEN
+/**
+ * Servicio para confirmar reembolso de una orden
+ * 
+ * @param {UUID} id - id de la orden
+ * @returns {Promise<Boolean>} true si todo fue exitoso
+ * @throws {ServiceError} error con detalles del problema
+ */
 const refundOrder = async (id) => {
   const t = await orderRepository.startTransaction();
   try {
@@ -112,7 +131,13 @@ const refundOrder = async (id) => {
   }
 };
 
-//FUNCION PARA BUSCAR UNA ORDEN POR ID
+/**
+ * Servicio para buscar una orden por id
+ *
+ * @param {UUID} id - id de la orden
+ * @returns {Promise<Object>} orden encontrada
+ * @throws {ServiceError} error con detalles del problema
+ */
 const orderFindById = async (id, t) => {
   try {
     //se busca la orden por id
@@ -134,7 +159,13 @@ const orderFindById = async (id, t) => {
   }
 };
 
-//FUNCION PARA BUSCAR ORDENES POR USUARIO
+/**
+ * Servicio para buscar todas las ordenes de un usuario
+ * 
+ * @param {UUID} userId - id del usuario
+ * @returns {Promise<Array<Object>>} array de ordenes
+ * @throws {ServiceError} error con detalles del problema
+ */
 const findByUser = async (userId) => {
   try {
     //se buscan las ordenes por usuario
@@ -156,7 +187,15 @@ const findByUser = async (userId) => {
   }
 };
 
-//FUNCION PARA PAGAR UNA ORDEN
+/**
+ * Servicio para pagar una orden
+ * 
+ * @param {Object} payment - datos del pago
+ * @param {UUID} id - id de la orden
+ * @param {Object} t - transaccion de la base de datos
+ * @returns {Promise<Object>} orden pagada
+ * @throws {ServiceError} error con detalles del problema
+ */
 const payOrder = async (payment, id, t) => {
   try {
     //se busca la orden por id

@@ -2,7 +2,13 @@ const roleRepository = require("../repositories/role.repository");
 const serviceError = require("../utils/errors/service.error");
 const roleCodes = require("../utils/errors/errorsCodes/role.code");
 
-//FUNCION PARA BUSCAR UN ROL POR ID
+/**
+ * Servicio para buscar un rol por id
+ * 
+ * @param {String} id - id del rol
+ * @returns {Promise<Object>} rol encontrado
+ * @throws {ServiceError} error con detalles del problema
+ */
 const findById = async (id) => {
   try {
     //se busca el rol por id
@@ -25,7 +31,13 @@ const findById = async (id) => {
   }
 };
 
-//FUNCION PARA BUSCAR VARIOS ROLES POR ID
+/**
+ * Servicio para buscar varios roles por id
+ * 
+ * @param {Array<String>} ids - ids de los roles
+ * @returns {Promise<Array<Object>>} roles encontrados
+ * @throws {ServiceError} error con detalles del problema
+ */
 const findAllByIds = async (ids) => {
   try {
     //se buscan los roles por id
@@ -46,7 +58,12 @@ const findAllByIds = async (ids) => {
   }
 };
 
-//FUNCION PARA BUSCAR TODOS LOS ROLES
+/**
+ * Servicio para buscar todos los roles
+ * 
+ * @returns {Promise<Array<Object>>} roles encontrados
+ * @throws {ServiceError} error con detalles del problema
+ */
 const findAll = async () => {
   try {
     //se buscan todos los roles
@@ -63,7 +80,14 @@ const findAll = async () => {
   }
 };
 
-//FUNCION PARA CREAR UN NUEVO ROL
+/**
+ * Servicio para crear un nuevo rol
+ * 
+ * @param {String} id - id del rol
+ * @param {String} role - nombre del rol
+ * @returns {Promise<Object>} rol creado
+ * @throws {ServiceError} error con detalles del problema
+ */
 const create = async (id, role) => {
   try {
     //se verifica si ya existe un rol con ese id y nombre

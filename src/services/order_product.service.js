@@ -2,7 +2,15 @@ const Order_productRepository = require("../repositories/order_product.repositor
 const ServiceError = require("../utils/errors/service.error");
 const OrderCodes = require("../utils/errors/errorsCodes/order.code");
 
-//FUNCION PARA CREAR LA RELACION ENTRE ORDEN Y PRODUCTOS
+/**
+ * Servicio para crear la relacion entre una orden y sus productos
+ * 
+ * @param {Array<Object>} products - productos de la orden
+ * @param {UUID} orderId - id de la orden
+ * @param {Object} t - transaccion de la base de datos
+ * @returns {Promise<Boolean>} true si todo fue exitoso
+ * @throws {ServiceError} error con detalles del problema
+ */
 const createRelation = async (products, orderId, t) => {
   try {
     //se crea un array con los productos a guardar
@@ -15,8 +23,9 @@ const createRelation = async (products, orderId, t) => {
     });
 
     //se guardan los productos de la orden
+    await Order_productRepository.bulkCreate(orderProducts, t);
     //se retorna los productos guardados
-    return await Order_productRepository.bulkCreate(orderProducts, t);
+    return true;
   } catch (e) {
     //en caso de error se lanza una excepcion
     throw new ServiceError(
@@ -26,7 +35,13 @@ const createRelation = async (products, orderId, t) => {
   }
 };
 
-//FUNCION PARA BUSCAR UNA ORDEN
+/**
+ * Servicio para buscar los productos de una orden
+ * 
+ * @param {UUID} orderId - id de la orden
+ * @returns {Promise<Array<Object>>} productos de la orden
+ * @throws {ServiceError} error con detalles
+ */
 const findOrder = async (orderId) => {
   try {
     //se busca la orden por id

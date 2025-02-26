@@ -1,7 +1,16 @@
 const user_roleRepository = require("../repositories/user_role.repository");
 const serviceError = require("../utils/errors/service.error");
 
-//FUNCION PARA CREAR UNA RELACION ENTRE USUARIO Y ROLES
+/**
+ * Servicio para crear una relacion entre usuario y roles
+ *
+ * @param {UUID} userId - id del usuario
+ * @param {Array<String>} roleIds - ids de los roles
+ * @param {UUID} editedBy - id del usuario que edita
+ * @param {Object} t - transaccion de la base de datos
+ * @returns {Promise<Boolean>} true si todo fue exitoso
+ * @throws {ServiceError} error con detalles del problema
+ */
 const createRelation = async (userId, roleIds, editedBy, t) => {
   try {
     //se crea un arreglo con las relaciones a insertar
@@ -23,7 +32,16 @@ const createRelation = async (userId, roleIds, editedBy, t) => {
   }
 };
 
-//FUNCION PARA ELIMINAR UNA RELACION ENTRE USUARIO Y ROLES
+/**
+ * Servicio para eliminar una relacion entre usuario y roles
+ * 
+ * @param {UUID} userId - id del usuario
+ * @param {Array<String>} roleIds - ids de los roles
+ * @param {UUID} editedBy - id del usuario que edita
+ * @param {Object} t - transaccion de la base de datos
+ * @returns {Promise<Boolean>} true si todo fue exitoso
+ * @throws {ServiceError} error con detalles del problema
+ */
 const deleteRelation = async (userId, roleIds, editedBy, t) => {
   try {
     //se eliminan las relaciones

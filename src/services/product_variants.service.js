@@ -6,10 +6,17 @@ const {
   REMOVE_PRODUCT,
 } = require("../utils/constants/operationProduct.util");
 
-//FUNCION PARA GUARDAR LAS VARIANTES DE UN PRODUCTO
+/**
+ * Servicio para guardar las variantes de un producto
+ *
+ * @param {Array<Object>} variants - variantes del producto
+ * @param {UUID} productId - id del producto
+ * @returns {Promise<Array<Object>>} variantes guardadas
+ * @throws {ServiceError} error con detalles del problema
+ */
 const save = async (variants, productId, t) => {
   try {
-    //se crea un array con las variantes a guardar 
+    //se crea un array con las variantes a guardar
     const saveVariants = variants.map((variant) => {
       return {
         color: variant.color,
@@ -31,7 +38,13 @@ const save = async (variants, productId, t) => {
   }
 };
 
-//FUNCION PARA RESERVAR PRODUCTOS
+/**
+ * Servicio para reservar productos
+ *
+ * @param {Array<Array<Object>>} items - id y cantidad de los productos a reservar
+ * @returns {Promise<Number>} precio total de los productos
+ * @throws {ServiceError} error con detalles del problema
+ */
 const reservationProducts = async (items, t) => {
   try {
     //se actualiza el stock de los productos
@@ -50,7 +63,15 @@ const reservationProducts = async (items, t) => {
   }
 };
 
-//FUNCION PARA ACTUALIZAR EL STOCK DE LOS PRODUCTOS
+/**
+ * servicio para actualizar el stock de los productos
+ *
+ * @param {Array<Object>} items - id y cantidad de los productos
+ * @param {String} operation - operacion a realizar
+ * @param {Object} t - transaccion de la base de datos
+ * @returns {Promise<Boolean>} true si todo fue exitoso
+ * @throws {ServiceError} error con detalles del problema
+ */
 const updateStock = async (items, operation, t) => {
   try {
     //se obtienen los productos ya mappeados
@@ -89,7 +110,13 @@ const updateStock = async (items, operation, t) => {
   }
 };
 
-//FUNCION PARA CALCULAR EL PRECIO TOTAL DE LOS PRODUCTOS
+/**
+ * funcio para calcular el precio total de los productos
+ *
+ * @param {Array<Object>} items - id y cantidad de los productos
+ * @param {Map} products - mapa de los productos
+ * @returns {Number} precio total de los productos
+ */
 const calculateTotal = (items, products) => {
   //se calcula el precio total de los
   //productos a partir de la cantidad y el precio
@@ -99,7 +126,13 @@ const calculateTotal = (items, products) => {
   }, 0);
 };
 
-//FUNCION PARA AGREGAR PRODUCTOS
+/**
+ * Servicio para agregar productos al stock
+ *
+ * @param {Array<Object>} items - id y cantidad de los productos
+ * @returns {Promise<Boolean>} true si todo fue exitoso
+ * @throws {ServiceError} error con detalles del problema
+ */
 const addProducts = async (items, t) => {
   try {
     //se actualiza el stock de los productos para agregarlos
@@ -116,7 +149,13 @@ const addProducts = async (items, t) => {
   }
 };
 
-//FUNCION PARA OBTENER LOS PRODUCTOS MAPPEADOS
+/**
+ * funcion para obtener un mapa de los productos
+ *
+ * @param {Array<Object>} items - id y cantidad de los productos
+ * @returns {Map} mapa de los productos
+ * @throws {ServiceError} error con detalles del problema
+ */
 const getProductsMap = async (items) => {
   //se crea un array con los ids de los productos
   const productIds = items.map((item) => item.id);
@@ -133,11 +172,17 @@ const getProductsMap = async (items) => {
   return new Map(products.map((p) => [p.id, p]));
 };
 
-//FUNCION PARA ACTUALIZAR LAS VARIANTES DE LOS PRODUCTOS
+/**
+ * Servicio para actualizar las variantes de los productos
+ *
+ * @param {Array<Object>} variants - variantes de los productos
+ * @returns {Promise<Array<Object>>} variantes actualizadas
+ * @throws {ServiceError} error con detalles del problema
+ */
 const updateVariants = async (variants, t) => {
   try {
     //se verifica si los productos existen
-    await getProductsMap(variants);
+    getProductsMap(variants);
     //se actualizan las variantes de los productos
     for (const variant of variants) {
       await variantsRepository.udpateProducts(variant.id, variant, t);

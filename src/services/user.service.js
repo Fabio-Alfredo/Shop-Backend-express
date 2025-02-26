@@ -6,7 +6,16 @@ const roleOperations = require("../utils/constants/operationRoles.util");
 const ServiceError = require("../utils/errors/service.error");
 const serviceError = require("../utils/errors/service.error");
 
-//FUNCION PARA ASIGNAR UN ROL A UN USUARIO
+/**
+ * Servicio para asignar o quitar roles a un usuario
+ *
+ * @param {String} action - operacion a realizar
+ * @param {Array<String>} roleIds - ids de los roles
+ * @param {UUID} userId - id del usuario
+ * @param {UUID} editedBy - id del usuario que realiza la operacion
+ * @returns {Promise<Boolean>} true si todo fue exitoso
+ * @throws {ServiceError} error con detalles del problema
+ */
 const assignRole = async (action, roleIds, userId, editedBy) => {
   const t = await userRepository.startTransaction();
   try {
@@ -46,7 +55,13 @@ const assignRole = async (action, roleIds, userId, editedBy) => {
   }
 };
 
-//FUNCION PARA BUSCAR UN USUARIO POR ID
+/**
+ * Servicio para buscar un usuario por id
+ * 
+ * @param {UUID} id - id del usuario
+ * @returns {Promise<Object>} usuario encontrado
+ * @throws {ServiceError} error con detalles del problema
+ */
 const findById = async (id, t) => {
   try {
     //se busca el usuario por id
@@ -67,7 +82,13 @@ const findById = async (id, t) => {
   }
 };
 
-//FUNCION PARA BUSCAR TODOS LOS USUARIOS
+/**
+ * Servicio para buscar todos los usuarios por rol
+ * 
+ * @param {String} roleId - id del rol
+ * @returns {Promise<Array<Object>>} usuarios encontrados
+ * @throws {ServiceError} error con detalles del problema
+ */
 const findAllByRole = async (roleId) => {
   try {
     // genera un array vacio

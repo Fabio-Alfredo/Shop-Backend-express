@@ -2,7 +2,13 @@ const categoryRepository = require("../repositories/category.repository");
 const ServiceError = require("../utils/errors/service.error");
 const CategoryCodes = require("../utils/errors/errorsCodes/category.codes");
 
-//FUNCION PARA CREAR UNA NUEVA CATEGORIA
+/**
+ * Servicio para crear una nueva categoria
+ * 
+ * @param {Object} category - datos de la nueva categoria
+ * @returns {Promise<Object>} categoria creada
+ * @throws {ServiceError} error con detalles del problema
+ */
 const createCategory = async (category) => {
   const t = await categoryRepository.startTransaction();
   try {
@@ -28,7 +34,13 @@ const createCategory = async (category) => {
   }
 };
 
-//FUNCION PARA BUSCAR UNA CATEGORIA POR ID
+/**
+ * Servicio para buscar una categoria por id
+ * 
+ * @param {string} id - id de la categoria
+ * @returns {Promise<Object>} categoria encontrada
+ * @throws {ServiceError} error con detalles del problema
+ */
 const findById = async (id) => {
   try {
     //se busca la categoria por id
@@ -51,7 +63,12 @@ const findById = async (id) => {
   }
 };
 
-//FUNCION PARA BUSCAR TODAS LAS CATEGORIAS
+/**
+ * Servicio para buscar todas las categorias
+ * 
+ * @returns {Promise<Array>} array de categorias
+ * @throws {ServiceError} error con detalles
+ */
 const findAll = async () => {
   try {
     //se buscan todas las categorias

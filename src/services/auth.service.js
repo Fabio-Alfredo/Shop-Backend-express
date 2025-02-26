@@ -3,7 +3,13 @@ const ServiceError = require("../utils/errors/service.error");
 const UserCodes = require("../utils/errors/errorsCodes/user.codes");
 const { generateToken } = require("../utils/security/jwt.utl");
 
-//FUNCION PARA REGISTRAR UN NUEVO USUARIO
+/**
+ * Registro de un nuevo usuario
+ * 
+ * @param {object} user - datos del usuario
+ * @returns {Promise<Object>} usuario creado
+ * @throws {ServiceError} error con detalles del problema
+ */
 const createUser = async (user) => {
   const t = await userRepository.startTransaction();
   try {
@@ -31,7 +37,14 @@ const createUser = async (user) => {
   }
 };
 
-//FUNCION PARA AUTENTICAR UN USUARIO
+/**
+ * Autenticacion de un usuario
+ * 
+ * @param {string} email - email del usuario
+ * @param {string} password - contraseña del usuario
+ * @returns {Promise<Object>} token de autenticacion
+ * @throws {ServiceError} error con detalles del problema
+ */
 const authUser = async (email, password) => {
   try {
     //se busca el usuario por email

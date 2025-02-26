@@ -4,7 +4,13 @@ const orderService = require("../services/order.service");
 const PaymentCodes = require("../utils/errors/errorsCodes/payment.code");
 const ServiceError = require("../utils/errors/service.error");
 
-//FUNCION PARA CREAR UN NUEVO PAGO
+/**
+ * Servicio para crear un nuevo pago
+ * 
+ * @param {Object} payment - datos del nuevo pago
+ * @returns {Promise<Object>} pago creado
+ * @throws {ServiceError} error con detalles del problema
+ */
 const createPayment = async (payment) => {
   const t = await paymentRepository.startTransaction();
   try {
@@ -42,7 +48,14 @@ const createPayment = async (payment) => {
   }
 };
 
-//FUNCION PARA REALIZAR UN REEMBOLSO
+/**
+ * Servicio para reembolsar un pago
+ * 
+ * @param {UUID} orderId - id de la orden
+ * @param {Number} amount - cantidad a reembolsar
+ * @returns {Promise<Object>} pago reembolsado
+ * @throws {ServiceError} error con detalles del problema
+ */
 const refundPayment = async (orderId, amount = null) => {
   const t = await paymentRepository.startTransaction();
   try {

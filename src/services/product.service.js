@@ -4,7 +4,19 @@ const variantsService = require("../services/product_variants.service");
 const ProductCodes = require("../utils/errors/errorsCodes/product.codes");
 const ServiceError = require("../utils/errors/service.error");
 
-//FUNCION PARA REGISTRAR UN NUEVO PRODUCTO
+/**
+ * Servicio para registrar un nuevo producto
+ *
+ * @param {string} sku - sku del producto
+ * @param {string} name - nombre del producto
+ * @param {string} description - descripcion del producto
+ * @param {number} price - precio del producto
+ * @param {number} stock - stock del producto
+ * @param {Array<Object>} variants - variantes del producto
+ * @param {String} category - id de la categoria del producto
+ * @returns {Promise<Object>} producto creado
+ * @throws {ServiceError} error con detalles del problema
+ */
 const registerProduct = async (
   sku,
   name,
@@ -45,7 +57,15 @@ const registerProduct = async (
   }
 };
 
-//FUNCION PARA ASIGNAR UNA CATEGORIA A UN PRODUCTO
+/**
+ * Funcion para asignar una categoria a un producto
+ *
+ * @param {Object} product - producto al que se le asignara la categoria
+ * @param {String} categoryId - id de la categoria
+ * @param {Object} t - transaccion
+ * @returns {Promise<Object>} producto con la categoria asignada
+ * @throws {ServiceError} error con detalles del problema
+ */
 const assingCategory = async (product, categoryId, t) => {
   try {
     //se busca la categoria por id
@@ -65,7 +85,13 @@ const assingCategory = async (product, categoryId, t) => {
   }
 };
 
-//FUNCION PARA BUSCAR UN PRODUCTO POR SKU
+/**
+ * Servicio para buscar un producto por sku
+ *
+ * @param {String} sku - sku del producto
+ * @returns {Promise<Object>} producto encontrado
+ * @throws {ServiceError} error con detalles del problema
+ */
 const findBySku = async (sku) => {
   try {
     //se busca el producto por sku
@@ -87,7 +113,13 @@ const findBySku = async (sku) => {
   }
 };
 
-//FUNCION PARA BUSCAR UN PRODUCTO POR ID
+/**
+ * Servicio para buscar un producto por id
+ *
+ * @param {UUID} id - id del producto
+ * @returns {Promise<Object>} producto encontrado
+ * @throws {ServiceError} error con detalles del problema
+ */
 const findById = async (id) => {
   try {
     //se busca el producto por id
@@ -107,7 +139,13 @@ const findById = async (id) => {
   }
 };
 
-//FUNCION PARA BUSCAR TODOS LOS PRODUCTOS
+/**
+ * Servicio para buscar todos los productos o por categoria
+ *
+ * @param {String} category - categoria de los productos a buscar (opcional)
+ * @returns {Promise<Array<Object>>} array de productos
+ * @throws {ServiceError} error con detalles del problema
+ */
 const findAll = async (category) => {
   try {
     //se genera un array vacio
@@ -129,7 +167,13 @@ const findAll = async (category) => {
   }
 };
 
-//FUNCION PARA ELIMINAR UN PRODUCTO
+/**
+ * Servicio para eliminar un producto
+ *
+ * @param {UUID} id - id del producto
+ * @returns {Promise<Object>} producto eliminado
+ * @throws {ServiceError} error con detalles del problema
+ */
 const deleteProduct = async (id) => {
   const t = await productRepository.startTransaction();
   try {
@@ -153,7 +197,15 @@ const deleteProduct = async (id) => {
   }
 };
 
-//FUNCION PARA ACTUALIZAR UN PRODUCTO
+/**
+ * Servicio para actualizar un producto
+ * 
+ * @param {UUID} id - id del producto
+ * @param {Object} data - datos del producto a actualizar
+ * @param {Array<Object>} variants - variantes del producto
+ * @returns {Promise<Object>} producto actualizado
+ * @throws {ServiceError} error con detalles del problema
+ */
 const updateProduct = async (id, data, variants) => {
   const t = await productRepository.startTransaction();
   try {
@@ -165,9 +217,7 @@ const updateProduct = async (id, data, variants) => {
     await variantsService.updateVariants(variants, t);
 
     //si se envia una nueva categoria se asigna al producto
-    if(data.category)
-      await assingCategory(productUpdated, data.category, t);
-
+    if (data.category) await assingCategory(productUpdated, data.category, t);
 
     //se confirma la transaccion
     //se retorna el producto actualizado
@@ -184,7 +234,13 @@ const updateProduct = async (id, data, variants) => {
   }
 };
 
-//FUNCION PARA AGREGAR PRODUCTOS
+/**
+ * Servicio para agregar productos al stock
+ * 
+ * @param {Array<Object>} items - productos a agregar al stock
+ * @returns {Promise<Boolean>} true si todo fue exitoso
+ * @throws {ServiceError} error con detalles del problema
+ */
 const addProducts = async (items) => {
   const t = await productRepository.startTransaction();
   try {
