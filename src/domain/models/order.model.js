@@ -49,10 +49,10 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'orderId',
     });
 
-    Order.belongsToMany(models.Payment, {
-      through: 'payment_history',
-      foreignKey: 'orderId'
-    })
+      Order.belongsToMany(models.Payment, {
+        through: 'payment_history',
+        foreignKey: 'orderId'
+      })
 
     Order.belongsTo(models.User, {
       foreignKey: "userId",

@@ -56,10 +56,12 @@ const createOrder = async (req, res, next) => {
  */
 const cancelOrder = async (req, res, next) => {
   try {
-    //se obtiene el id de la orden a cancelar
+    //se obtiene el id de la orden a cancelar y el usuario que la cancela
     const { id } = req.params;
+    const user = req.user;
+
     //se cancela la orden
-    await orderService.cancelOrder(id);
+    await orderService.cancelOrder(id, user);
     //se busca la orden cancelada
     const order = await orderService.orderFindById(id);
     //se retorna la orden cancelada
@@ -126,6 +128,7 @@ const getOrderById = async (req, res, next) => {
     const { id } = req.params;
     //se busca la orden por id
     const order = await orderService.orderFindById(id);
+    console.log(order);
     //se retorna la orden
     return responseHandler(res, 200, "succes", order);
   } catch (e) {

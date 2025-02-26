@@ -1,6 +1,5 @@
 const orderRepository = require("../repositories/order.repository");
 const order_productService = require("../services/order_product.service");
-const paymentService = require("../services/payment.service");
 const variantsService = require("../services/product_variants.service");
 const ServiceError = require("../utils/errors/service.error");
 const OrderCodes = require("../utils/errors/errorsCodes/order.code");
@@ -30,7 +29,7 @@ const createOrder = async (order, user) => {
 
     //Creamos el nuevo calculo de los stock y el costo total
     const total = await variantsService.reservationProducts(products, t);
-    
+
     orderData.total = total;
     //crear la nueva orden
     const newOrder = await orderRepository.create(orderData, t);
@@ -62,7 +61,7 @@ const createOrder = async (order, user) => {
  * @returns {Promise<Boolean>} true si todo fue exitoso
  * @throws {ServiceError} error con detalles del problema
  */
-const cancelOrder = async (id) => {
+const cancelOrder = async (id, user) => {
   const t = await orderRepository.startTransaction();
   try {
     //se busca la orden por id
@@ -71,6 +70,12 @@ const cancelOrder = async (id) => {
     if (order.status !== PAID)
       throw new ServiceError(
         "Estate order is invalid for cancel",
+        OrderCodes.INVALID_ORDER
+      );
+
+    if (user.id !== order.user.id)
+      throw new ServiceError(
+        "User not authorized to cancel this order",
         OrderCodes.INVALID_ORDER
       );
 
@@ -94,24 +99,20 @@ const cancelOrder = async (id) => {
 
 /**
  * Servicio para confirmar reembolso de una orden
- * 
+ *
  * @param {UUID} id - id de la orden
  * @returns {Promise<Boolean>} true si todo fue exitoso
  * @throws {ServiceError} error con detalles del problema
  */
-const refundOrder = async (id) => {
+const refundOrder = async (order) => {
   const t = await orderRepository.startTransaction();
   try {
-    //se busca la orden por id
-    const order = await orderFindById(id);
     //se valida que la orden este en estado pagado
     if (order.status !== PAID)
       throw new ServiceError(
         "Estate order is invalid for refund",
         OrderCodes.INVALID_ORDER
       );
-    //se realiza el reembolso de la orden
-    await paymentService.refundPayment(order.id);
     //se actualiza el estado de la orden a reembolsado
     await orderRepository.updateOrder(order.id, { status: REFUNDED }, t);
     //se actualiza el stock de los productos
@@ -162,7 +163,7 @@ const orderFindById = async (id, t) => {
 
 /**
  * Servicio para buscar todas las ordenes de un usuario
- * 
+ *
  * @param {UUID} userId - id del usuario
  * @returns {Promise<Array<Object>>} array de ordenes
  * @throws {ServiceError} error con detalles del problema
@@ -190,19 +191,21 @@ const findByUser = async (userId) => {
 
 /**
  * Servicio para pagar una orden
- * 
+ *
  * @param {Object} payment - datos del pago
  * @param {UUID} id - id de la orden
  * @param {Object} t - transaccion de la base de datos
  * @returns {Promise<Object>} orden pagada
  * @throws {ServiceError} error con detalles del problema
  */
-const payOrder = async (payment, id, t) => {
+const payOrder = async (payment, orderData, t) => {
   try {
     //se busca la orden por id
-    const order = await orderFindById(id);
+    const order = await orderRepository.findById(orderData.id, t);
+    
     //se valida que la orden este en estado procesando
-    await order.addPayments([payment]);
+    await order.addPayment(payment, { transaction: t });
+    
 
     //se actualiza el estado de la orden a pagado
     order.status = PAID;

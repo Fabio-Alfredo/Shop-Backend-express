@@ -6,7 +6,7 @@ const ServiceError = require("../utils/errors/service.error");
 
 /**
  * Servicio para crear un nuevo pago
- * 
+ *
  * @param {Object} payment - datos del nuevo pago
  * @returns {Promise<Object>} pago creado
  * @throws {ServiceError} error con detalles del problema
@@ -17,7 +17,9 @@ const createPayment = async (payment) => {
     //separamos los detalles del pago
     const { paymentDetails, ...paymentData } = payment;
     //buscamos la orden a pagar
-    const existOrder = await orderService.orderFindById(paymentData.orderId);
+   
+    const existOrder = await orderService.orderFindById(paymentData.orderId, t);
+
     //realizamos la transaccion
     //await transactionService.stripeTransaction(existOrder.total, paymentDetails);
 
@@ -31,7 +33,7 @@ const createPayment = async (payment) => {
       t
     );
     //actualizamos el estado de la orden
-    await orderService.payOrder(newPayment, paymentData.orderId, t);
+    await orderService.payOrder(newPayment, existOrder, t);
 
     //confirmamos la transaccion
     //retornamos el nuevo pago
@@ -50,7 +52,7 @@ const createPayment = async (payment) => {
 
 /**
  * Servicio para reembolsar un pago
- * 
+ *
  * @param {UUID} orderId - id de la orden
  * @param {Number} amount - cantidad a reembolsar
  * @returns {Promise<Object>} pago reembolsado
@@ -59,6 +61,8 @@ const createPayment = async (payment) => {
 const refundPayment = async (orderId, amount = null) => {
   const t = await paymentRepository.startTransaction();
   try {
+    const existOrder = await orderService.orderFindById(orderId, t);
+
     //buscamos el pago a reembolsar por el id de la orden
     const payment = await paymentRepository.findByOrderId(orderId);
     //realizamos el reembolso
@@ -70,6 +74,7 @@ const refundPayment = async (orderId, amount = null) => {
       t
     );
 
+    await orderService.refundOrder(existOrder, t);
     //confirmamos la transaccion
     //retornamos el pago reembolsado
     await t.commit();

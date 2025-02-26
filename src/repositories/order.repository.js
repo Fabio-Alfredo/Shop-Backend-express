@@ -102,7 +102,7 @@ const findById = async (orderId, t) => {
       {
         model: User, //incluye el usuario
         as: "user",
-        attributes: ["name", "email"], //atributos del usuario
+        attributes: ["id","name", "email"], //atributos del usuario
       },
     ],
     transaction: t,
