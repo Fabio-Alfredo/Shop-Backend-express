@@ -1,3 +1,5 @@
+
+//Estados que pueden tener las ordenes
 module.exports ={
     PENDING:'pending',
     PAID:'paid',
