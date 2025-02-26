@@ -89,6 +89,10 @@ const findAllByCategory = async (categoryId) => {
       where: { id: categoryId },  //busca por id de categoria
       through: { attributes: [] }, //no se muestran los atributos de la relacion
     },
+    include: {
+      model: Product_variants, //incluye las variantes
+      as: "product_variants",
+    },
   });
   return products;
 };

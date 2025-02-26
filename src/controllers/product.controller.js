@@ -3,10 +3,11 @@ const createHttpError = require("http-errors");
 const ProductCodes = require("../utils/errors/errorsCodes/product.codes");
 const categoryCodes = require("../utils/errors/errorsCodes/category.codes");
 const responseHandler = require("../handlers/response.handler");
+const productDto = require("../domain/dtos/product.dto");
 
 /**
  * Controlador para registrar un nuevo producto
- * 
+ *
  * @param {object} req - datos del producto a registrar
  * @param {object} res - respuesta con el producto creado
  * @param {object} next - middleware para manejar errores
@@ -28,6 +29,7 @@ const registerProduct = async (req, res, next) => {
       variants,
       category
     );
+    console.log(newProduct);
     //se retorna el producto creado
     return responseHandler(res, 201, "Product created", newProduct);
   } catch (e) {
@@ -50,7 +52,7 @@ const registerProduct = async (req, res, next) => {
 
 /**
  * Controlador para actualizar la data de un producto
- * 
+ *
  * @param {object} req - datos del producto a actualizar y el id del producto
  * @param {object} res - respuesta con el producto actualizado
  * @param {object} next - middleware para manejar errores
@@ -82,7 +84,7 @@ const updateDataProduct = async (req, res, next) => {
 
 /**
  * Controlador para obtener todos los productos
- * 
+ *
  * @param {object} req - datos de la categoria de los productos a obtener (opcional)
  * @param {object} res - respuesta con los productos
  * @param {object} next - middleware para manejar errores
@@ -95,7 +97,12 @@ const findAllProducts = async (req, res, next) => {
     //se obtienen los productos
     const products = await productService.findAll(category);
     //se retornan los productos
-    return responseHandler(res, 200, "success", products);
+    return responseHandler(
+      res,
+      200,
+      "success",
+      products.map((product) => productDto(product)) || []
+    );
   } catch (e) {
     //en caso de error se lanza una excepcion adecuada al
     switch (e.code) {
@@ -110,7 +117,7 @@ const findAllProducts = async (req, res, next) => {
 
 /**
  * Controlador para buscar un producto por id
- * 
+ *
  * @param {object} req - id del producto a buscar
  * @param {object} res - respuesta con el producto encontrado
  * @param {object} next - middleware para manejar errores
@@ -123,7 +130,7 @@ const findProductById = async (req, res, next) => {
     //se busca el producto por id
     const product = await productService.findById(id);
     //se retorna el producto
-    return responseHandler(res, 200, "success", product);
+    return responseHandler(res, 200, "success", productDto(product));
   } catch (e) {
     //en caso de error se lanza una excepcion adecuada al error
     switch (e.code) {
@@ -141,7 +148,7 @@ const findProductById = async (req, res, next) => {
 
 /**
  * Controlador para eliminar un producto
- * 
+ *
  * @param {object} req - id del producto a eliminar
  * @param {object} res - respuesta de exito
  * @param {object} next - middleware para manejar errores

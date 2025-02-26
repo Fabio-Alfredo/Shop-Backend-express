@@ -91,7 +91,7 @@ const findAll = async (req, res, next) => {
       res,
       200,
       "success",
-      users.map((user) => userDTO(user))
+      users.map((user) => userDTO(user) || [])
     );
   } catch (e) {
     //en caso de error se lanza una excepcion adecuada al error
