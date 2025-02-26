@@ -58,7 +58,7 @@ const createPayment = async (payment) => {
  * @returns {Promise<Object>} pago reembolsado
  * @throws {ServiceError} error con detalles del problema
  */
-const refundPayment = async (orderId, amount = null) => {
+const refundPayment = async (orderId) => {
   const t = await paymentRepository.startTransaction();
   try {
     const existOrder = await orderService.orderFindById(orderId, t);
@@ -66,7 +66,7 @@ const refundPayment = async (orderId, amount = null) => {
     //buscamos el pago a reembolsar por el id de la orden
     const payment = await paymentRepository.findByOrderId(orderId);
     //realizamos el reembolso
-    //await transactionService.stripeRefund(payment.transactionId, amount);
+    //await transactionService.stripeRefund(payment.transactionId, existOrder.total);
     //actualizamos el estado del pago
     const refund = await paymentRepository.update(
       { status: "refunded" },

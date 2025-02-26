@@ -35,6 +35,29 @@ const createPayment = async (req, res, next) => {
   }
 };
 
+const refoundPayment = async (req, res, next) => {
+  try{
+    const {id} = req.params;
+    const payment = await paymentService.refundPayment(id);
+    return responseHandler(res, 200, 'order reembolsada' );
+  }catch(e){
+    switch(e.code){
+      case PaymentCodes.NOT_FOUND:
+        return next(createHttpError(404, e.message));
+        break;
+      case OrderCodes.NOT_FOUND:
+        return next(createHttpError(404, e.message));
+        break;
+      case OrderCodes.INVALID_ORDER:
+        return next(createHttpError(400, e.message));
+        break;
+      default:
+        next(e);
+    }
+  }
+}
+
 module.exports = {
   createPayment,
+  refoundPayment
 };

@@ -104,11 +104,12 @@ const cancelOrder = async (id, user) => {
  * @returns {Promise<Boolean>} true si todo fue exitoso
  * @throws {ServiceError} error con detalles del problema
  */
-const refundOrder = async (order) => {
+const refundOrder = async (orderData) => {
   const t = await orderRepository.startTransaction();
   try {
     //se valida que la orden este en estado pagado
-    if (order.status !== PAID)
+    const order = await orderFindById(orderData.id, t);
+    if (order.status !== PROCESSING)
       throw new ServiceError(
         "Estate order is invalid for refund",
         OrderCodes.INVALID_ORDER

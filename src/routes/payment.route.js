@@ -26,4 +26,25 @@ paymentRoute.post(
   paymentController.createPayment
 );
 
+/**
+ * @route PUT /payment/refund/:id
+ * @desc Acepta la devolución de una orden
+ * @access Private (Admin)
+ * @middleware
+ * -authMiddleware.authValidator: Valida el token de acceso del usuario
+ * -authMiddleware.roleValidator: Valida si el usuario tiene el rol de ADMIN
+ * -orderValidator.findOrderValidator: Valida  los campos de entrada de la orden
+ * -runValidator: Ejecuta la validación y maneja errores en caso de datos inválidos.
+ * @controller
+ * -orderController.refundOrder: Acepta la devolución de una orden
+ */
+paymentRoute.put(
+  "/refund/:id",
+  authMiddleware.authValidator,
+  authMiddleware.roleValidator(["ADMIN"]),
+  // orderValidator.findOrderValidator,
+  runValidator,
+  paymentController.refoundPayment
+);
+
 module.exports = paymentRoute;

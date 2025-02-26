@@ -1,5 +1,4 @@
-const { Payment } = require("../domain/models");
-const Order = require("../utils/errors/errorsCodes/order.code");
+const { Payment, Order } = require("../domain/models");
 
 /**
  * Inicializa una transaccion
@@ -53,6 +52,7 @@ const findByOrderId = async (orderId) => {
       through: { attributes: [] }, //no se muestran los atributos de la relacion
     },
   });
+  
   return payment;
 };
 
