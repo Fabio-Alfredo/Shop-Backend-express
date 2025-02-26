@@ -164,6 +164,11 @@ const updateProduct = async (id, data, variants) => {
     //se actualizan las variantes del producto
     await variantsService.updateVariants(variants, t);
 
+    //si se envia una nueva categoria se asigna al producto
+    if(data.category)
+      await assingCategory(productUpdated, data.category, t);
+
+
     //se confirma la transaccion
     //se retorna el producto actualizado
     await t.commit();
