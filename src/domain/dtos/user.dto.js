@@ -1,5 +1,7 @@
+//DTO utilizado para mapear un usuario
+//se mapea el usuario con los roles
 const mapUser = (user) => {
-    console.log(user.Roles)
+
   return {
     id: user.id,
     name: user.name,

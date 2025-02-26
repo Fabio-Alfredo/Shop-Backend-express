@@ -1,3 +1,5 @@
+//DTO utilizado para mapear una orden
+//se mapea la orden con los productos
 const MapOrder = async (order) => {
   const { Product_variants, ...orderData } = order.toJSON();
 
