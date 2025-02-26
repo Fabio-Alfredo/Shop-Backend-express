@@ -5,6 +5,12 @@ const productDto = (product) => {
     name: product.name,
     description: product.description,
     price: product.price,
+    categories: product.Categories.map((category) => {
+      return {
+        id: category.id,
+        name: category.category,
+      };
+    }),
     variants: product.product_variants.map((variant) => {
       return {
         id: variant.id,

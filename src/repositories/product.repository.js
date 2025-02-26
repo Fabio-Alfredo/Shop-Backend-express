@@ -67,39 +67,47 @@ const bulkUpdate = (products, t) => {
 const findAll = async () => {
   const prducts = await Product.findAll({
     where: { status: true },
-    include: {
-      model: Product_variants, //incluye las variantes
-      as: "product_variants",
-    },
+    include: [
+      {
+        model: Product_variants, //incluye las variantes
+        as: "product_variants",
+      },
+      {
+        model: Category,
+        through: { attributes: [] },
+      }, //incluye la categoria
+    ],
   });
   return prducts || [];
 };
 
 /**
-* Busca todos los productos por categoria
-*
-* @param {String} categoryId - id de la categoria
-* @returns {Promise<*>} productos encontrados
-*/
+ * Busca todos los productos por categoria
+ *
+ * @param {String} categoryId - id de la categoria
+ * @returns {Promise<*>} productos encontrados
+ */
 const findAllByCategory = async (categoryId) => {
   const products = await Product.findAll({
     where: { status: true },
-    include: {
-      model: Category,  //incluye la categoria
-      where: { id: categoryId },  //busca por id de categoria
-      through: { attributes: [] }, //no se muestran los atributos de la relacion
-    },
-    include: {
-      model: Product_variants, //incluye las variantes
-      as: "product_variants",
-    },
+    include: [
+      {
+        model: Category, //incluye la categoria
+        where: { id: categoryId }, //busca por id de categoria
+        through: { attributes: [] }, //no se muestran los atributos de la relacion
+      },
+      {
+        model: Product_variants, //incluye las variantes
+        as: "product_variants",
+      },
+    ],
   });
   return products;
 };
 
 /**
  * Busca todos los productos por ids
- * 
+ *
  * @param {array[]} productIds - ids de los productos
  * @returns {Promise<*>} productos encontrados
  */
@@ -110,7 +118,7 @@ const findAllByIds = async (productIds) => {
 
 /**
  * Actualiza un producto
- * 
+ *
  * @param {UUID} id - id del producto
  * @param {object} product - datos del producto
  * @param t - transaccion
@@ -119,6 +127,7 @@ const findAllByIds = async (productIds) => {
 const updateProduct = async (id, product, t) => {
   const productUpdated = await Product.update(product, {
     where: { id },
+    fields: ["name", "description", "price"],
     transaction: t,
   });
   return productUpdated;
@@ -126,7 +135,7 @@ const updateProduct = async (id, product, t) => {
 
 /**
  * Busca todos los productos por sku
- * 
+ *
  * @param {array[]} skuProducts - skus de los productos
  * @returns {Promise<*>} productos encontrados
  */
@@ -139,7 +148,7 @@ const findAllBySku = async (skuProducts) => {
 
 /**
  * Elimina un producto o lo desactiva
- * 
+ *
  * @param {UUID} id - id del producto
  * @param t - transaccion
  * @returns {Promise<*>} confirmacion de eliminacion

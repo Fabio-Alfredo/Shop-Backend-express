@@ -155,7 +155,7 @@ const findAll = async (category) => {
     if (category)
       products = await productRepository.findAllByCategory(category);
     else products = await productRepository.findAll();
-
+  console.log(products)
     //se retorna el array de productos
     return products;
   } catch (e) {
@@ -210,14 +210,15 @@ const updateProduct = async (id, data, variants) => {
   const t = await productRepository.startTransaction();
   try {
     //se busca el producto por id
-    await findById(id);
+    const product = await findById(id);
     //se actualiza el producto
     const productUpdated = await productRepository.updateProduct(id, data, t);
     //se actualizan las variantes del producto
     await variantsService.updateVariants(variants, t);
 
     //si se envia una nueva categoria se asigna al producto
-    if (data.category) await assingCategory(productUpdated, data.category, t);
+    if (data.category) 
+      await assingCategory(product, data.category, t);
 
     //se confirma la transaccion
     //se retorna el producto actualizado

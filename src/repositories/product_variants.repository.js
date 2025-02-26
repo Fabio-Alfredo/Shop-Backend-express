@@ -54,6 +54,7 @@ const bulkUpdateStock = async (products, t) => {
 const udpateProducts = async (id, product, t) => {
   const updateProducts = await Product_variants.update(product, {
     where: { id },
+    fields: ["color", "size", "stock"],
     transaction: t,
   });
   return updateProducts;
