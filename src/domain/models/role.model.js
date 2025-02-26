@@ -1,3 +1,16 @@
+
+/**
+ * Modelo de la tabla roles
+ * 
+ * Relaciones:
+ * - El modelo Role tiene una relacion de muchos a muchos con el modelo User
+ * 
+ * @typedef {Object} Role
+ * @property {String} id - id del rol
+ * @property {String} rol - nombre del rol
+ * @property {Date} createdAt - fecha de creacion
+ * @property {Date} updatedAt - fecha de actualizacion
+ */
 module.exports = (sequelize, DataTypes) => {
   const Role = sequelize.define(
     "Role",

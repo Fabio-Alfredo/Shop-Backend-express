@@ -4,7 +4,14 @@ const paymentService = require("../services/payment.service");
 const OrderCodes = require("../utils/errors/errorsCodes/order.code");
 const responseHandler = require('../handlers/response.handler');
 
-//CONTROLADOR PARA CREAR UNA NUEVA ORDEN
+/**
+ * Controlador para crear un pago
+ * 
+ * @param {object} req - datos del pago a crear
+ * @param {object} res - respuesta con el pago creado
+ * @param {object} next - middleware para manejar errores
+ * @returns {object} respuesta con el pago creado
+ */
 const createPayment = async (req, res, next) => {
   try {
     //se obtiene la data del pago

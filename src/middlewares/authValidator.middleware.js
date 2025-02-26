@@ -1,7 +1,14 @@
 const createHttpError = require("http-errors");
 const jwt = require("../utils/security/jwt.utl");
 
-//Middleware para validar la autenticacion de un usuario
+/**
+ * Middleware para validar la autenticacion de un usuario
+ * 
+ * @param {object} req - datos de la peticion
+ * @param {object} res - respuesta con la data del usuario y el token
+ * @param {object} next - middleware para manejar errores
+ * @returns {object} respuesta con la data del usuario y el token
+ */
 const authValidator = async (req, res, next) => {
   try {
     //se valida que exista el header de autorizacion
@@ -31,7 +38,12 @@ const authValidator = async (req, res, next) => {
   }
 };
 
-//Middleware para validar los roles de un usuario
+/**
+ * Middleware para validar los roles de un usuario
+ * 
+ * @param {array} roles - roles permitidos
+ * @returns {function} middleware para validar los roles de un usuario
+ */
 const roleValidator = (roles) => {
   return (req, res, next) => {
     try {

@@ -4,7 +4,14 @@ const ProductCodes = require("../utils/errors/errorsCodes/product.codes");
 const categoryCodes = require("../utils/errors/errorsCodes/category.codes");
 const responseHandler = require("../handlers/response.handler");
 
-//CONTROLADOR PARA REGISTRAR UN NUEVO PRODUCTO
+/**
+ * Controlador para registrar un nuevo producto
+ * 
+ * @param {object} req - datos del producto a registrar
+ * @param {object} res - respuesta con el producto creado
+ * @param {object} next - middleware para manejar errores
+ * @returns {object} respuesta con el producto creado
+ */
 const registerProduct = async (req, res, next) => {
   try {
     //se obtiene la data del producto
@@ -41,7 +48,14 @@ const registerProduct = async (req, res, next) => {
   }
 };
 
-//CONTROLADOR PARA ACTUALIZAR LA DATA DE UN PRODUCTO
+/**
+ * Controlador para actualizar la data de un producto
+ * 
+ * @param {object} req - datos del producto a actualizar y el id del producto
+ * @param {object} res - respuesta con el producto actualizado
+ * @param {object} next - middleware para manejar errores
+ * @returns {object} respuesta con el producto actualizado
+ */
 const updateDataProduct = async (req, res, next) => {
   try {
     //se obtiene la data y las variantes del producto
@@ -66,7 +80,14 @@ const updateDataProduct = async (req, res, next) => {
   }
 };
 
-//CONTROLADOR PARA OBTENER TODOS LOS PRODUCTOS
+/**
+ * Controlador para obtener todos los productos
+ * 
+ * @param {object} req - datos de la categoria de los productos a obtener (opcional)
+ * @param {object} res - respuesta con los productos
+ * @param {object} next - middleware para manejar errores
+ * @returns {object} respuesta con los productos
+ */
 const findAllProducts = async (req, res, next) => {
   try {
     //se obtiene la categoria de los productos
@@ -87,7 +108,14 @@ const findAllProducts = async (req, res, next) => {
   }
 };
 
-//CONTROLADOR PARA OBTENER UN PRODUCTO POR ID
+/**
+ * Controlador para buscar un producto por id
+ * 
+ * @param {object} req - id del producto a buscar
+ * @param {object} res - respuesta con el producto encontrado
+ * @param {object} next - middleware para manejar errores
+ * @returns {object} respuesta con el producto encontrado
+ */
 const findProductById = async (req, res, next) => {
   try {
     //se obtiene el id del producto
@@ -111,7 +139,14 @@ const findProductById = async (req, res, next) => {
   }
 };
 
-//CONTROLADOR PARA ELIMINAR UN PRODUCTO
+/**
+ * Controlador para eliminar un producto
+ * 
+ * @param {object} req - id del producto a eliminar
+ * @param {object} res - respuesta de exito
+ * @param {object} next - middleware para manejar errores
+ * @returns {object} respuesta de exito
+ */
 const deleteProduct = async (req, res, next) => {
   try {
     //se obtiene el id del producto
@@ -135,7 +170,14 @@ const deleteProduct = async (req, res, next) => {
   }
 };
 
-//CONTROLADOR PARA AGREGAR PRODUCTOS
+/**
+ * Controlador para agregar productos
+ *
+ * @param {object} req - informacion de los productos a agregar
+ * @param {object} res - respuesta de exito
+ * @param {object} next - middleware para manejar errores
+ * @returns {object} respuesta de exito
+ */
 const addProducts = async (req, res, next) => {
   try {
     //se obtienen los productos a agregar

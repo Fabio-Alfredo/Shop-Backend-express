@@ -3,7 +3,14 @@ const categoryService = require("../services/category.service");
 const CategoryCodes = require("../utils/errors/errorsCodes/category.codes");
 const responseHandler = require("../handlers/response.handler");
 
-//CONTROLADOR PARA CREAR UNA NUEVA CATEGORIA
+/**
+ * Controlador para crear una nueva categoria
+ * 
+ * @param {object} req - datos de la categoria a crear
+ * @param {object} res - respuesta con la categoria creada
+ * @param {object} next - middleware para manejar errores
+ * @returns {object} respuesta con la categoria creada
+ */
 const createCategory = async (req, res, next) => {
   try {
     //se obtiene la categoria a crear
@@ -27,7 +34,14 @@ const createCategory = async (req, res, next) => {
   }
 };
 
-// CONTROLADOR PARA OBTENER TODAS LAS CATEGORIAS
+/**
+ * Controlador para obtener todas las categorias
+ * 
+ * @param {object} req - datos de la categoria a crear
+ * @param {object} res - respuesta con las categorias
+ * @param {object} next - middleware para manejar errores
+ * @returns {object} respuesta con las categorias
+ */
 const findAllCategories = async (req, res, next) => {
   try {
     //se obtienen todas las categorias

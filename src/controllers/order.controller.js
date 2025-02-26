@@ -4,7 +4,14 @@ const OrderCodes = require("../utils/errors/errorsCodes/order.code");
 const ProductCodes = require("../utils/errors/errorsCodes/product.codes");
 const createHttpError = require("http-errors");
 
-//CONTROLADOR PARA CREAR UNA NUEVA ORDEN
+/**
+ * Controlador para crear una orden
+ *
+ * @param {object} req - datos de la orden a crear y usuario que la crea
+ * @param {object} res - respuesta con la orden creada
+ * @param {object} next - middleware para manejar errores
+ * @returns {object} respuesta con la orden creada
+ */
 const createOrder = async (req, res, next) => {
   try {
     //se obtiene la data de la orden
@@ -39,7 +46,14 @@ const createOrder = async (req, res, next) => {
   }
 };
 
-//CONTROLADOR PARA CANCELAR UNA ORDEN
+/**
+ * Controlador para cancelar una orden
+ *
+ * @param {object} req - id de la orden a cancelar
+ * @param {object} res - respuesta con la orden cancelada
+ * @param {object} next - middleware para manejar errores
+ * @returns {object} respuesta con la orden cancelada
+ */
 const cancelOrder = async (req, res, next) => {
   try {
     //se obtiene el id de la orden a cancelar
@@ -65,7 +79,14 @@ const cancelOrder = async (req, res, next) => {
   }
 };
 
-//CONTROLADOR PARA HACER UN REEMBOLSO DE UNA ORDEN
+/**
+ * Controlador para reembolsar una orden
+ * 
+ * @param {object} req - id de la orden a reembolsar
+ * @param {object} res - respuesta con la orden reembolsada
+ * @param {object} next - middleware para manejar errores
+ * @returns {object} respuesta con la orden reembolsada
+ */
 const refundOrder = async (req, res, next) => {
   try {
     //se obtiene el id de la orden a reembolsar
@@ -91,7 +112,14 @@ const refundOrder = async (req, res, next) => {
   }
 };
 
-//CONTROLADOR PARA OBTENER UNA ORDEN POR ID
+/**
+ * Controlador para obtener una orden por id
+ * 
+ * @param {object} req - id de la orden a buscar
+ * @param {object} res - respuesta con la orden encontrada
+ * @param {object} next - middleware para manejar errores
+ * @returns {object} respuesta con la orden encontrada
+ */
 const getOrderById = async (req, res, next) => {
   try {
     //se obtiene el id de la orden a buscar
@@ -115,7 +143,14 @@ const getOrderById = async (req, res, next) => {
   }
 };
 
-//CONTROLADOR PARA OBTENER TODAS LAS ORDENES DE UN USUARIO
+/**
+ * Controlador para obtener las ordenes de un usuario
+ * 
+ * @param {object} req - usuario que busca las ordenes
+ * @param {object} res - respuesta con las ordenes encontradas
+ * @param {object} next - middleware para manejar errores
+ * @returns {object} respuesta con las ordenes encontradas
+ */
 const getOrdersByUser = async (req, res, next) => {
   try {
     //se obtiene el usuario que esta buscando las ordenes

@@ -3,7 +3,15 @@ const UserCodes = require("../utils/errors/errorsCodes/user.codes");
 const createHttpError = require("http-errors");
 const responseHandler = require("../handlers/response.handler");
 
-//CONTROLADOR PARA REGISTRAR UN NUEVO USUARIO
+/**
+ * Controlador para registrar un nuevo usuario
+ * 
+ * @param {object} req - datos del usuario a registrar
+ * @param {object} res - respuesta con el usuario creado
+ * @param {object} next - middleware para manejar errores
+ * @returns {object} respuesta con el usuario creado
+ */
+
 const registerUser = async (req, res, next) => {
   try {
     //se obtiene el usuario a registrar
@@ -27,7 +35,14 @@ const registerUser = async (req, res, next) => {
   }
 };
 
-//CONTROLADOR PARA INICIAR SESION
+/**
+ * Controlador para autenticar un usuario
+ * 
+ * @param {object} req - datos del usuario a autenticar
+ * @param {object} res - respuesta con el token de autenticacion
+ * @param {object} next - middleware para manejar errores
+ * @returns {object} respuesta con el token de autenticacion
+ */
 const loginUser = async (req, res, next) => {
   try {
     //se obtiene el email y password del usuario

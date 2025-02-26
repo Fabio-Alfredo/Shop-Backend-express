@@ -1,6 +1,21 @@
 const bcrypt = require("bcryptjs");
 const config = require("../../configs/config").production;
 
+/**
+ * Modelo de la tabla users
+ * 
+ * Relaciones:
+ * - El modelo User tiene una relacion de muchos a muchos con el modelo Role
+ * - El modelo User tiene una relacion de uno a muchos con el modelo Order
+ * 
+ * @typedef {Object} User
+ * @property {UUID} id - id del usuario
+ * @property {String} name - nombre del usuario
+ * @property {String} email - correo del usuario
+ * @property {String} password - contraseña del usuario
+ * @property {Date} createdAt - fecha de creacion
+ * @property {Date} updatedAt - fecha de actualizacion
+ */
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define(
     "User",
@@ -61,12 +76,16 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
+  // Hooks
+  // Antes de guardar el usuario, hashear la contraseña
   User.beforeSave(async (user, options) => {
     if (user.changed("password")) {
       user.password = await bcrypt.hash(user.password, parseInt(config.salt));
     }
   });
 
+  // Metodos
+  // Validar contraseña
   User.prototype.validatePassword = async function (password) {
     return bcrypt.compare(password, this.password);
   };

@@ -4,7 +4,14 @@ const userCodes = require("../utils/errors/errorsCodes/user.codes");
 const userDTO = require("../domain/dtos/user.dto");
 const createHttpError = require("http-errors");
 
-//CONTROLADOR PARA ASIGNAR UN ROL A UN
+/**
+ * Controlador para asignar un rol a un usuario
+ * 
+ * @param {object} req - datos del usuario que realiza la peticion y los datos de la accion a realizar (id del usuario, id del rol y accion a realizar)
+ * @param {object} res - respuesta con el rol asignado
+ * @param {object} next - middleware para manejar errores
+ * @returns {object} respuesta con el rol asignado
+ */
 const assignRole = async (req, res, next) => {
   try {
     //se obtiene el id del usuario, los roles a asignar y la accion a realizar
@@ -34,7 +41,14 @@ const assignRole = async (req, res, next) => {
   }
 };
 
-//CONTROLADOR PARA BUSCAR UN USUARIO POR ID
+/**
+ * Controlador para buscar un usuario por su id
+ * 
+ * @param {object} req - datos del usuario a buscar
+ * @param {object} res - respuesta con el usuario encontrado
+ * @param {object} next - middleware para manejar errores
+ * @returns {object} respuesta con el usuario encontrado
+ */
 const findUserById = async (req, res, next) => {
   try {
     //se obtiene el id del usuario a buscar
@@ -58,7 +72,14 @@ const findUserById = async (req, res, next) => {
   }
 };
 
-//CONTROLADOR PARA OBTENER TODOS LOS USUARIOS
+/**
+ * Controlador para buscar todos los usuarios
+ * 
+ * @param {object} req - datos de la peticion con el id del rol por el cual se van a buscar los usuarios (opcional)
+ * @param {object} res - respuesta con los usuarios encontrados
+ * @param {object} next - middleware para manejar errores
+ * @returns {object} respuesta con los usuarios encontrados
+ */
 const findAll = async (req, res, next) => {
   try {
     //se obtiene el id del rol por el cual se van a buscar los usuarios

@@ -3,7 +3,14 @@ const ServiceError = require("../utils/errors/service.error");
 const roleService = require("../services/role.service");
 const responseHandler = require("../handlers/response.handler");
 
-//CONTROLADOR PARA OBTENER TODOS LOS ROLES
+/**
+ * Controlador para buscar todos los roles
+ * 
+ * @param {object} req - datos de la peticion
+ * @param {object} res - respuesta con los roles encontrados
+ * @param {object} next - middleware para manejar errores
+ * @returns {object} respuesta con los roles encontrados
+ */
 const findAllRoles = async (req, res, next) => {
   try {
     //se obtienen todos los roles
@@ -22,7 +29,14 @@ const findAllRoles = async (req, res, next) => {
   }
 };
 
-//CONTROLADOR PARA CREAR UN NUEVO ROL
+/**
+ * Controlador para crear un rol
+ * 
+ * @param {object} req - datos del rol a crear
+ * @param {object} res - respuesta con el rol creado
+ * @param {object} next - middleware para manejar errores
+ * @returns {object} respuesta con el rol creado
+ */
 const createRole = async (req, res, next) => {
   try {
     //se obtiene el id y nombre del rol
