@@ -122,6 +122,13 @@ const save = async (order, t) => {
   return newOrder;
 };
 
+const updateOrder = async (orderId, data, t) => {
+  const updatedOrder = await Order.update(data, {
+    where: { id: orderId },
+    transaction: t,
+  });
+  return updatedOrder;
+}
 module.exports = {
   create,
   findById,
@@ -129,4 +136,5 @@ module.exports = {
   startTransaction,
   findByUser,
   deleteOrder,
+  updateOrder
 };
