@@ -41,7 +41,12 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       defaultValue: true,
     },
-  });
+  },
+  {
+    tableName: "products",
+    timestamps: true,
+  }
+);
   Product.associate = (models) => {
     Product.belongsToMany(models.Category, {
       through: "category_products",
