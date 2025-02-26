@@ -155,7 +155,7 @@ const findAll = async (category) => {
     if (category)
       products = await productRepository.findAllByCategory(category);
     else products = await productRepository.findAll();
-  console.log(products)
+  
     //se retorna el array de productos
     return products;
   } catch (e) {

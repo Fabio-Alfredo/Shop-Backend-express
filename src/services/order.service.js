@@ -23,13 +23,14 @@ const createOrder = async (order, user) => {
   const t = await orderRepository.startTransaction();
   try {
     //Extraemos los productos y los detalles de pago de la orden
-    const { products, paymentDetails, ...orderData } = order;
+    const { products, ...orderData } = order;
 
     //añadimos al usuario a la orden a crear
     orderData.userId = user.id;
 
     //Creamos el nuevo calculo de los stock y el costo total
     const total = await variantsService.reservationProducts(products, t);
+    
     orderData.total = total;
     //crear la nueva orden
     const newOrder = await orderRepository.create(orderData, t);

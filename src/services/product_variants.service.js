@@ -49,6 +49,8 @@ const reservationProducts = async (items, t) => {
   try {
     //se actualiza el stock de los productos
     await updateStock(items, REMOVE_PRODUCT, t);
+
+    const products = await getProductsMap(items);
     //se calcula el precio total de los productos
     const price = await calculateTotal(items, products);
 

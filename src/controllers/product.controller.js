@@ -161,7 +161,7 @@ const deleteProduct = async (req, res, next) => {
     //se elimina el producto
     await productService.deleteProduct(id);
     //se retorna un mensaje de exito
-    return responseHandler(res, 204, "Product deleted");
+    return responseHandler(res, 200, "Product deleted");
   } catch (e) {
     //en caso de error se lanza una excepcion adecuada al error
     switch (e.code) {
