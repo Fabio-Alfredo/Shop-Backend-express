@@ -89,10 +89,11 @@ const findAll = async () => {
  * @throws {ServiceError} error con detalles del problema
  */
 const create = async (id, role) => {
+  const t = await roleRepository.getTransaction();
   try {
     //se verifica si ya existe un rol con ese id y nombre
     //si ya existe se lanza una excepcion
-    const exists = await roleRepository.existsRole(id, role);
+    const exists = await roleRepository.existsRole(id, role, t);
     if (exists)
       throw new serviceError(
         "Role already exists",
@@ -101,10 +102,14 @@ const create = async (id, role) => {
 
     //se crea el nuevo rol
     const newRole = await roleRepository.create(id, role);
-    //se retorna el rol si todo fue exitoso
+    //se confirma la transaccion
+    //se retorna el rol creado si todo fue exitoso
+    await t.commit();
     return newRole;
   } catch (e) {
-    //si ocurre un error se lanza una excepcion
+    //en caso de error se hace rollback de la transaccion
+    //se lanza una excepcion
+    await t.rollback();
     throw new serviceError(
       e.message || "Internal Service error",
       e.code || roleCodes.NOT_FOUND

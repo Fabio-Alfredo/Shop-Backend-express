@@ -1,8 +1,18 @@
 const { Role } = require("../domain/models");
 
 /**
- * Crea un nuevo rol
+ * Inicializa una transaccion
  * 
+ * @returns {Promise<*>} transaccion
+ */
+const startTransaction = async () => {
+  const t = await Role.sequelize.transaction();
+  return t;
+};
+
+/**
+ * Crea un nuevo rol
+ *
  * @param {string} id - id del rol
  * @param {string} rol - nombre del rol
  * @returns {Promise<*>} rol creado
@@ -14,7 +24,7 @@ const create = async (id, rol) => {
 
 /**
  * Busca un rol por id
- * 
+ *
  * @param {number} id - id del rol
  * @returns {Promise<*>} rol encontrado
  */
@@ -25,7 +35,7 @@ const findById = async (id) => {
 
 /**
  * Verifica si existe un rol por id y nombre
- * 
+ *
  * @param {string} id - id del rol
  * @param {string} rol - nombre del rol
  * @returns {Promise<boolean>} true si existe, false si no
@@ -47,7 +57,7 @@ const findAll = async () => {
 
 /**
  * Busca todos los roles por id
- * 
+ *
  * @param {array[]} ids - ids de los roles
  * @returns {Promise<*>} roles encontrados
  */
@@ -62,4 +72,5 @@ module.exports = {
   findAll,
   findAllByIds,
   existsRole,
+  startTransaction,
 };
