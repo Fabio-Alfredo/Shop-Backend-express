@@ -1,19 +1,15 @@
 const express = require("express");
-const dbConnection = require("./src/configs/dbConnection.config");
-const config = require("./src/configs/config").production;
+const cors = require("cors");
 const Routes = require("./src/routes/index.route");
 const errorHandler = require("./src/handlers/error.handler");
-const cors = require('cors')
 
+// Crear la aplicación de Express
 const app = express();
 
-dbConnection();
-
+// Middlewares
 app.use(cors());
 app.use(express.json());
 app.use(Routes);
 app.use(errorHandler);
 
-app.listen(config.port, () => {
-  console.log(`Server is running on port ${config.port}`);
-});
+module.exports = app;
