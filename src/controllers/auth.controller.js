@@ -19,7 +19,7 @@ const registerUser = async (req, res, next) => {
     //se crea el usuario
     const newUser = await authService.createUser(user);
     //se retorna el usuario creado
-    return responseHandler(res, 201, "success", newUser);
+    return responseHandler(res, 201, "success");
   } catch (e) {
     //en caso de error se lanza una excepcion adecuada al error
     switch (e.code) {
