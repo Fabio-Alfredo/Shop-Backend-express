@@ -69,7 +69,7 @@ const authUser = async (email, password) => {
   } catch (e) {
     //en caso de error se lanza una excepcion
     throw new ServiceError(
-      e.message || "Internal server error while register user",
+      e.message || "Internal server error while login user",
       e.code || UserCodes.NOT_FOUND
     );
   }

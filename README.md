@@ -162,3 +162,61 @@ Posibles errores adicionales:
   "error": "Internal server error while register user"
 }
 ```
+
+### Login de usuarios
+
+- **Method:** `POST`
+- **Path:** `/auth/login`
+- **Descripción:** Este endpoint permite a los usuarios autenticarse en la aplicación proporcionando sus credenciales (correo electrónico y contraseña). Al iniciar sesión correctamente, se genera un token de autenticación que les permite acceder a las funcionalidades protegidas de la aplicación, como la gestión de su perfil o la realización de transacciones.
+
+#### Ejemplo de solicitud
+
+```json
+{
+  "email": "user@gmail.com",
+  "password": "password"
+}
+```
+
+#### Ejemplo de respuesta
+
+- **Exitoso:**
+
+```json
+{
+  "success": true,
+  "message": "success login",
+  "data": {
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZkZjNhN2FjLTkyMGYtNGJjYS1iMzM5LTc0NjY3NjIzMGQ3YSIsImVtYWlsIjoiZmFiaW8yQGdtYWlsLmNvbSIsInJvbGVzIjpbIkFETUlOIl0sImlhdCI6MTc0MDg4MzQ2MywiZXhwIjoxNzQwODkwNjYzfQ.h7ZJ1ggWUcj74VypvTbkBM7I6E8u6NL3W1wvzU1BQgU"
+  }
+}
+```
+
+- **Error:**
+
+```json
+{
+  "error": "Invalid credentials "
+}
+```
+
+Posibles errores adicionales:
+
+- **Error en email y contraseña:**
+
+```json
+{
+  "errors": [
+    "Email is not valid", 
+    "Password is required"
+  ]
+}
+```
+
+- **Error interno del servidor:**
+
+```json
+{
+  "error": "Internal server error while login user"
+}
+```
