@@ -206,10 +206,7 @@ Posibles errores adicionales:
 
 ```json
 {
-  "errors": [
-    "Email is not valid", 
-    "Password is required"
-  ]
+  "errors": ["Email is not valid", "Password is required"]
 }
 ```
 
@@ -218,5 +215,200 @@ Posibles errores adicionales:
 ```json
 {
   "error": "Internal server error while login user"
+}
+```
+
+## Endpoints para Usuarios
+
+### Buscar de usuario por ID
+
+- **Method:** `GET`
+- **Path:** `/user/findId/:id`
+- **Descripción:** Este endpoint permite a los administradores buscar la informacion de un usuario por medio de su ID.
+
+### Requisito de autenticacion
+
+- **Autenticación:** Requiere estar logueado. La solicitud debe incluir un token de JWT válido para proceder.
+- **Roles permitidos:** Solo los usuarios con los roles máximos tienen permiso para realizar esta acción y gestionar la información de otros usuarios.
+
+#### Ejemplo de respuesta
+
+- **Exitoso:**
+
+```json
+{
+{
+  "success": true,
+  "message": "success",
+  "data": {
+      "id": "dbb717c8-b776-4b45-a764-de57251fe6b9",
+      "name": "user2",
+      "email": "user2@gmail.com",
+      "roles": []
+  }
+}
+}
+```
+
+- **Error:**
+
+```json
+{
+  "error": "Invalid credentials "
+}
+```
+
+Posibles errores adicionales:
+
+- **Token ya expirado:**
+
+```json
+{
+  "error": "TokenExpiredError is not defined"
+}
+```
+
+- **Id no existente:**
+
+```json
+{
+  "error": "Invalid data user"
+}
+```
+
+- **Error interno del servidor:**
+
+```json
+{
+  "error": "Internal service errro for find user"
+}
+```
+
+### Buscar de usuarios por roles
+
+- **Method:** `GET`
+- **Path:** `/user/all?roleId={roleId}`
+- **Descripción:** Este endpoint permite a los administradores buscar usuarios filtrando por rol. Si se proporciona un rol en la solicitud, se devuelven únicamente los usuarios que coincidan con dicho rol. Si no se especifica un rol, se devuelve la lista completa de usuarios.
+
+### Requisito de autenticacion
+
+- **Autenticación:** Requiere estar logueado. La solicitud debe incluir un token de JWT válido para proceder.
+- **Roles permitidos:** Solo los usuarios con los roles máximos tienen permiso para realizar esta acción y gestionar la información de otros usuarios.
+
+#### Ejemplo de respuesta
+
+- **Exitoso:**
+
+```json
+{
+  "success": true,
+  "message": "success",
+  "data": [
+    {
+      "id": "2844282f-8a2a-4dd6-b59a-1886408df242",
+      "name": "user2",
+      "email": "user2@gmail.com",
+      "roles": []
+    },
+    {
+      "id": "6df3a7ac-920f-4bca-b339-746676230d7a",
+      "name": "user",
+      "email": "user@gmail.com",
+      "roles": ["administrador"]
+    }
+  ]
+}
+```
+
+- **Error:**
+
+```json
+{
+  "error": "Invalid role, not exists"
+}
+```
+
+Posibles errores adicionales:
+
+- **Token ya expirado:**
+
+```json
+{
+  "error": "TokenExpiredError is not defined"
+}
+```
+
+- **Error interno del servidor:**
+
+```json
+{
+  "error": "Internal service error for find all users"
+}
+```
+
+### Editar roles de un usuario
+
+- **Method:** `PUT`
+- **Path:** `/user/assingRole`
+- **Descripción:** Este endpoint permite a los administradores modificar los roles de los usuarios. A través de una acción específica, se puede eliminar un rol asignado a un usuario (acciones "REMOVE_ROLE", "REMOVE_ROLE"),.
+
+### Requisito de autenticacion
+
+- **Autenticación:** Requiere estar logueado. La solicitud debe incluir un token de JWT válido para proceder.
+- **Roles permitidos:** Solo los usuarios con los roles máximos tienen permiso para realizar esta acción y gestionar la información de otros usuarios.
+
+#### Ejemplo de solicitud
+
+```json
+{
+  "userId": "dbb717c8-b776-4b45-a764-de57251fe6b9",
+  "roleIds": ["ADMIN"],
+  "action": "REMOVE_ROLE"
+}
+```
+
+#### Ejemplo de respuesta
+
+- **Exitoso:**
+
+```json
+{
+  "success": true,
+  "message": "success",
+  "data": "role editado con exito"
+}
+```
+
+- **Error:**
+
+```json
+{
+  "error": "Invalid data user"
+}
+```
+
+Posibles errores adicionales:
+
+- **Roles invalidos para usuario:**
+
+```json
+{
+  "error": "You are not allowed to access this resource"
+}
+```
+
+- **Editar sus propios roles:**
+
+```json
+{
+  "error": "Invalid action update your roles"
+}
+```
+
+- **Error interno del servidor:**
+
+```json
+{
+  "error": "Internal server error for  edit role"
 }
 ```

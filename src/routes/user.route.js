@@ -19,7 +19,7 @@ const userRoute = Route();
  * @controller
  * -userController.assignRole: Asigna un nuevo rol a un usuario
  */
-userRoute.post(
+userRoute.put(
   "/assingRole",
   authMiddleware.authValidator,
   authMiddleware.roleValidator(["ADMIN"]),

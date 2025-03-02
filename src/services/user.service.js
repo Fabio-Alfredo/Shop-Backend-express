@@ -49,7 +49,7 @@ const assignRole = async (action, roleIds, userId, editedBy) => {
     //se lanza una excepcion
     await t.rollback();
     throw new serviceError(
-      e.message || "Internal server error",
+      e.message || "c",
       e.code || userCodes.NOT_FOUND
     );
   }
@@ -57,7 +57,7 @@ const assignRole = async (action, roleIds, userId, editedBy) => {
 
 /**
  * Servicio para buscar un usuario por id
- * 
+ *
  * @param {UUID} id - id del usuario
  * @returns {Promise<Object>} usuario encontrado
  * @throws {ServiceError} error con detalles del problema
@@ -76,7 +76,7 @@ const findById = async (id, t) => {
   } catch (e) {
     //si ocurre un error se lanza una excepcion
     throw new serviceError(
-      e.message || "Internal service error",
+      e.message || "Internal service errro for find user",
       e.code || userCodes.NOT_FOUND
     );
   }
@@ -84,7 +84,7 @@ const findById = async (id, t) => {
 
 /**
  * Servicio para buscar todos los usuarios por rol
- * 
+ *
  * @param {String} roleId - id del rol
  * @returns {Promise<Array<Object>>} usuarios encontrados
  * @throws {ServiceError} error con detalles del problema
@@ -95,15 +95,19 @@ const findAllByRole = async (roleId) => {
     let users = [];
     // si no se envia un roleId se buscan todos los usuarios
 
-    if (!roleId) users = await userRepository.findAll();
-    else users = await userRepository.findAllByRol(roleId);
-
+    if (!roleId) {
+      users = await userRepository.findAll();
+    } else {
+      //si se envia un roleId se buscan los usuarios por rol
+      await roleService.findById(roleId);
+      users = await userRepository.findAllByRol(roleId);
+    }
     //se retorna el array de usuarios
     return users;
   } catch (e) {
     //si ocurre un error se lanza una excepcion
     throw new serviceError(
-      e.message || "Internal service error",
+      e.message || "Internal service error for find all users",
       e.code || userCodes.NOT_FOUND
     );
   }
