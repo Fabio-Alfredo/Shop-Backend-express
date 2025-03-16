@@ -890,3 +890,119 @@ Posibles errores adicionales:
   "error": "Internal server error while find all categories"
 }
 ```
+
+## Endpoints para ordenes
+
+### Creacion de una orden
+
+- **Method:** `POST`
+- **Path:** `/order/create`
+- **Descripcion**: Este endpoint permite a los usuarios authenticados crear una orden. Para ello, deben proporcionar los datos correspondientes a la orden (como direccion y una lista con los productos).
+
+### Requisito de autenticacion
+
+- **Autenticación:** Requiere estar logueado. La solicitud debe incluir un token de JWT válido para proceder.
+
+#### Ejemplo de solicitud
+
+```json
+{
+  "direction": "por aca",
+  "products": [
+    {
+      "sku": "CARTO-004",
+      "id": "b2d8a815-3f4d-4ae6-8972-e4826dcd380c",
+      "quantity": 2
+    },
+    {
+      "sku": "CARTO-006",
+      "id": "e7b69d73-a836-452f-a034-4145f9a59052",
+      "quantity": 5
+    }
+  ]
+}
+```
+
+#### Ejemplo de respuesta
+
+- **Exitoso:**
+
+```json
+{
+  "success": true,
+  "message": "Order created",
+  "data": {
+    "id": "aeb7903e-b0cc-4fc7-ade7-441580fdf20b",
+    "total": "140.70",
+    "direction": "por aca",
+    "status": "pending",
+    "createdAt": "2025-03-16T16:38:52.000Z",
+    "updatedAt": "2025-03-16T16:38:52.000Z",
+    "userId": "6df3a7ac-920f-4bca-b339-746676230d7a",
+    "user": {
+      "id": "6df3a7ac-920f-4bca-b339-746676230d7a",
+      "name": "fabio2",
+      "email": "fabio2@gmail.com"
+    },
+    "products": [
+      {
+        "sku": "CARTO-004",
+        "id": "b2d8a815-3f4d-4ae6-8972-e4826dcd380c",
+        "name": "Camiseta",
+        "description": "Es una camiseta asi y asa",
+        "color": "azul",
+        "size": "s",
+        "price": "20.10",
+        "quantity": 2
+      },
+      {
+        "sku": "CARTO-006",
+        "id": "e7b69d73-a836-452f-a034-4145f9a59052",
+        "name": "Camiseta",
+        "description": "Es una camiseta asi y asa",
+        "color": "verde",
+        "size": "s",
+        "price": "20.10",
+        "quantity": 5
+      }
+    ]
+  }
+}
+```
+
+- **Error:**
+
+```json
+{
+  "error": "El producto con id b2d8a815-3f4d-4ae6-8972-e4826dcd384c no existe"
+}
+```
+
+Posibles errores adicionales:
+
+- **Formato de id invalido:**
+
+```json
+{
+  "errors": ["Product ID must be a valid UUID."]
+}
+```
+
+- **Solicitud sin productos:**
+
+```json
+{
+  "errors": ["Products must be a non-empty array."]
+}
+```
+
+- **Cantidad no proporcionada:**
+
+```json
+{
+  "errors": [
+    "Each product must have a quantity.",
+    "Quantity must be an integer greater than 0."
+  ]
+}
+```
