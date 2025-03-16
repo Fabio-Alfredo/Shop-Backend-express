@@ -412,3 +412,91 @@ Posibles errores adicionales:
   "error": "Internal server error for  edit role"
 }
 ```
+
+## Endpoints para Registro de nuevo producto
+
+### Registro de productos
+
+- **Method:** `POST`
+- **Path:** `/product/register`
+- **Descripcion**: Este endpoint permite a los usuarios con privilegios de administrador registrar nuevos productos en la aplicación. Para ello, deben proporcionar los datos correspondientes del producto (como sku, name, descripcion, precio, categoria y las variantes que este puede contener). Una vez completado el registro, se crea un producto que podrá ser editado en caso de que sea necesario realizar modificaciones.
+
+### Requisito de autenticacion
+
+- **Autenticación:** Requiere estar logueado. La solicitud debe incluir un token de JWT válido para proceder.
+- **Roles permitidos:** Solo los usuarios con los roles máximos tienen permiso para realizar esta acción y gestionar la información de otros usuarios.
+
+#### Ejemplo de solicitud
+
+```json
+{
+  "sku": "CARTO-006",
+  "name": "Camiseta ",
+  "description": "Es una camiseta asi y asa",
+  "price": 20.1,
+  "category": "ZAP",
+  "variants": [
+    {
+      "color": "azul",
+      "size": "s",
+      "stock": 50
+    },
+    {
+      "color": "amarilla",
+      "size": "m",
+      "stock": 50
+    }
+  ]
+}
+```
+
+#### Ejemplo de respuesta
+
+- **Exitoso:**
+
+```json
+{
+  "success": true,
+  "message": "Product created",
+  "data": {
+    "id": "829942b1-daef-4f6b-963f-00258b2e2e4f",
+    "status": true,
+    "sku": "CARTO-012",
+    "name": "Camiseta 2",
+    "description": "Es una camiseta asi y asa",
+    "price": 20.1,
+    "updatedAt": "2025-03-16T04:09:43.439Z",
+    "createdAt": "2025-03-16T04:09:43.439Z"
+  }
+}
+```
+
+- **Error:**
+
+```json
+{
+  "error": "Producto ya ingresado"
+}
+```
+
+Posibles errores adicionales:
+
+- **Sku invalido :**
+
+```json
+{
+  "errors": [
+    "SKU product is required for register new product",
+    "SKU must be beetween 6 and 10 characters",
+    "El SKU debe tener el formato LETRAS-NÚMEROS (ej. CARTO-003)."
+  ]
+}
+```
+
+- **Error interno del servidor:**
+
+```json
+{
+  "error": "Internal server error while register product"
+}
+```
