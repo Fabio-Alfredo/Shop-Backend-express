@@ -151,6 +151,8 @@ const findAll = async (category) => {
     //se genera un array vacio
     let products;
 
+    await categoryService.findById(category);
+
     //si no se envia una categoria se buscan todos los productos
     if (category)
       products = await productRepository.findAllByCategory(category);
@@ -161,7 +163,7 @@ const findAll = async (category) => {
   } catch (e) {
     //en caso de error se lanza una excepcion
     throw new ServiceError(
-      e.message || "Internal server error while find product",
+      e.message || "Internal server error while find products",
       e.code || ProductCodes.NOT_FOUND
     );
   }

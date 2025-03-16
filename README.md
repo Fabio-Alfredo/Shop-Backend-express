@@ -500,3 +500,67 @@ Posibles errores adicionales:
   "error": "Internal server error while register product"
 }
 ```
+
+### Buscar prodcto por categoria
+
+- **Method:** `GET`
+- **Path:** `/product/findAll?category={categoryId}`
+- **Descripción:** Este endpoint permite a los usuarios buscar productos filtrando por su categoria. Si se proporciona un product en la solicitud, se devuelven únicamente los productos que coincidan con dicha categoria. Si no se especifica una, se devuelve la lista completa de productos.
+
+#### Ejemplo de respuesta
+
+- **Exitoso:**
+
+```json
+{
+  "success": true,
+  "message": "success",
+  "data": [
+    {
+      "id": "d3555900-f65e-4541-b1da-15834d63d416",
+      "sku": "CARTO-013",
+      "name": "Camiseta polo",
+      "description": "Es una camiseta asi y asa",
+      "price": "20.10",
+      "categories": [
+        {
+          "id": "RPA",
+          "name": "Ropa"
+        }
+      ],
+      "variants": [
+        {
+          "id": "9936d73b-12cb-4855-bb15-420d2024cac0",
+          "color": "azul",
+          "size": "s",
+          "stock": 50
+        },
+        {
+          "id": "d189fbcd-c0c2-488e-8097-06fbebb80611",
+          "color": "amarilla",
+          "size": "m",
+          "stock": 50
+        }
+      ]
+    }
+  ]
+}
+```
+
+- **Error:**
+
+```json
+{
+  "error": "Category Not exist"
+}
+```
+
+Posibles errores adicionales:
+
+- **Error interno del servidor:**
+
+```json
+{
+  "error": "Internal server error while find product"
+}
+```
