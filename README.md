@@ -840,3 +840,53 @@ Posibles errores adicionales:
   "error": "Internal server error while create category"
 }
 ```
+
+### Buscar todas las categorias
+
+- **Method:** `GET`
+- **Path:** `/category/all`
+- **Descripción:** Este endpoint permite a los administradores buscar todas las categorias existentes.
+
+### Requisito de autenticacion
+
+- **Autenticación:** Requiere estar logueado. La solicitud debe incluir un token de JWT válido para proceder.
+- **Roles permitidos:** Solo los usuarios con los roles máximos tienen permiso para realizar esta acción y gestionar la información de otros usuarios.
+
+#### Ejemplo de respuesta
+
+- **Exitoso:**
+
+```json
+{
+  "success": true,
+  "message": "sucess",
+  "data": [
+    {
+      "id": "ACC",
+      "category": "Accesorios",
+      "createdAt": "2025-02-26T18:41:31.000Z",
+      "updatedAt": "2025-02-26T18:41:31.000Z"
+    },
+    {
+      "id": "RPA",
+      "category": "Ropa",
+      "createdAt": "2025-02-26T18:41:31.000Z",
+      "updatedAt": "2025-02-26T18:41:31.000Z"
+    },
+    {
+      "id": "ZAP",
+      "category": "Zapatos",
+      "createdAt": "2025-02-26T18:41:31.000Z",
+      "updatedAt": "2025-02-26T18:41:31.000Z"
+    }
+  ]
+}
+```
+
+- **Error:**
+
+```json
+{
+  "error": "Internal server error while find all categories"
+}
+```
