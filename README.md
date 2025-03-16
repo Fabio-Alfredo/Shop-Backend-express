@@ -564,3 +564,83 @@ Posibles errores adicionales:
   "error": "Internal server error while find product"
 }
 ```
+
+### Editar informacion de un producto
+
+- **Method:** `PUT`
+- **Path:** `/product/update/:id`
+- **Descripción:** Este endpoint permite a los administradores modificar los datos de los productos registrados, ademas pueden editarse los datos de sus variantes.
+
+### Requisito de autenticacion
+
+- **Autenticación:** Requiere estar logueado. La solicitud debe incluir un token de JWT válido para proceder.
+- **Roles permitidos:** Solo los usuarios con los roles máximos tienen permiso para realizar esta acción y gestionar la información de otros usuarios.
+
+#### Ejemplo de solicitud
+
+```json
+{
+  "price": 30.1,
+  "variants": [
+    {
+      "id": "9936d73b-12cb-4855-bb15-420d2024cac0",
+      "color": "verde"
+    }
+  ]
+}
+```
+
+#### Ejemplo de respuesta
+
+- **Exitoso:**
+
+```json
+{
+  "success": true,
+  "message": "Product updated",
+  "data": {
+    "id": "d3555900-f65e-4541-b1da-15834d63d416",
+    "sku": "CARTO-013",
+    "name": "Camiseta polo",
+    "description": "Es una camiseta asi y asa",
+    "price": "30.10",
+    "status": true,
+    "createdAt": "2025-03-16T04:24:33.000Z",
+    "updatedAt": "2025-03-16T04:36:26.000Z"
+  }
+}
+```
+
+- **Error:**
+
+```json
+{
+  "error": "Invalid product"
+}
+```
+
+Posibles errores adicionales:
+
+- **Roles invalidos para usuario:**
+
+```json
+{
+  "error": "You are not allowed to access this resource"
+}
+```
+
+- **Error interno del servidor:**
+
+```json
+{
+  "error": "Internal server error while update product"
+}
+```
+
+- **Error en el id del producto:**
+
+```json
+{
+  "errors": ["Product id must be a valid UUID"]
+}
+```
