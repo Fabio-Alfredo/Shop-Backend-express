@@ -84,7 +84,13 @@ const updateStock = async (items, operation, t) => {
     //si no hay suficiente stock se lanza una excepcion
     const updateProducts = items.map((item) => {
       const product = products.get(item.id);
-      if (!product || product.stock < item.quantity)
+      if (!product)
+        throw new ServiceError(
+          `El producto con id ${item.id} no existe`,
+          productCodes.NOT_FOUND
+        );
+        
+      if (product.stock < item.quantity)
         throw new ServiceError(
           `EL roducto ${product.name} no tiene suficiente stock`,
           productCodes.NOT_FOUND
