@@ -413,7 +413,7 @@ Posibles errores adicionales:
 }
 ```
 
-## Endpoints para Registro de nuevo producto
+## Endpoints para productos
 
 ### Registro de productos
 
@@ -761,5 +761,82 @@ Posibles errores adicionales:
 ```json
 {
   "errors": ["Quantity must be a number greater than 0"]
+}
+```
+
+## Endpoints para categorias
+
+### Creacion de una categoria
+
+- **Method:** `POST`
+- **Path:** `/category/create`
+- **Descripcion**: Este endpoint permite a los usuarios con privilegios de administrador registrar una nueva categoria para los productos. Para ello, deben proporcionar los datos correspondientes de la categoria (como id y nombre).
+
+### Requisito de autenticacion
+
+- **Autenticación:** Requiere estar logueado. La solicitud debe incluir un token de JWT válido para proceder.
+- **Roles permitidos:** Solo los usuarios con los roles máximos tienen permiso para realizar esta acción y gestionar la información de otros usuarios.
+
+#### Ejemplo de solicitud
+
+```json
+{
+  "id": "RPA",
+  "category": "ropa"
+}
+```
+
+#### Ejemplo de respuesta
+
+- **Exitoso:**
+
+```json
+{
+  "success": true,
+  "message": "Product created",
+  "data": {
+    "id": "829942b1-daef-4f6b-963f-00258b2e2e4f",
+    "status": true,
+    "sku": "CARTO-012",
+    "name": "Camiseta 2",
+    "description": "Es una camiseta asi y asa",
+    "price": 20.1,
+    "updatedAt": "2025-03-16T04:09:43.439Z",
+    "createdAt": "2025-03-16T04:09:43.439Z"
+  }
+}
+```
+
+- **Error:**
+
+```json
+{
+  "error": "Category already exist"
+}
+```
+
+Posibles errores adicionales:
+
+- **Formato de id invalido:**
+
+```json
+{
+  "errors": ["Id must be between 3 and 5 characters"]
+}
+```
+
+- **Categoria no proporcionada:**
+
+```json
+{
+  "error": "Expected double-quoted property name in JSON at position 18 (line 3 column 1)"
+}
+```
+
+- **Error interno del servidor:**
+
+```json
+{
+  "error": "Internal server error while create category"
 }
 ```
