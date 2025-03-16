@@ -644,3 +644,52 @@ Posibles errores adicionales:
   "errors": ["Product id must be a valid UUID"]
 }
 ```
+
+### Eliminar un producto
+
+- **Method:** `DELETE`
+- **Path:** `/product/delete/:id`
+- **Descripción:** Este endpoint permite a los administradores eliminar un producto, esto se logra cambiando el estado de activo a inactivo.
+
+### Requisito de autenticacion
+
+- **Autenticación:** Requiere estar logueado. La solicitud debe incluir un token de JWT válido para proceder.
+- **Roles permitidos:** Solo los usuarios con los roles máximos tienen permiso para realizar esta acción y gestionar la información de otros usuarios.
+
+#### Ejemplo de respuesta
+
+- **Exitoso:**
+
+```json
+{
+  "success": true,
+  "message": "Product deleted",
+  "data": {}
+}
+```
+
+- **Error:**
+
+```json
+{
+  "error": "Invalid product"
+}
+```
+
+Posibles errores adicionales:
+
+- **Id de producto invalido:**
+
+```json
+{
+  "errors": ["Product id must be a valid UUID"]
+}
+```
+
+- **Error interno del servidor:**
+
+```json
+{
+  "error": "Internal server error while delete product"
+}
+```

@@ -151,7 +151,7 @@ const findAll = async (category) => {
     //se genera un array vacio
     let products;
 
-    await categoryService.findById(category);
+    // await categoryService.findById(category);
 
     //si no se envia una categoria se buscan todos los productos
     if (category)
