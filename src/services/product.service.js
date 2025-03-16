@@ -259,7 +259,7 @@ const addProducts = async (items) => {
     //se lanza una excepcion
     await t.rollback();
     throw new ServiceError(
-      e.message || "Error al agregar productos",
+      e.message || "Error while add products",
       e.code || ProductCodes.NOT_FOUND
     );
   }

@@ -693,3 +693,73 @@ Posibles errores adicionales:
   "error": "Internal server error while delete product"
 }
 ```
+
+### Editar stock de un producto
+
+- **Method:** `PUT`
+- **Path:** `/product/addStock`
+- **Descripción:** Este endpoint permite a los administradores modificar el stock de las variantes de un producto registrado.
+
+### Requisito de autenticacion
+
+- **Autenticación:** Requiere estar logueado. La solicitud debe incluir un token de JWT válido para proceder.
+- **Roles permitidos:** Solo los usuarios con los roles máximos tienen permiso para realizar esta acción y gestionar la información de otros usuarios.
+
+#### Ejemplo de solicitud
+
+```json
+{
+  "items": [
+    {
+      "id": "7afc232e-c660-4c63-942c-abe5deeb7e3a",
+      "quantity": 10
+    }
+  ]
+}
+```
+
+#### Ejemplo de respuesta
+
+- **Exitoso:**
+
+```json
+{
+  "success": true,
+  "message": "Products added",
+  "data": {}
+}
+```
+
+- **Error:**
+
+```json
+{
+  "error": "Invalid product"
+}
+```
+
+Posibles errores adicionales:
+
+- **Tipo de id invalid:**
+
+```json
+{
+  "errors": ["Product id must be a valid UUID"]
+}
+```
+
+- **Error interno del servidor:**
+
+```json
+{
+  "error": "Error while add products"
+}
+```
+
+- **Cantidad para stock invalida:**
+
+```json
+{
+  "errors": ["Quantity must be a number greater than 0"]
+}
+```
