@@ -151,13 +151,13 @@ const findAll = async (category) => {
     //se genera un array vacio
     let products;
 
-    // await categoryService.findById(category);
-
     //si no se envia una categoria se buscan todos los productos
-    if (category)
+    if (category) {
+      await categoryService.findById(category);
       products = await productRepository.findAllByCategory(category);
-    else products = await productRepository.findAll();
-  
+    } else {
+      products = await productRepository.findAll();
+    }
     //se retorna el array de productos
     return products;
   } catch (e) {
@@ -201,7 +201,7 @@ const deleteProduct = async (id) => {
 
 /**
  * Servicio para actualizar un producto
- * 
+ *
  * @param {UUID} id - id del producto
  * @param {Object} data - datos del producto a actualizar
  * @param {Array<Object>} variants - variantes del producto
@@ -219,8 +219,7 @@ const updateProduct = async (id, data, variants) => {
     await variantsService.updateVariants(variants, t);
 
     //si se envia una nueva categoria se asigna al producto
-    if (data.category) 
-      await assingCategory(product, data.category, t);
+    if (data.category) await assingCategory(product, data.category, t);
 
     //se confirma la transaccion
     //se retorna el producto actualizado
@@ -239,7 +238,7 @@ const updateProduct = async (id, data, variants) => {
 
 /**
  * Servicio para agregar productos al stock
- * 
+ *
  * @param {Array<Object>} items - productos a agregar al stock
  * @returns {Promise<Boolean>} true si todo fue exitoso
  * @throws {ServiceError} error con detalles del problema
