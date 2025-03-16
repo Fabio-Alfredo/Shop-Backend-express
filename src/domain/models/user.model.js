@@ -1,5 +1,5 @@
 const bcrypt = require("bcryptjs");
-const config = require("../../configs/config").production;
+const config = require("../../configs/config");
 
 /**
  * Modelo de la tabla users

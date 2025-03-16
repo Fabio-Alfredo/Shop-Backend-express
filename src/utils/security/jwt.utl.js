@@ -8,7 +8,7 @@ const config = require("../../configs/config");
  * @returns {Object} - Token generado
  */
 const generateToken = (payload) => {
-  const token = sign(payload, config.production.jsw, { expiresIn: "2h" });
+  const token = sign(payload, config.jsw, { expiresIn: "2h" });
   return { token };
 };
 
@@ -20,7 +20,7 @@ const generateToken = (payload) => {
  */
 const verifyToken = (token) => {
   try {
-    const data = verify(token, config.production.jsw);
+    const data = verify(token, config.jsw);
     return { valid: true, data };
   } catch (e) {
     if (e instanceof TokenExpiredError) {

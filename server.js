@@ -1,6 +1,6 @@
 const app = require("./app");
 const dbConnection = require("./src/configs/dbConnection.config");
-const config = require("./src/configs/config").production;
+const config = require("./src/configs/config");
 
 dbConnection();
 
