@@ -1095,7 +1095,7 @@ Posibles errores adicionales:
 
 ```json
 {
-  "error": "Internal service errro for find user"
+  "error": "Internal server error while find order"
 }
 ```
 
@@ -1231,7 +1231,7 @@ Posibles errores adicionales:
 
 ```json
 {
-  "error": "Internal service errro for find user"
+  "error": "Internal service error while find orders"
 }
 ```
 
@@ -1314,7 +1314,7 @@ Posibles errores adicionales:
 
 ```json
 {
-  "error": "Internal service errro for find user"
+  "error": "Internal server error while cancel order"
 }
 ```
 
@@ -1323,5 +1323,88 @@ Posibles errores adicionales:
 ```json
 {
   "errors": ["Product id must be a valid UUID"]
+}
+```
+
+## Endpoints para pagos
+
+### Creacion de un pago
+
+- **Method:** `POST`
+- **Path:** `/payment/create`
+- **Descripcion**: Este endpoint permite a los usuarios authenticados crear un pago para una orden. Para ello, deben proporcionar los datos correspondientes a al pago (como metodo, orderId, descripcion, token_de_pago, email).
+
+### Requisito de autenticacion
+
+- **Autenticación:** Requiere estar logueado. La solicitud debe incluir un token de JWT válido para proceder.
+
+#### Ejemplo de solicitud
+
+```json
+{
+  "method": "card",
+  "orderId": "aeb7903e-b0cc-4fc7-ade7-441580fdf20b",
+  "description": "aca va algo",
+  "paymentDetails": {
+    "token": "tok_abc123",
+    "email": "user@example.com"
+  }
+}
+```
+
+#### Ejemplo de respuesta
+
+- **Exitoso:**
+
+```json
+{
+  "success": true,
+  "message": "succes",
+  "data": {
+    "id": "2ced9b1e-0702-4fc4-bcce-7323727f625b",
+    "method": "card",
+    "updatedAt": "2025-03-19T17:41:58.060Z",
+    "createdAt": "2025-03-19T17:41:58.060Z"
+  }
+}
+```
+
+- **Error:**
+
+```json
+{
+  "error": "Order not exist"
+}
+```
+
+Posibles errores adicionales:
+
+- **Datos de pago invalidos:**
+
+```json
+{
+  "errors": [
+    "Invalid value",
+    "Payment details must be an object.",
+    "Payment details is required.",
+    "Token is required.",
+    "Email must be a string."
+  ]
+}
+```
+
+- **Token ya expirado:**
+
+```json
+{
+  "error": "TokenExpiredError is not defined"
+}
+```
+
+- **Error interno del servidor:**
+
+```json
+{
+  "error": "Internal server error while paid order"
 }
 ```
