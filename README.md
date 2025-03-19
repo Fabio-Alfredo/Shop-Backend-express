@@ -104,6 +104,71 @@ node --watch server.js
 
 Los principales endpoints de la API se detallan a continuación:
 
+## Endpoints para productos
+
+### Creacion de roles
+
+- **Method:** `POST`
+- **Path:** `/role/create`
+- **Descripcion**: Este endpoint permite a los usuarios con privilegios de administrador crear nuevos roles en la aplicación. Para ello, deben proporcionar los datos correspondientes al nuevo rol (como id, name).
+
+### Requisito de autenticacion
+
+- **Autenticación:** Requiere estar logueado. La solicitud debe incluir un token de JWT válido para proceder.
+- **Roles permitidos:** Solo los usuarios con los roles máximos tienen permiso para realizar esta acción y gestionar la información de otros usuarios.
+
+#### Ejemplo de solicitud
+
+```json
+{
+  "id": "SPADMIN3",
+  "name": "superadmin3"
+}
+```
+
+#### Ejemplo de respuesta
+
+- **Exitoso:**
+
+```json
+{
+  "success": true,
+  "message": "success",
+  "data": {
+    "id": "SPADMIN3",
+    "rol": "superadmin3",
+    "updatedAt": "2025-03-19T18:02:50.248Z",
+    "createdAt": "2025-03-19T18:02:50.248Z"
+  }
+}
+```
+
+- **Error:**
+
+```json
+{
+  "error": "Role already exists"
+}
+```
+
+Posibles errores adicionales:
+
+- **Name invalido :**
+
+```json
+{
+  "errors": ["Role name is required."]
+}
+```
+
+- **Error interno del servidor:**
+
+```json
+{
+  "error": "Internal Service error while create role"
+}
+```
+
 ## Endpoints para Autenticacion
 
 ### Registro de usuarios
