@@ -74,6 +74,7 @@ orderRouter.get(
 orderRouter.get(
   "/findId/:id",
   authMiddleware.authValidator,
+  authMiddleware.roleValidator(["ADMIN"]),
   orderValidator.findOrderValidator,
   runValidator,
   orderController.getOrderById

@@ -1006,3 +1006,95 @@ Posibles errores adicionales:
   ]
 }
 ```
+
+### Buscar una orden por ID
+
+- **Method:** `GET`
+- **Path:** `/order/findId/:id`
+- **Descripción:** Este endpoint permite a los administradores buscar la informacion de una orden por medio de su ID.
+
+### Requisito de autenticacion
+
+- **Autenticación:** Requiere estar logueado. La solicitud debe incluir un token de JWT válido para proceder.
+- **Roles permitidos:** Solo los usuarios con los roles máximos tienen permiso para realizar esta acción y gestionar la información de otros usuarios.
+
+#### Ejemplo de respuesta
+
+- **Exitoso:**
+
+```json
+{
+  "success": true,
+  "message": "succes",
+  "data": {
+    "id": "6494138f-ad52-4ada-9cff-3b5d8fb34722",
+    "total": "140.70",
+    "direction": "por aca",
+    "status": "refunded",
+    "createdAt": "2025-02-26T19:59:58.000Z",
+    "updatedAt": "2025-02-26T21:19:12.000Z",
+    "userId": "6df3a7ac-920f-4bca-b339-746676230d7a",
+    "user": {
+      "id": "6df3a7ac-920f-4bca-b339-746676230d7a",
+      "name": "fabio2",
+      "email": "fabio2@gmail.com"
+    },
+    "products": [
+      {
+        "sku": "CARTO-004",
+        "id": "b2d8a815-3f4d-4ae6-8972-e4826dcd380c",
+        "name": "Camiseta",
+        "description": "Es una camiseta asi y asa",
+        "color": "azul",
+        "size": "s",
+        "price": "20.10",
+        "quantity": 2
+      },
+      {
+        "sku": "CARTO-006",
+        "id": "e7b69d73-a836-452f-a034-4145f9a59052",
+        "name": "Camiseta",
+        "description": "Es una camiseta asi y asa",
+        "color": "verde",
+        "size": "s",
+        "price": "20.10",
+        "quantity": 5
+      }
+    ]
+  }
+}
+```
+
+- **Error:**
+
+```json
+{
+  "error": "Invalid credentials"
+}
+```
+
+Posibles errores adicionales:
+
+- **Token ya expirado:**
+
+```json
+{
+  "error": "TokenExpiredError is not defined"
+}
+```
+
+- **Id no existente:**
+
+```json
+{
+  "error": "Order not exist"
+}
+```
+
+- **Error interno del servidor:**
+
+```json
+{
+  "error": "Internal service errro for find user"
+}
+```

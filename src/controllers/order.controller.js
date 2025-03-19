@@ -81,38 +81,6 @@ const cancelOrder = async (req, res, next) => {
   }
 };
 
-// /**
-//  * Controlador para reembolsar una orden
-//  * 
-//  * @param {object} req - id de la orden a reembolsar
-//  * @param {object} res - respuesta con la orden reembolsada
-//  * @param {object} next - middleware para manejar errores
-//  * @returns {object} respuesta con la orden reembolsada
-//  */
-// const refundOrder = async (req, res, next) => {
-//   try {
-//     //se obtiene el id de la orden a reembolsar
-//     const { id } = req.params;
-//     //se reembolsa la orden
-//     await orderService.refundOrder(id);
-//     //se busca la orden reembolsada
-//     const order = await orderService.orderFindById(id);
-//     //se retorna la orden reembolsada
-//     return responseHandler(res, 200, "Order refunded", order);
-//   } catch (e) {
-//     //en caso de error se lanza una excepcion adecuada al error
-//     switch (e.code) {
-//       case OrderCodes.NOT_FOUND:
-//         next(createHttpError(404, e.message));
-//         break;
-//       case OrderCodes.INVALID_ORDER:
-//         next(createHttpError(400, e.message));
-//         break;
-//       default:
-//         next(e);
-//     }
-//   }
-// };
 
 /**
  * Controlador para obtener una orden por id
