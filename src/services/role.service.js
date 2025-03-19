@@ -74,7 +74,7 @@ const findAll = async () => {
   } catch (e) {
     //si ocurre un error se lanza una excepcion
     throw new serviceError(
-      e.message || "Internal Service error",
+      e.message || "Internal Service error while find roles",
       e.code || roleCodes.NOT_FOUND
     );
   }

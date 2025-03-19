@@ -104,7 +104,7 @@ node --watch server.js
 
 Los principales endpoints de la API se detallan a continuación:
 
-## Endpoints para productos
+## Endpoints para roles
 
 ### Creacion de roles
 
@@ -166,6 +166,80 @@ Posibles errores adicionales:
 ```json
 {
   "error": "Internal Service error while create role"
+}
+```
+
+### Buscar todos los roles
+
+- **Method:** `GET`
+- **Path:** `/role/all`
+- **Descripción:** Este endpoint permite a los administradores buscar todos los roles registrados dentro de la db.
+
+### Requisito de autenticacion
+
+- **Autenticación:** Requiere estar logueado. La solicitud debe incluir un token de JWT válido para proceder.
+- **Roles permitidos:** Solo los usuarios con los roles máximos tienen permiso para realizar esta acción y gestionar la información de otros usuarios.
+
+#### Ejemplo de respuesta
+
+- **Exitoso:**
+
+```json
+{
+  "success": true,
+  "message": "success",
+  "data": [
+    {
+      "id": "ADMIN",
+      "rol": "administrador",
+      "createdAt": "2025-02-26T18:17:03.000Z",
+      "updatedAt": "2025-02-26T18:17:03.000Z"
+    },
+    {
+      "id": "CLTE",
+      "rol": "cliente",
+      "createdAt": "2025-02-26T18:17:03.000Z",
+      "updatedAt": "2025-02-26T18:17:03.000Z"
+    },
+    {
+      "id": "MODER",
+      "rol": "moderador",
+      "createdAt": "2025-02-26T18:17:03.000Z",
+      "updatedAt": "2025-02-26T18:17:03.000Z"
+    },
+    {
+      "id": "SPADMIN3",
+      "rol": "superadmin3",
+      "createdAt": "2025-03-19T18:02:50.000Z",
+      "updatedAt": "2025-03-19T18:02:50.000Z"
+    }
+  ]
+}
+```
+
+- **Error:**
+
+```json
+{
+  "error": "You are not allowed to access this resource"
+}
+```
+
+Posibles errores adicionales:
+
+- **Token ya expirado:**
+
+```json
+{
+  "error": "Token expired"
+}
+```
+
+- **Error interno del servidor:**
+
+```json
+{
+  "error": "Internal Service error while find roles"
 }
 ```
 
@@ -329,7 +403,7 @@ Posibles errores adicionales:
 
 ```json
 {
-  "error": "TokenExpiredError is not defined"
+  "error": "Token expired"
 }
 ```
 
@@ -399,7 +473,7 @@ Posibles errores adicionales:
 
 ```json
 {
-  "error": "TokenExpiredError is not defined"
+  "error": "Token expired"
 }
 ```
 
@@ -1144,7 +1218,7 @@ Posibles errores adicionales:
 
 ```json
 {
-  "error": "TokenExpiredError is not defined"
+  "error": "Token expired"
 }
 ```
 
@@ -1288,7 +1362,7 @@ Posibles errores adicionales:
 
 ```json
 {
-  "error": "TokenExpiredError is not defined"
+  "error": "Token expired"
 }
 ```
 
@@ -1371,7 +1445,7 @@ Posibles errores adicionales:
 
 ```json
 {
-  "error": "TokenExpiredError is not defined"
+  "error": "Token expired"
 }
 ```
 
@@ -1462,7 +1536,7 @@ Posibles errores adicionales:
 
 ```json
 {
-  "error": "TokenExpiredError is not defined"
+  "error": "Token expired"
 }
 ```
 
@@ -1519,7 +1593,7 @@ Posibles errores adicionales:
 
 ```json
 {
-  "error": "TokenExpiredError is not defined"
+  "error": "Token expired"
 }
 ```
 
