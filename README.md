@@ -1408,3 +1408,60 @@ Posibles errores adicionales:
   "error": "Internal server error while paid order"
 }
 ```
+
+### Confirmacion de reembolso
+
+- **Method:** `PUT`
+- **Path:** `/payment/refund/:id`
+- **Descripción:** Este endpoint permite a los usuarios administradores revisar la solucitud de reembolso y aprovar dicho reembolso.
+
+### Requisito de autenticacion
+
+- **Autenticación:** Requiere estar logueado. La solicitud debe incluir un token de JWT válido para proceder.
+- **Roles permitidos:** Solo los usuarios con los roles máximos tienen permiso para realizar esta acción y gestionar la información de otros usuarios.
+
+#### Ejemplo de respuesta
+
+- **Exitoso:**
+
+```json
+{
+  "success": true,
+  "message": "order reembolsada",
+  "data": {}
+}
+```
+
+- **Error:**
+
+```json
+{
+  "error": "Estate order is invalid for refund"
+}
+```
+
+Posibles errores adicionales:
+
+- **Ordern no existente:**
+
+```json
+{
+  "error": "Order not exist"
+}
+```
+
+- **Token ya expirado:**
+
+```json
+{
+  "error": "TokenExpiredError is not defined"
+}
+```
+
+- **Error interno del servidor:**
+
+```json
+{
+  "error": "Internal server error while refund order"
+}
+```
