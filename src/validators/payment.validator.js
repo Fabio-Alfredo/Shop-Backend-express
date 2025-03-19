@@ -25,6 +25,7 @@ const createPaymentValidator = [
     .bail(),
 
   body("paymentDetails")
+    .exists()
     .isObject()
     .withMessage("Payment details must be an object.")
     .notEmpty()

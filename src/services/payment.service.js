@@ -19,11 +19,17 @@ const createPayment = async (payment, user) => {
     //buscamos la orden a pagar
 
     const existOrder = await orderService.orderFindById(paymentData.orderId, t);
-    console.log(existOrder);
     //validamos que el usuario que paga sea el mismo que creo la orden
     if (existOrder.user.id !== user.id) {
       throw new ServiceError(
         "You are not authorized to pay this order",
+        PaymentCodes.NOT_FOUND
+      );
+    }
+
+    if (existOrder.status !== "pending" ) {
+      throw new ServiceError(
+        "Error, the order not is pending",
         PaymentCodes.NOT_FOUND
       );
     }
