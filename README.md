@@ -1234,3 +1234,94 @@ Posibles errores adicionales:
   "error": "Internal service errro for find user"
 }
 ```
+
+### Solicitar reembolos par una orden
+
+- **Method:** `PUT`
+- **Path:** `/order/cancel/:id`
+- **Descripción:** Este endpoint permite a los usuarios solicitar el reembolso por alguna orden que desean cancelar, la orden quedara en estado de "processing refound" hasta que un administrador acepte o rechace el reembolso.
+
+### Requisito de autenticacion
+
+- **Autenticación:** Requiere estar logueado. La solicitud debe incluir un token de JWT válido para proceder.
+
+#### Ejemplo de respuesta
+
+- **Exitoso:**
+
+```json
+{
+  "success": true,
+  "message": "Order canceled",
+  "data": {
+    "id": "6ffe7f43-eb6a-4af3-88f6-b93e8b8b7cb9",
+    "total": "140.70",
+    "direction": "por aca",
+    "status": "processing refund",
+    "createdAt": "2025-03-16T16:40:09.000Z",
+    "updatedAt": "2025-03-19T17:16:22.000Z",
+    "userId": "6df3a7ac-920f-4bca-b339-746676230d7a",
+    "user": {
+      "id": "6df3a7ac-920f-4bca-b339-746676230d7a",
+      "name": "fabio2",
+      "email": "fabio2@gmail.com"
+    },
+    "products": [
+      {
+        "sku": "CARTO-004",
+        "id": "b2d8a815-3f4d-4ae6-8972-e4826dcd380c",
+        "name": "Camiseta",
+        "description": "Es una camiseta asi y asa",
+        "color": "azul",
+        "size": "s",
+        "price": "20.10",
+        "quantity": 2
+      },
+      {
+        "sku": "CARTO-006",
+        "id": "e7b69d73-a836-452f-a034-4145f9a59052",
+        "name": "Camiseta",
+        "description": "Es una camiseta asi y asa",
+        "color": "verde",
+        "size": "s",
+        "price": "20.10",
+        "quantity": 5
+      }
+    ]
+  }
+}
+```
+
+- **Error:**
+
+```json
+{
+  "error": "Estate order is invalid for cancel"
+}
+```
+
+Posibles errores adicionales:
+
+- **Token ya expirado:**
+
+```json
+{
+  "error": "TokenExpiredError is not defined"
+}
+```
+
+- **Error interno del servidor:**
+
+```json
+{
+  "error": "Internal service errro for find user"
+}
+```
+
+- **Id en formato invalido:**
+
+```json
+{
+  "errors": ["Product id must be a valid UUID"]
+}
+```
