@@ -89,7 +89,7 @@ const findAll = async () => {
  * @throws {ServiceError} error con detalles del problema
  */
 const create = async (id, role) => {
-  const t = await roleRepository.getTransaction();
+  const t = await roleRepository.startTransaction();
   try {
     //se verifica si ya existe un rol con ese id y nombre
     //si ya existe se lanza una excepcion
@@ -111,7 +111,7 @@ const create = async (id, role) => {
     //se lanza una excepcion
     await t.rollback();
     throw new serviceError(
-      e.message || "Internal Service error",
+      e.message || "Internal Service error while create role",
       e.code || roleCodes.NOT_FOUND
     );
   }
