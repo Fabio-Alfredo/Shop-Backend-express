@@ -1098,3 +1098,139 @@ Posibles errores adicionales:
   "error": "Internal service errro for find user"
 }
 ```
+
+### Buscar todas las ordenes de un usuario
+
+- **Method:** `GET`
+- **Path:** `/order/findUser`
+- **Descripción:** Este endpoint permite a los usuario buscar la informacion de todas las ordenes que ha realizado.
+
+### Requisito de autenticacion
+
+- **Autenticación:** Requiere estar logueado. La solicitud debe incluir un token de JWT válido para proceder.
+
+#### Ejemplo de respuesta
+
+- **Exitoso:**
+
+```json
+{
+  "success": true,
+  "message": "succes",
+  "data": [
+    {
+      "id": "6494138f-ad52-4ada-9cff-3b5d8fb34722",
+      "total": "140.70",
+      "direction": "por aca",
+      "status": "refunded",
+      "createdAt": "2025-02-26T19:59:58.000Z",
+      "updatedAt": "2025-02-26T21:19:12.000Z",
+      "userId": "6df3a7ac-920f-4bca-b339-746676230d7a",
+      "products": [
+        {
+          "sku": "CARTO-004",
+          "name": "Camiseta",
+          "description": "Es una camiseta asi y asa",
+          "color": "azul",
+          "size": "s",
+          "price": "20.10",
+          "quantity": 2
+        },
+        {
+          "sku": "CARTO-006",
+          "name": "Camiseta",
+          "description": "Es una camiseta asi y asa",
+          "color": "verde",
+          "size": "s",
+          "price": "20.10",
+          "quantity": 5
+        }
+      ]
+    },
+    {
+      "id": "6ffe7f43-eb6a-4af3-88f6-b93e8b8b7cb9",
+      "total": "140.70",
+      "direction": "por aca",
+      "status": "pending",
+      "createdAt": "2025-03-16T16:40:09.000Z",
+      "updatedAt": "2025-03-16T16:40:09.000Z",
+      "userId": "6df3a7ac-920f-4bca-b339-746676230d7a",
+      "products": [
+        {
+          "sku": "CARTO-004",
+          "name": "Camiseta",
+          "description": "Es una camiseta asi y asa",
+          "color": "azul",
+          "size": "s",
+          "price": "20.10",
+          "quantity": 2
+        },
+        {
+          "sku": "CARTO-006",
+          "name": "Camiseta",
+          "description": "Es una camiseta asi y asa",
+          "color": "verde",
+          "size": "s",
+          "price": "20.10",
+          "quantity": 5
+        }
+      ]
+    },
+    {
+      "id": "aeb7903e-b0cc-4fc7-ade7-441580fdf20b",
+      "total": "140.70",
+      "direction": "por aca",
+      "status": "pending",
+      "createdAt": "2025-03-16T16:38:52.000Z",
+      "updatedAt": "2025-03-16T16:38:52.000Z",
+      "userId": "6df3a7ac-920f-4bca-b339-746676230d7a",
+      "products": [
+        {
+          "sku": "CARTO-004",
+          "name": "Camiseta",
+          "description": "Es una camiseta asi y asa",
+          "color": "azul",
+          "size": "s",
+          "price": "20.10",
+          "quantity": 2
+        },
+        {
+          "sku": "CARTO-006",
+          "name": "Camiseta",
+          "description": "Es una camiseta asi y asa",
+          "color": "verde",
+          "size": "s",
+          "price": "20.10",
+          "quantity": 5
+        }
+      ]
+    }
+  ]
+}
+```
+
+- **Error:**
+
+```json
+{
+  "error": "authorization header is required"
+}
+```
+
+Posibles errores adicionales:
+
+- **Token ya expirado:**
+
+```json
+{
+  "error": "TokenExpiredError is not defined"
+}
+```
+
+- **Error interno del servidor:**
+
+```json
+{
+  "error": "Internal service errro for find user"
+}
+```
