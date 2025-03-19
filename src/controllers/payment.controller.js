@@ -16,8 +16,9 @@ const createPayment = async (req, res, next) => {
   try {
     //se obtiene la data del pago
     const payment = req.body;
+    const user = req.user;
     //se genera el pago
-    const newPayment = await paymentService.createPayment(payment);
+    const newPayment = await paymentService.createPayment(payment, user);
     //se retorna el pago creado
     return responseHandler(res, 201,'succes', newPayment);
   } catch (e) {

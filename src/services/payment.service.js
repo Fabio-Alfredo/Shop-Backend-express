@@ -11,15 +11,22 @@ const ServiceError = require("../utils/errors/service.error");
  * @returns {Promise<Object>} pago creado
  * @throws {ServiceError} error con detalles del problema
  */
-const createPayment = async (payment) => {
+const createPayment = async (payment, user) => {
   const t = await paymentRepository.startTransaction();
   try {
     //separamos los detalles del pago
     const { paymentDetails, ...paymentData } = payment;
     //buscamos la orden a pagar
-   
-    const existOrder = await orderService.orderFindById(paymentData.orderId, t);
 
+    const existOrder = await orderService.orderFindById(paymentData.orderId, t);
+    console.log(existOrder);
+    //validamos que el usuario que paga sea el mismo que creo la orden
+    if (existOrder.user.id !== user.id) {
+      throw new ServiceError(
+        "You are not authorized to pay this order",
+        PaymentCodes.NOT_FOUND
+      );
+    }
     //realizamos la transaccion
     //await transactionService.stripeTransaction(existOrder.total, paymentDetails);
 
