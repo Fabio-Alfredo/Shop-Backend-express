@@ -29,6 +29,20 @@ Antes de comenzar con la instalación, asegúrate de tener lo siguiente:
 - **Node.js**: Necesitarás tener Node.js instalado. Puedes descargarlo e instalarlo desde [aquí](https://nodejs.org/es).
 - **MySQL**: Este proyecto requiere una base de datos MySQL para almacenar la información. Asegúrate de tener MySQL instalado en tu máquina o de tener acceso a un servidor MySQL. Puedes descargar MySQL desde [aquí](https://dev.mysql.com/downloads/installer/).
 - **Stripe**: Si planeas usar la integración de pagos con [Stripe](https://stripe.com/es-us), necesitarás una cuenta en Stripe y una clave secreta para procesar pagos.
+-**FireBase**:Para el manejo de imágenes, necesitarás contar con unacuenta de [FireBase](https://console.firebase.google.com) válida.
+La clave generada por Firebase, denominada **serviceAccountKey.json**, debe ser colocada en la raíz del proyecto para su correcto funcionamiento.
+A continuación, se muestra un esquema básico de la estructura de tu proyecto y dónde debe ir el archivo con la clave de Firebase:
+
+```bash
+/mi-proyecto
+├── /node_modules
+├── /src
+├── /public
+├── .env.example
+├── .env
+├── serviceAccountKey.json <-- Este archivo
+└── README.md
+```
 
 ## Instalacion
 
