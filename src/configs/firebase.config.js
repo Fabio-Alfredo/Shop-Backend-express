@@ -8,3 +8,5 @@ if (!admin.apps.length) {
     storageBucket: config.storage_bucket,
   });
 }
+
+module.exports = admin;
