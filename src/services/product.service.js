@@ -3,6 +3,8 @@ const categoryService = require("../services/category.service");
 const variantsService = require("../services/product_variants.service");
 const ProductCodes = require("../utils/errors/errorsCodes/product.codes");
 const ServiceError = require("../utils/errors/service.error");
+const uploadImage = require("../handlers/uploadImage.handler");
+const createImges = require("./product_images.service");
 
 /**
  * Servicio para registrar un nuevo producto
@@ -18,6 +20,7 @@ const ServiceError = require("../utils/errors/service.error");
  * @throws {ServiceError} error con detalles del problema
  */
 const registerProduct = async (
+  images,
   sku,
   name,
   description,
@@ -30,13 +33,20 @@ const registerProduct = async (
   try {
     //Validacion de la existencia de un producto con ese sku
     await findBySku(sku);
-
+    if (!images && !images.length)
+      throw new ServiceError(
+        "Se requiere al menos una imagen para el producto",
+        ProductCodes.INVALID_PRODUCT
+      );
+    
     //se create un nuevo producto
     const product = await productRepository.create(
       { sku, name, description, price, stock },
       t
     );
 
+    const imagesUrl = await uploadImage(images.images, "products");
+    await createImges.createImage(imagesUrl,product.id, t);
     //se guardan las variantes del producto
     await variantsService.save(variants, product.id, t);
     //se asigna la categoria al producto

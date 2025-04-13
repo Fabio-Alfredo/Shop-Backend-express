@@ -24,8 +24,7 @@ const create = async (user_roles, t) => {
  * @returns {Promise<*>} confirmacion de eliminacion
  */
 const deleteByUserIdAndRoleId = async (userId, roleIds, t) => {
-  console.log(userId, roleIds);
-  console.log(t);
+
   const deletedRelation = await User_role.destroy({
     where: {
       userId,

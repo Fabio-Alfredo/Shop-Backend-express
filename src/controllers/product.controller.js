@@ -18,9 +18,10 @@ const registerProduct = async (req, res, next) => {
     //se obtiene la data del producto
     const { sku, name, description, price, stock, variants, category } =
       req.body;
-
+    const images = req.files;
     //se crea el producto
     const newProduct = await productService.registerProduct(
+      images,
       sku,
       name,
       description,
@@ -29,7 +30,7 @@ const registerProduct = async (req, res, next) => {
       variants,
       category
     );
-    console.log(newProduct);
+
     //se retorna el producto creado
     return responseHandler(res, 201, "Product created", newProduct);
   } catch (e) {

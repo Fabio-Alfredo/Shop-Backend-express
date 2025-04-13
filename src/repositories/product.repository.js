@@ -1,4 +1,4 @@
-const { Product, Product_variants, Category } = require("../domain/models");
+const { Product, Product_variants, Category, Product_images } = require("../domain/models");
 
 /**
  * Inicializa una transaccion
@@ -40,7 +40,9 @@ const findBySku = async (sku) => {
  * @returns {Promise<*>} producto encontrado
  */
 const findById = async (id) => {
-  const product = await Product.findOne({ where: { id } });
+  const product = await Product.findOne(
+    { where: { id } }
+  );
   return product;
 };
 
@@ -76,6 +78,12 @@ const findAll = async () => {
         model: Category,
         through: { attributes: [] },
       }, //incluye la categoria
+      {
+        model: Product_images,
+        as: "images",
+        through: { attributes: [] },
+        require: false,
+      },
     ],
   });
   return prducts || [];

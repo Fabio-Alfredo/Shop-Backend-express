@@ -96,7 +96,7 @@ const getOrderById = async (req, res, next) => {
     const { id } = req.params;
     //se busca la orden por id
     const order = await orderService.orderFindById(id);
-    console.log(order);
+
     //se retorna la orden
     return responseHandler(res, 200, "succes", order);
   } catch (e) {
