@@ -1,3 +1,5 @@
+const { storage } = require("firebase-admin");
+
 require("dotenv").config();
 const {
   PORT,
@@ -10,6 +12,7 @@ const {
   JWT_SECRET,
   STRIPE_SECRET,
   NODE_ENV,
+  STORAGE_BUCKET,
 } = process.env;
 
 //valida que las variables de entorno no esten vacias
@@ -25,6 +28,7 @@ const validEnv = (env, name) => {
 //para desarrollo y produccion
 const config = {
   development: {
+    storage_bucket: validEnv(STORAGE_BUCKET, "STORAGE_BUCKET"),
     db_user: validEnv(DB_USER, "DB USER"),
     db_pass: validEnv(DB_PASSWORD, "DB PASSWORD"),
     database: validEnv(DATABASE, "DATABASE"),
@@ -36,6 +40,7 @@ const config = {
     stripe: validEnv(STRIPE_SECRET, "STRIPE_SECRET"),
   },
   production: {
+    storage_bucket: validEnv(STORAGE_BUCKET, "STORAGE_BUCKET"),
     db_user: validEnv(DB_USER, "DB USER"),
     db_pass: validEnv(DB_PASSWORD, "DB PASSWORD"),
     database: validEnv(DATABASE, "DATABASE"),
