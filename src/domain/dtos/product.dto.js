@@ -19,8 +19,13 @@ const productDto = (product) => {
         stock: variant.stock,
       };
     }),
+    images: product.images.map((image) => {
+      return {
+        id: image.id,
+        url: image.url,
+      };
+    }),
   };
 };
-
 
 module.exports = productDto;

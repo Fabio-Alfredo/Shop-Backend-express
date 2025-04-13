@@ -81,8 +81,6 @@ const findAll = async () => {
       {
         model: Product_images,
         as: "images",
-        through: { attributes: [] },
-        require: false,
       },
     ],
   });
@@ -107,6 +105,12 @@ const findAllByCategory = async (categoryId) => {
       {
         model: Product_variants, //incluye las variantes
         as: "product_variants",
+      },
+      {
+        model: Product_images,
+        as: "images",
+        through: { attributes: [] },
+        require: false,
       },
     ],
   });

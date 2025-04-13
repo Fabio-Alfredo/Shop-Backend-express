@@ -48,7 +48,7 @@ const registerProduct = async (
     const imagesUrl = await uploadImage(images.images, "products");
     await createImges.createImage(imagesUrl,product.id, t);
     //se guardan las variantes del producto
-    await variantsService.save(variants, product.id, t);
+    // await variantsService.save(variants, product.id, t);
     //se asigna la categoria al producto
     await assingCategory(product, category, t);
 
