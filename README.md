@@ -28,10 +28,9 @@ Antes de comenzar con la instalación, asegúrate de tener lo siguiente:
 
 - **Node.js**: Necesitarás tener Node.js instalado. Puedes descargarlo e instalarlo desde [aquí](https://nodejs.org/es).
 - **MySQL**: Este proyecto requiere una base de datos MySQL para almacenar la información. Asegúrate de tener MySQL instalado en tu máquina o de tener acceso a un servidor MySQL. Puedes descargar MySQL desde [aquí](https://dev.mysql.com/downloads/installer/).
-- **Stripe**: Si planeas usar la integración de pagos con [Stripe](https://stripe.com/es-us), necesitarás una cuenta en Stripe y una clave secreta para procesar pagos.
--**FireBase**:Para el manejo de imágenes, necesitarás contar con unacuenta de [FireBase](https://console.firebase.google.com) válida.
-La clave generada por Firebase, denominada **serviceAccountKey.json**, debe ser colocada en la raíz del proyecto para su correcto funcionamiento.
-A continuación, se muestra un esquema básico de la estructura de tu proyecto y dónde debe ir el archivo con la clave de Firebase:
+- **Stripe**: Si planeas usar la integración de pagos con [Stripe](https://stripe.com/es-us), necesitarás una cuenta en Stripe y una clave secreta para procesar pagos. -**FireBase**:Para el manejo de imágenes, necesitarás contar con unacuenta de [FireBase](https://console.firebase.google.com) válida.
+  La clave generada por Firebase, denominada **serviceAccountKey.json**, debe ser colocada en la raíz del proyecto para su correcto funcionamiento.
+  A continuación, se muestra un esquema básico de la estructura de tu proyecto y dónde debe ir el archivo con la clave de Firebase:
 
 ```bash
 /mi-proyecto
@@ -599,6 +598,16 @@ Posibles errores adicionales:
       "size": "m",
       "stock": 50
     }
+  ],
+  "images": [
+    {
+      "id": "d5e76d0d-44f8-4383-a796-84a792cb900e",
+      "url": "https://storage.googleapis.com/reservite-a0e86.firebasestorage.app/products/WhatsApp%20Image%202024-11-09%20at%2012.58.52.jpeg1744511828524?GoogleAccessId=firebase-adminsdk-fbsvc%40reservite-a0e86.iam.gserviceaccount.com&Expires=1744598229&Signature=fUcmbEg2xySHCmLkuzC8QQx%2BY6VYZWuHkujrGmJNEAP5FWmQKbiMvURAV5fGBmRRCAC4L5zYdnPjklQ1XE3k6jL%2F4G2H3NPxByrhUwPZD9kUwg4Vq4%2BhrtKRTzedKgBVXBfrlTinHC%2BYwl3cC%2FQ21OXmtJhoBdefRVyOj4KC2E7ZexyzRMQJJVxUyWP4jWYWXpK3YYvhUrS6EPug5SIpXEy5ZWWVE3MuRe8s6Ida7eQcO5Fs%2BQ9SMRBrqvnKkv6bX%2BYxIHaeXsH17oZDxHV%2FhDuyVpfH6cb2Cr%2FqwpgRN7QiNADZRKEZEAt7eE2%2FgmXa1dkZH20ajAw3osS5Idx2%2Fg%3D%3D"
+    },
+    {
+      "id": "53ce282b-f2e9-49cc-8a08-b889e4a9cd0e",
+      "url": "https://storage.googleapis.com/reservite-a0e86.firebasestorage.app/products/Zoro-One-Piece.1674496496.0855.jpg1744511828523?GoogleAccessId=firebase-adminsdk-fbsvc%40reservite-a0e86.iam.gserviceaccount.com&Expires=1744598229&Signature=r3NRlhv0RLWfCzWWgitW2EM2mzK0uFNOY1UWQqpSOM5MkDcSldQCapb11FATCT3UhKVdohjk3m9hI6nhG4mt7DeN833MnQsdUeZHN1YdhbjEBXfq1IOY1i7qwbaMcvGg40e7WEc9P8T9u6E9I5bKoQgHziyo43HleRfbTnRkYMAnrPbPKELsVwIQb2m6TP5td3R89EFzeg0mIvQhk%2FJoIOE%2B3qF7SYR8OEYltzfIVB%2FG0FFI%2BrJkM0ypJ74cGfd8mh%2FSn0QSlc6z6qNc2pKxKRmv0p%2FleGEk%2F3jcIXXoyCJw3Vdk36K7kRCxv0TonK3cVbmen%2B30nyxdVzid%2FPQI0A%3D%3D"
+    }
   ]
 }
 ```
@@ -693,6 +702,16 @@ Posibles errores adicionales:
           "color": "amarilla",
           "size": "m",
           "stock": 50
+        }
+      ],
+      "images": [
+        {
+          "id": "d5e76d0d-44f8-4383-a796-84a792cb900e",
+          "url": "https://storage.googleapis.com/reservite-a0e86.firebasestorage.app/products/WhatsApp%20Image%202024-11-09%20at%2012.58.52.jpeg1744511828524?GoogleAccessId=firebase-adminsdk-fbsvc%40reservite-a0e86.iam.gserviceaccount.com&Expires=1744598229&Signature=fUcmbEg2xySHCmLkuzC8QQx%2BY6VYZWuHkujrGmJNEAP5FWmQKbiMvURAV5fGBmRRCAC4L5zYdnPjklQ1XE3k6jL%2F4G2H3NPxByrhUwPZD9kUwg4Vq4%2BhrtKRTzedKgBVXBfrlTinHC%2BYwl3cC%2FQ21OXmtJhoBdefRVyOj4KC2E7ZexyzRMQJJVxUyWP4jWYWXpK3YYvhUrS6EPug5SIpXEy5ZWWVE3MuRe8s6Ida7eQcO5Fs%2BQ9SMRBrqvnKkv6bX%2BYxIHaeXsH17oZDxHV%2FhDuyVpfH6cb2Cr%2FqwpgRN7QiNADZRKEZEAt7eE2%2FgmXa1dkZH20ajAw3osS5Idx2%2Fg%3D%3D"
+        },
+        {
+          "id": "53ce282b-f2e9-49cc-8a08-b889e4a9cd0e",
+          "url": "https://storage.googleapis.com/reservite-a0e86.firebasestorage.app/products/Zoro-One-Piece.1674496496.0855.jpg1744511828523?GoogleAccessId=firebase-adminsdk-fbsvc%40reservite-a0e86.iam.gserviceaccount.com&Expires=1744598229&Signature=r3NRlhv0RLWfCzWWgitW2EM2mzK0uFNOY1UWQqpSOM5MkDcSldQCapb11FATCT3UhKVdohjk3m9hI6nhG4mt7DeN833MnQsdUeZHN1YdhbjEBXfq1IOY1i7qwbaMcvGg40e7WEc9P8T9u6E9I5bKoQgHziyo43HleRfbTnRkYMAnrPbPKELsVwIQb2m6TP5td3R89EFzeg0mIvQhk%2FJoIOE%2B3qF7SYR8OEYltzfIVB%2FG0FFI%2BrJkM0ypJ74cGfd8mh%2FSn0QSlc6z6qNc2pKxKRmv0p%2FleGEk%2F3jcIXXoyCJw3Vdk36K7kRCxv0TonK3cVbmen%2B30nyxdVzid%2FPQI0A%3D%3D"
         }
       ]
     }
