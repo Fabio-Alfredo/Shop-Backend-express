@@ -578,39 +578,20 @@ Posibles errores adicionales:
 - **Autenticación:** Requiere estar logueado. La solicitud debe incluir un token de JWT válido para proceder.
 - **Roles permitidos:** Solo los usuarios con los roles máximos tienen permiso para realizar esta acción y gestionar la información de otros usuarios.
 
-#### Ejemplo de solicitud
+#### Ejemplo de solicitud (form-data)
 
-```json
-{
-  "sku": "CARTO-006",
-  "name": "Camiseta ",
-  "description": "Es una camiseta asi y asa",
-  "price": 20.1,
-  "category": "ZAP",
-  "variants": [
-    {
-      "color": "azul",
-      "size": "s",
-      "stock": 50
-    },
-    {
-      "color": "amarilla",
-      "size": "m",
-      "stock": 50
-    }
-  ],
-  "images": [
-    {
-      "id": "d5e76d0d-44f8-4383-a796-84a792cb900e",
-      "url": "https://storage.googleapis.com/reservite-a0e86.firebasestorage.app/products/WhatsApp%20Image%202024-11-09%20at%2012.58.52.jpeg1744511828524?GoogleAccessId=firebase-adminsdk-fbsvc%40reservite-a0e86.iam.gserviceaccount.com&Expires=1744598229&Signature=fUcmbEg2xySHCmLkuzC8QQx%2BY6VYZWuHkujrGmJNEAP5FWmQKbiMvURAV5fGBmRRCAC4L5zYdnPjklQ1XE3k6jL%2F4G2H3NPxByrhUwPZD9kUwg4Vq4%2BhrtKRTzedKgBVXBfrlTinHC%2BYwl3cC%2FQ21OXmtJhoBdefRVyOj4KC2E7ZexyzRMQJJVxUyWP4jWYWXpK3YYvhUrS6EPug5SIpXEy5ZWWVE3MuRe8s6Ida7eQcO5Fs%2BQ9SMRBrqvnKkv6bX%2BYxIHaeXsH17oZDxHV%2FhDuyVpfH6cb2Cr%2FqwpgRN7QiNADZRKEZEAt7eE2%2FgmXa1dkZH20ajAw3osS5Idx2%2Fg%3D%3D"
-    },
-    {
-      "id": "53ce282b-f2e9-49cc-8a08-b889e4a9cd0e",
-      "url": "https://storage.googleapis.com/reservite-a0e86.firebasestorage.app/products/Zoro-One-Piece.1674496496.0855.jpg1744511828523?GoogleAccessId=firebase-adminsdk-fbsvc%40reservite-a0e86.iam.gserviceaccount.com&Expires=1744598229&Signature=r3NRlhv0RLWfCzWWgitW2EM2mzK0uFNOY1UWQqpSOM5MkDcSldQCapb11FATCT3UhKVdohjk3m9hI6nhG4mt7DeN833MnQsdUeZHN1YdhbjEBXfq1IOY1i7qwbaMcvGg40e7WEc9P8T9u6E9I5bKoQgHziyo43HleRfbTnRkYMAnrPbPKELsVwIQb2m6TP5td3R89EFzeg0mIvQhk%2FJoIOE%2B3qF7SYR8OEYltzfIVB%2FG0FFI%2BrJkM0ypJ74cGfd8mh%2FSn0QSlc6z6qNc2pKxKRmv0p%2FleGEk%2F3jcIXXoyCJw3Vdk36K7kRCxv0TonK3cVbmen%2B30nyxdVzid%2FPQI0A%3D%3D"
-    }
-  ]
-}
-```
+
+| Campo       | Tipo    | Descripción                     | Ejemplo                                                                           |
+| ----------- | ------- | ------------------------------- | --------------------------------------------------------------------------------- |
+| sku         | Texto   | Código único del producto       | `CARTO-006`                                                                       |
+| name        | Texto   | Nombre del producto             | `Camiseta`                                                                        |
+| description | Texto   | Descripción del producto        | `Camiseta de algodón 100%`                                                        |
+| price       | Texto   | Precio del producto (decimal)   | `20.1`                                                                            |
+| stock       | Texto   | Cantidad en inventario          | `100`                                                                             |
+| category    | Texto   | Categoría del producto          | `ZAP`                                                                             |
+| variants    | Texto   | JSON string con variantes       | `[{"color":"azul","size":"s","stock":50},{"color":"rojo","size":"m","stock":30}]` |
+| images      | Archivo | Una o más imágenes del producto | Seleccionar uno o varios archivos desde tu dispositivo   
+
 
 #### Ejemplo de respuesta
 
@@ -618,17 +599,28 @@ Posibles errores adicionales:
 
 ```json
 {
-  "success": true,
-  "message": "Product created",
-  "data": {
-    "id": "829942b1-daef-4f6b-963f-00258b2e2e4f",
-    "status": true,
-    "sku": "CARTO-012",
-    "name": "Camiseta 2",
-    "description": "Es una camiseta asi y asa",
+  "message": "Producto creado exitosamente",
+  "product": {
+    "id": 15,
+    "sku": "CARTO-006",
+    "name": "Camiseta",
     "price": 20.1,
-    "updatedAt": "2025-03-16T04:09:43.439Z",
-    "createdAt": "2025-03-16T04:09:43.439Z"
+    "stock": 100,
+    "category": "ZAP",
+    "variants": [
+      {"color":"azul","size":"s","stock":50},
+      {"color":"rojo","size":"m","stock":30}
+    ],
+    "images": [
+      {
+        "id": "uuid-1",
+        "url": "https://storage.firebase.com/imagen1.jpg"
+      },
+      {
+        "id": "uuid-2",
+        "url": "https://storage.firebase.com/imagen2.jpg"
+      }
+    ]
   }
 }
 ```
