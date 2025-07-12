@@ -26,10 +26,10 @@ nav:
     - Introducción: endpoints.md
     - Productos:
       - Registrar producto: products/register.md
+      - Editar stock: products/add_stock.md
       - Buscar producto por categoría: products/find_by_category.md
       - Actualizar producto: products/update.md
       - Eliminar producto: products/delete.md
-      - Editar stock: products/add_stock.md
     - Categorías:
       - Crear categoría: categories/create.md
       - Listar categorías: categories/list.md
