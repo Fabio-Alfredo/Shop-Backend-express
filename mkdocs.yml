@@ -31,6 +31,7 @@ nav:
       - Actualizar producto: products/update.md
       - Eliminar producto: products/delete.md
       - Obtener todos los productos: products/find_all.md
+      - Buscar producto por ID: products/find_id.md
     - Categorías:
       - Crear categoría: categories/create.md
       - Listar categorías: categories/list.md

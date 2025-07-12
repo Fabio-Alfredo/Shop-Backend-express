@@ -97,8 +97,7 @@ Content-Type: application/json
 | Código | Motivo                      | Solución                                                     |
 | ------ | --------------------------- | ------------------------------------------------------------ |
 | 404    | Categoría no encontrada     | Verifica que la categoría exista y esté registrada correctamente |
-| 403    | Acceso denegado             | Asegúrate de que el token JWT sea válido y el usuario tenga permisos |
-| 401    | Token inválido o no enviado | Asegúrate de enviar el token en el header y que sea válido |
+| 500    | Error interno del servidor  | Contacta al administrador del sistema si el problema persiste. |
 ---
 
 
