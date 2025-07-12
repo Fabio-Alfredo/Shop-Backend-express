@@ -77,12 +77,13 @@ npm node --watch server.js
 Lista! Ahora tu API debería estar corriendo en `http://localhost:3000`.(o el puerto que hayas configurado en `.env`).
 
 ---
-## 🚀 ¿Dónde puedo probar la API?
-Puedes utilizar herramientas como [Postman](https://www.postman.com/) o [Insomnia](https://insomnia.rest/) para probar los endpoints de la API.
 
----
-## 📚 ¿Qué hacer a continuación?
 
-👉 Ahora puedes pasar a la seccion de [Endpoints](endpoints.md) para explorar las funcionalidades disponibles.
+📚 **¿Y ahora qué sigue?**
+
+✨ **Paso 1:** Aprende cómo autenticarte correctamente en la [guía de autenticación](authentication.md).  
+🔍 **Paso 2:** Explora los [endpoints organizados por módulos](endpoints/index.md) y comienza a conectar tu app con Shop API.
+
+> ¡Todo está diseñado para que entiendas fácilmente cómo integrarte, incluso si no eres experto en backend!
 
 ---
