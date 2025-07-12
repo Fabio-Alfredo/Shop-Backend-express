@@ -21,6 +21,7 @@ nav:
   - Inicio: index.md
   - Introducción: introduction.md
   - Autenticación: authentication.md
+  - Instalación y configuración: instalacion.md
   - Productos:
       - Registrar producto: products/register.md
       - Buscar producto por categoría: products/find_by_category.md

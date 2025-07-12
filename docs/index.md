@@ -1,29 +1,52 @@
-# 🛍️ Bienvenido a la API de Tienda
+# 🛍️ Bienvenido a Shop API
 
-¡Bienvenido a la documentación oficial de la API de gestión de productos, órdenes y pagos de la tienda! Aquí encontrarás toda la información necesaria para integrar, consumir y entender cada uno de los endpoints de forma clara, ordenada e intuitiva.
-
-## ✨ Características principales
-
-- Gestión de productos y variantes
-- Administración de categorías
-- Creación y control de órdenes
-- Procesamiento de pagos
-- Autenticación con JWT
-- Control de accesos por roles
+> Una solución completa para la gestión de tiendas, compras, ventas y usuarios.
 
 ---
 
-### 📚 Estructura de la documentación
+Shop API te permite integrar fácilmente funcionalidades clave como:
 
-- [Introducción](introduction.md)
-- [Autenticación](authentication.md)
-- [Productos](products/register.md)
-- [Categorías](categories/create.md)
-- [Órdenes](orders/create.md)
-- [Pagos](payments/create.md)
-- [Errores comunes](errors.md)
+- ✅ Gestión de productos y stock
+- ✅ Creación de órdenes y cancelaciones
+- ✅ Procesamiento de pagos con Stripe
+- ✅ Control de usuarios con roles
+- ✅ Seguridad avanzada con autenticación JWT
+- ✅ Almacenamiento de imágenes con Firebase
+
+Ya seas desarrollador, administrador o simplemente estés explorando, esta documentación está pensada para **ser clara, interactiva y fácil de entender**.
 
 ---
 
+## 🚀 ¿Qué puedes hacer aquí?
 
-👉 Utiliza el menú de navegación para acceder a los módulos. Si necesitas ayuda, no dudes en contactar al equipo de desarrollo.
+Con esta documentación podrás:
+
+📦 **Consultar endpoints**  
+Explora cada ruta, sus parámetros, respuestas y ejemplos reales.
+
+🔐 **Entender la seguridad**  
+Aprende cómo se maneja la autenticación y los permisos por rol.
+
+🛠️ **Conectar tu app fácilmente**  
+Sigue nuestras guías paso a paso para consumir esta API desde tu frontend o herramienta favorita (Postman, Insomnia...).
+
+---
+
+## 🧩 Estructura general
+
+```plaintext
+📁 Productos          → Registrar, editar, eliminar y consultar productos
+🧾 Órdenes            → Crear compras, cancelar, reembolsar
+🧑 Usuarios           → Registro, login y control de roles
+🛡️ Seguridad          → JWT y protección de rutas
+💳 Pagos (Stripe)     → Procesar pagos de forma segura
+🖼️ Imágenes (Firebase)→ Almacenar imágenes asociadas
+```
+---
+
+## 🧭 ¿Por dónde empezar?
+
+Te recomendamos comenzar por 👉 [**Introducción**](introduction.md), donde aprenderás cómo instalar y configurar el entorno en pocos pasos.
+
+---
+
