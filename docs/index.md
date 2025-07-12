@@ -42,6 +42,7 @@ Sigue nuestras guías paso a paso para consumir esta API desde tu frontend o her
 💳 Pagos (Stripe)     → Procesar pagos de forma segura
 🖼️ Imágenes (Firebase)→ Almacenar imágenes asociadas
 ```
+
 ---
 
 ## 🧭 ¿Por dónde empezar?

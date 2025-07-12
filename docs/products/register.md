@@ -37,8 +37,8 @@ ADMINISTRATOR
 ---
 
 ## 📦 Body (form-data)
-Metodo: `POST`
-Ruta: `/products/register`
+- **Método:** `POST`
+- **Ruta:** `/products/register`
 
 
 | Campo       | Tipo    | Descripción                     | Ejemplo                                                                           |

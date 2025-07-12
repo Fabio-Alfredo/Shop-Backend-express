@@ -30,6 +30,7 @@ nav:
       - Buscar producto por categoría: products/find_by_category.md
       - Actualizar producto: products/update.md
       - Eliminar producto: products/delete.md
+      - Obtener todos los productos: products/find_all.md
     - Categorías:
       - Crear categoría: categories/create.md
       - Listar categorías: categories/list.md

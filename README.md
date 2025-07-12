@@ -740,19 +740,19 @@ Posibles errores adicionales:
 - **Autenticación:** Requiere estar logueado. La solicitud debe incluir un token de JWT válido para proceder.
 - **Roles permitidos:** Solo los usuarios con los roles máximos tienen permiso para realizar esta acción y gestionar la información de otros usuarios.
 
-#### Ejemplo de solicitud
+#### Ejemplo de solicitud (form-data)
 
-```json
-{
-  "price": 30.1,
-  "variants": [
-    {
-      "id": "9936d73b-12cb-4855-bb15-420d2024cac0",
-      "color": "verde"
-    }
-  ]
-}
-```
+
+| Campo         | Tipo    | Requerido | Descripción                                |
+| ------------- | ------- | --------- | ------------------------------------------ |
+| `name`        | string  | ❌         | Nuevo nombre del producto                  |
+| `description` | string  | ❌         | Descripción del producto                   |
+| `price`       | number  | ❌         | Precio actualizado                         |
+| `stock`       | number  | ❌         | Nueva cantidad en inventario               |
+| `categoryId`  | number  | ❌         | ID de la nueva categoría                   |
+| `image`       | archivo | ❌         | Nueva imagen del producto (`.jpg`, `.png`) |
+| `variants`    | array   | ❌         | Nuevas variantes del producto (opcional)   |
+
 
 #### Ejemplo de respuesta
 

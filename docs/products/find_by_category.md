@@ -26,8 +26,8 @@ Este endpoint es público. Cualquier usuario puede consultar productos por categ
 
 ---
 ## 📦 Parámetros de la ruta
-Metodo: `GET`
-Ruta: `/product/findByCategory/:category`
+- **Método:** `GET`
+- **Ruta:** `/product/findByCategory/:category`
 
 | Nombre     | Tipo   | Descripción                          |
 |------------|--------|--------------------------------------|

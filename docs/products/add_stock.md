@@ -34,8 +34,8 @@ ADMINISTRATOR
 
 
 ## 📦 Body (JSON)
-Metodo: `PUT`
-Ruta: `/product/addStock/:id`
+- **Método:** `PUT`
+- **Ruta:** `/product/addStock/:id`
 
 Array con los productos a modificar. Cada producto debe incluir su ID y la cantidad a añadir al stock.
 
