@@ -19,6 +19,12 @@ Debes enviar un token JWT válido en el encabezado:
 Authorization: Bearer <token>
 ```
 
+Debes asegurarte de que el usuario tenga el rol adecuado para registrar productos.
+
+```http
+ADMINISTRATOR
+```
+
 ---
 
 ## 📋 Headers
@@ -105,6 +111,6 @@ Content-Type: application/json
 | 403    | Permiso denegado            | Solo los usuarios Admin pueden registrar productos           |
 
 
-## 💡 Tip
+## 💡 Tip "¿Sabías que...?"
 Puedes usar este endpoint junto a la subida de imágenes por Firebase para crear productos completos con fotos.
 
