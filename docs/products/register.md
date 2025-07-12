@@ -37,6 +37,9 @@ ADMINISTRATOR
 ---
 
 ## 📦 Body (form-data)
+Metodo: `POST`
+Ruta: `/products/register`
+
 
 | Campo       | Tipo    | Descripción                     | Ejemplo                                                                           |
 | ----------- | ------- | ------------------------------- | --------------------------------------------------------------------------------- |
@@ -101,6 +104,8 @@ Content-Type: application/json
 }
 
 ```
+
+---
 
 ## ❌ Respuesta de error
 

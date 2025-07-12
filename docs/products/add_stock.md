@@ -34,6 +34,9 @@ ADMINISTRATOR
 
 
 ## 📦 Body (JSON)
+Metodo: `PUT`
+Ruta: `/product/addStock/:id`
+
 Array con los productos a modificar. Cada producto debe incluir su ID y la cantidad a añadir al stock.
 
 ```json
@@ -72,6 +75,8 @@ curl -X PATCH "http://localhost:3000/api/product/addStock/7afc232e-c660-4c63-942
 ## 📄 Respuesta exitosa
 
 ```json
+HTTP/1.1 200 OK
+Content-Type: application/json
 {
   "success": true,
   "message": "Products added",
