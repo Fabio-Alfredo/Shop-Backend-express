@@ -34,7 +34,7 @@ nav:
       - Buscar producto por ID: products/find_id.md
     - Categorías:
       - Crear categoría: categories/create.md
-      - Listar categorías: categories/list.md
+      - Listar categorías: categories/find_all.md
     - Órdenes:
       - Crear orden: orders/create.md
       - Buscar orden por ID: orders/find_by_id.md
