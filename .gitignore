@@ -2,3 +2,5 @@ node_modules/
 .env
 .idea
 serviceAccountKey.json
+.DS_Store
+.venv

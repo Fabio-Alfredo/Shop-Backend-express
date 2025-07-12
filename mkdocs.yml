@@ -1,0 +1,56 @@
+site_name: "API Documentación - Shop"
+site_description: "Documentación completa y clara para la API de Shop, "
+site_author: "Equipo de Desarrollo Shop"
+site_url: "https://tu-dominio.com/docs"
+
+theme:
+  name: material
+  palette:
+    primary: 'indigo'
+    accent: 'indigo'
+  font:
+    text: Roboto
+    code: Roboto Mono
+  features:
+    - navigation.tabs
+    - navigation.sections
+  logo: 'assets/logo.png'
+  favicon: 'assets/favicon.ico'
+
+nav:
+  - Inicio: index.md
+  - Introducción: introduction.md
+  - Autenticación: authentication.md
+  - Productos:
+      - Registrar producto: products/register.md
+      - Buscar producto por categoría: products/find_by_category.md
+      - Actualizar producto: products/update.md
+      - Eliminar producto: products/delete.md
+      - Editar stock: products/add_stock.md
+  - Categorías:
+      - Crear categoría: categories/create.md
+      - Listar categorías: categories/list.md
+  - Órdenes:
+      - Crear orden: orders/create.md
+      - Buscar orden por ID: orders/find_by_id.md
+      - Buscar órdenes de usuario: orders/find_by_user.md
+      - Cancelar orden: orders/cancel.md
+  - Pagos:
+      - Crear pago: payments/create.md
+      - Confirmar reembolso: payments/refund.md
+  - Errores comunes: errors.md
+
+extra_css:
+  - assets/css/extra.css
+
+markdown_extensions:
+  - admonition
+  - codehilite:
+      guess_lang: false
+  - toc:
+      permalink: true
+  - pymdownx.superfences
+  - pymdownx.tabbed
+
+plugins:
+  - search
