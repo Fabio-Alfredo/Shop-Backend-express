@@ -24,6 +24,10 @@ nav:
   - Autenticación: authentication.md
   - Endpoints: 
     - Introducción: endpoints.md
+    - Usuarios:
+      - Editar rol de usuario: users/edit_role.md
+      - Listar usuarios: users/find_all.md
+      - Buscar usuario por ID: users/find_id.md
     - Productos:
       - Registrar producto: products/register.md
       - Editar stock: products/add_stock.md

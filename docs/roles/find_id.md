@@ -25,6 +25,7 @@ Debes asegurarte de que el usuario tenga el rol adecuado para buscar roles.
 ```http
 ADMINISTRATOR
 ```
+
 ---
 
 ## 📋 Headers
@@ -71,6 +72,7 @@ Content-Type: application/json
   }
 }
 ```
+
 ---
 
 ## ❌ Respuesta de error

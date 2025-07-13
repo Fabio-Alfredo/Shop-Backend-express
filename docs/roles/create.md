@@ -25,6 +25,7 @@ Debes asegurarte de que el usuario tenga el rol adecuado para crear roles.
 ```http
 ADMINISTRATOR
 ```
+
 ---
 
 ## 📋 Headers
