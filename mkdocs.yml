@@ -44,6 +44,10 @@ nav:
     - Pagos:
       - Crear pago: payments/create.md
       - Confirmar reembolso: payments/refund.md
+    - Roles:
+      - Crear rol: roles/create.md
+      - Listar roles: roles/find_all.md
+      - Buscar rol por ID: roles/find_id.md
 
   - Errores comunes: errors.md
 
