@@ -1,6 +1,6 @@
 # ❌ Cancelar orden / Solicitar reembolso
 
-Este endpoint permite **cancelar una orden** previamente creada. Si la orden ya fue pagada, se intentará realizar un **reembolso automático** usando el sistema de pagos (ej. Stripe).
+Este endpoint permite **cancelar una orden** previamente creada. Si la orden ya fue pagada, se intentará realizar un **reembolso** usando el sistema de pagos (ej. Stripe).
 
 ---
 
@@ -102,4 +102,4 @@ HTTP/1.1 200 OK
 ---
 
 ## ⚠️ Advertencia
-Si el pago fue procesado, el sistema intentará **realizar el reembolso automáticamente** a través de Stripe. Este proceso puede demorar unos minutos.
+Si el pago fue procesado, el sistema creara la solicitud de reembolso. Este proceso puede demorar unos minutos.
