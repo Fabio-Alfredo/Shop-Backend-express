@@ -1,7 +1,7 @@
 site_name: "API Documentación - Shop"
 site_description: "Documentación completa y clara para la API de Shop, "
-site_author: "Equipo de Desarrollo Shop"
-site_url: "https://tu-dominio.com/docs"
+site_author: "Fabio Hernandez"
+site_url: "https://Fabio-Alfredo.github.io/Shop-Backend-express/"
 
 theme:
   name: material
@@ -14,8 +14,8 @@ theme:
   features:
     - navigation.tabs
     - navigation.sections
-  logo: 'assets/logo.png'
-  favicon: 'assets/favicon.ico'
+  logo: 'assets/logo.svg'
+  favicon: 'assets/favicon.svg'
 
 nav:
   - Inicio: index.md
@@ -52,7 +52,6 @@ nav:
       - Crear rol: roles/create.md
       - Listar roles: roles/find_all.md
       - Buscar rol por ID: roles/find_id.md
-
   - Errores comunes: errors.md
 
 extra_css:
